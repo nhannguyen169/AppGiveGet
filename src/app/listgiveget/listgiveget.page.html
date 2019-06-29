@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar class="toolbar-title">
+        <ion-buttons slot="start">
+          <ion-back-button style="color:white;"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Danh sách giao dịch</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+      <ion-segment (ionChange)="segmentChanged()" [(ngModel)]="segment" color="secondary">
+        <ion-segment-button value="0">
+          <p>Give</p>
+        </ion-segment-button>
+        <ion-segment-button value="1">
+          <p>Get</p>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-slides #slides (ionSlideDidChange)="slideChanged()">
+        <ion-slide>
+            <ion-list lines="none">
+                <ion-item [color]="even? 'light' : 'medium'" *ngFor="let p of products;let even=even">
+                    <ion-label>
+                      {{p.name}}
+                    </ion-label>
+                    <ion-label>
+                      {{p.type}}
+                    </ion-label>
+                    <ion-label>
+                      {{p.date}}
+                    </ion-label>
+                    <ion-label>
+                      <img src="{{p.img}}" class="img-product">
+                    </ion-label>
+                    <ion-button color="success" class="button-icon">
+                        <ion-icon name="create"></ion-icon>
+                    </ion-button>
+                    <ion-button color="danger" class="button-icon" (click)="showReportAllert()">
+                        <ion-icon name="trash"></ion-icon>
+                    </ion-button>
+                </ion-item>
+              </ion-list>
+        </ion-slide>
+        <ion-slide>
+            <ion-list lines="none">
+                <ion-item [color]="even? 'light' : 'medium'" *ngFor="let p of products;let even=even">
+                    <ion-label>
+                      {{p.user}}
+                    </ion-label>
+                    <ion-label>
+                      {{p.name}}
+                    </ion-label>
+                    <ion-label>
+                      {{p.type}}
+                    </ion-label>
+                    <ion-label>
+                      {{p.date}}
+                    </ion-label>
+                    <ion-label>
+                      <img src="{{p.img}}" class="img-product">
+                    </ion-label>
+                    <ion-button color="danger" class="button-icon" (click)="showReportAllert()">
+                        <ion-icon name="trash"></ion-icon>
+                    </ion-button>
+                </ion-item>
+              </ion-list>
+        </ion-slide>
+      </ion-slides>
+</ion-content>

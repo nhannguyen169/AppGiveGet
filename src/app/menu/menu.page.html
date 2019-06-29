@@ -1,0 +1,18 @@
+
+<ion-menu side="start" menuId="side">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title ><img style="width:40%;" src="assets/logo/logo.png"/></ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-menu-toggle  auto-hide="false" *ngFor="let p of pages">
+        <ion-item class="menu-lst" lines="none" [routerLink]= "p.url" routerDirection="root" [class.active-item]="selectedPath === p.url">
+          <ion-icon style="font-size:25px;padding-right:15px" [name]="p.icon"></ion-icon>
+          {{p.title}}
+        </ion-item>
+      </ion-menu-toggle>
+      <img style="width:200px;padding-top:50px;" src="assets/logo/vanlang.png"/>
+    </ion-content>
+</ion-menu>
+<ion-router-outlet id="side" main></ion-router-outlet>

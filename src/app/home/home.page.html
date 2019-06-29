@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar class="header-toolbar">
+    <ion-button slot="start" class="menuBtn">
+      <ion-menu-button></ion-menu-button>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class=“home-content”>
+    <ion-card class="info-item">
+        <ion-card-header>
+          <ion-card-subtitle style="font-size: 12px;color:white;">Tip!</ion-card-subtitle>
+          <ion-card-title style="color:white;font-size: 14px">Hãy cho đi để nhận lại</ion-card-title>
+          <img src="/assets/img/pet.jpg" style="width: 50px;float:right;">
+        </ion-card-header>
+      </ion-card>    
+    <div style="padding-top: 30px;">
+      <ion-searchbar showCancelButton cancelButtonText="Cancel"></ion-searchbar>
+    </div>
+    <ion-grid>
+        <ion-row>
+          <ion-col size="6" col-sm-4 *ngFor="let i of products"  no-padding>
+              <ion-card id="thumb-item">
+                <img class="img-item" src='{{i.img}}' routerLink="/item-detail/{{i.id}}" routerDirection="forward"/>
+                <ion-card-header>
+                  <ion-card-subtitle style="font-size: 10px;">{{i.loaisp}}</ion-card-subtitle>
+                  <ion-card-title class="name-item">{{i.tensp}}</ion-card-title>
+                </ion-card-header>
+              </ion-card>    
+          </ion-col>
+        </ion-row>  
+    </ion-grid>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button  (click)="scrollToTop()">
+          <ion-icon name="arrow-round-up"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-tabs>
+            <ion-tab-bar slot="bottom" color="tint">
+              <ion-tab-button>
+                <ion-icon name="home"></ion-icon>
+                <ion-label>Home</ion-label>
+              </ion-tab-button>
+              <ion-tab-button [routerLink]="['/item-post']">
+                <ion-icon name="today"></ion-icon>
+                <ion-label>Post</ion-label>
+              </ion-tab-button>
+              <ion-tab-button [routerLink]="['/listgiveget']">
+                <ion-icon name="list"></ion-icon>
+                <ion-label>List deal</ion-label>
+              </ion-tab-button>
+              <ion-tab-button [routerLink]="['/profile']">
+                <ion-icon name="contact"></ion-icon>
+                <ion-label>Profile</ion-label>
+              </ion-tab-button>
+            </ion-tab-bar>
+        </ion-tabs>
+    </ion-toolbar>
+</ion-footer>

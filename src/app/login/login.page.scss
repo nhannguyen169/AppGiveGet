@@ -1,0 +1,29 @@
+ion-item{
+    --background: transparent;
+    --color: #fff;
+    padding-top:15px;
+    font-size: 15px;
+    --border-color: var(--ion-color-warning-contrast,  #ffffff);
+    --border:solid;
+}
+ion-button{
+    --background: #0ec254;
+}
+ion-content{
+    --background: url(/assets/img/login-background.jpg) no-repeat center/cover fixed;
+}
+
+.login-input{
+    width:280px;
+    margin: 0 auto;
+}
+
+.login-btn{
+    width:230px;
+    margin: 0 auto;
+}
+.txt-register{
+    margin: auto;
+    display: block;
+    color: white;
+}

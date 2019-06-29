@@ -1,0 +1,7 @@
+{
+  "name": "appGiveGet",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

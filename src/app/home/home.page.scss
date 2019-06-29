@@ -1,0 +1,38 @@
+.header-toolbar{
+    --background: #aaffa9; 
+    --background: -webkit-linear-gradient(to right, #aaffa9, #11ffbd); 
+    --background: linear-gradient(to right, #aaffa9, #11ffbd);
+}
+.menuBtn{
+    --background: transparent;
+    width:30px;
+    height:30px;
+    padding-left: 10px;
+    --box-shadow:none;
+}
+
+.img-item{
+    height: 100px;
+}
+
+#thumb-item{
+    background: #A1FFCE;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #FAFFD1, #A1FFCE);
+    background: linear-gradient(to right, #FAFFD1, #A1FFCE);
+    width: auto;
+}
+.name-item{
+    text-align: center;
+    font-size: 9px;
+    color:#696969;
+}
+.info-item{
+    --background: url(/assets/img/sky.jpg) no-repeat center/cover fixed;
+    --border-radius: 5px;
+    margin: 0 auto;
+    display: block;
+    padding-top: 20px;
+    color: white;
+    font-size: 14px;
+    width:auto;
+}
