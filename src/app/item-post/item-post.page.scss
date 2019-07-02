@@ -52,8 +52,22 @@ ion-content{
     font-size: 13px;
 }
 ion-footer{
-    background:	#FFF5EE;
+    background:	#383a3e;
     text-align:center; 
     padding-top: 10px;
     padding-bottom: 10px;
+}
+.post-photo{
+    padding-top: 50px;
+    padding-bottom: 25px;
+    background:#383a3e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.photo-camera{
+    width: 200px;
+    height: 200px;
+    border-radius: 15px; 
 }

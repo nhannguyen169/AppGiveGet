@@ -12,13 +12,11 @@
 }
 
 .img-item{
-    height: 100px;
+    height: 150px;
 }
 
 #thumb-item{
-    background: #A1FFCE;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #FAFFD1, #A1FFCE);
-    background: linear-gradient(to right, #FAFFD1, #A1FFCE);
+    background-color:	#F5F5F5;
     width: auto;
 }
 .name-item{
@@ -27,7 +25,7 @@
     color:#696969;
 }
 .info-item{
-    --background: url(/assets/img/sky.jpg) no-repeat center/cover fixed;
+    --background: url(/assets/img/light.jpg) no-repeat center/cover fixed;
     --border-radius: 5px;
     margin: 0 auto;
     display: block;
@@ -35,4 +33,15 @@
     color: white;
     font-size: 14px;
     width:auto;
+}
+
+ion-content{
+    --background: url(/assets/img/home-background.jpg) no-repeat center/cover fixed;
+}
+
+#subtitle-product{
+    background:#FFA500;
+    color: white;
+    border-radius:15px;
+    text-align: center;
 }

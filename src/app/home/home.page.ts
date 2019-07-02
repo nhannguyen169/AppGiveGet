@@ -1,7 +1,6 @@
 import { Component, ViewChild} from '@angular/core';
 import { IonContent } from '@ionic/angular';
 import { CrudProduct } from '../service/crud.product';
-import firebase from 'firebase';
 @Component({  
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -14,6 +13,7 @@ export class HomePage {
    
   }
   products : any;
+
   //lay thong tin san pham
   ngOnInit() {   
     this.crudProduct.read_Products().subscribe(data => {

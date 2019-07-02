@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar [class.show-background]="showToolbar">
       <ion-buttons slot="start">
-        <ion-back-button style="color:black;"></ion-back-button>
+        <ion-back-button style="color:white;"></ion-back-button>
       </ion-buttons>
       <ion-title>Đăng bài</ion-title>
     </ion-toolbar>
@@ -9,19 +9,24 @@
   
   <ion-content (ionScroll)="onScroll($event)" [scrollEvents]="true" fullscreen>
     <div style="background:whitesmoke;">
-      <div style="background: white;">
-          <img src="/assets/img/camera.png" class="img-detail"/>
+      <div class="post-photo">
+        <img [src]="captureDataUrl" *ngIf="captureDataUrl" class="photo-camera" />
+        <ion-fab vertical="top" horizontal="center" slot="fixed">
+          <ion-fab-button color="danger" (click)="getPicture(0)">
+            <ion-icon name="camera"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>      
       </div> 
       <ion-grid id="grid1">
         <ion-row style="height: 40px;">
-            <ion-textarea placeholder="Nhập tên sản phẩm"></ion-textarea>
+            <ion-textarea placeholder="Nhập tên sản phẩm" [(ngModel)]="newProductName"></ion-textarea>
         </ion-row>
         <ion-row>
         <hr>
         </ion-row>
         <ion-row style="height: 200px;">
           <ion-col>
-              <ion-textarea placeholder="Mô tả..."></ion-textarea>
+              <ion-textarea placeholder="Mô tả..." [(ngModel)]="newProductDescribe"></ion-textarea>
           </ion-col>
         </ion-row>
       </ion-grid>  
@@ -31,14 +36,27 @@
               <ion-item>
                   <ion-icon name="clipboard" style="padding-right: 20px;"></ion-icon>
                   <ion-label style="color:#C0C0C0">Loại sản phẩm</ion-label>
-                  <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Chọn">
-                    <ion-select-option value="red">Red</ion-select-option>
-                    <ion-select-option value="purple">Purple</ion-select-option>
-                    <ion-select-option value="yellow">Yellow</ion-select-option>
-                    <ion-select-option value="orange">Orange</ion-select-option>
-                    <ion-select-option value="green">Green</ion-select-option>
+                  <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Chọn" [(ngModel)]="newProductType">
+                    <ion-select-option *ngFor="let pt of producttype" value="{{pt.name}}">{{pt.name}}</ion-select-option>
+                    <ion-select-option value="Other">Other ...</ion-select-option>
                   </ion-select>
-                </ion-item>
+              </ion-item>
+              <ion-item style="padding-top:3%;">
+                <ion-icon name="card" style="padding-right: 20px;"></ion-icon>
+                <ion-label style="color:#C0C0C0">Cách thức nhận</ion-label>
+                <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Chọn" [(ngModel)]="newProductMethod">
+                  <ion-select-option value="true">Hệ thống tự chọn</ion-select-option>
+                  <ion-select-option value="false">Chọn thủ công</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <ion-item style="padding-top:3%;">
+                <ion-icon name="heart-half" style="padding-right: 20px;"></ion-icon>
+                <ion-label style="color:#C0C0C0">Tình trạng sản phẩm</ion-label>
+                <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Chọn" [(ngModel)]="newProductStatus">
+                  <ion-select-option value="new">Mới</ion-select-option>
+                  <ion-select-option value="old">Cũ</ion-select-option>
+                </ion-select>
+              </ion-item>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -54,6 +72,6 @@
   </ion-content>
   
 <ion-footer>
-  <ion-button class="offer-btn">Đăng</ion-button>
+  <ion-button class="offer-btn" (click)="CreateProduct()" >Đăng</ion-button>
 </ion-footer>
   
