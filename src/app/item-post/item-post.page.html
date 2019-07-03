@@ -38,7 +38,6 @@
                   <ion-label style="color:#C0C0C0">Loại sản phẩm</ion-label>
                   <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Chọn" [(ngModel)]="newProductType">
                     <ion-select-option *ngFor="let pt of producttype" value="{{pt.name}}">{{pt.name}}</ion-select-option>
-                    <ion-select-option value="Other">Other ...</ion-select-option>
                   </ion-select>
               </ion-item>
               <ion-item style="padding-top:3%;">

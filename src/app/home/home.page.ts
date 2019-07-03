@@ -23,7 +23,7 @@ export class HomePage {
           id: e.payload.doc.id,
           tensp: e.payload.doc.data()['tensp'],
           loaisp: e.payload.doc.data()['loaisp'],
-          img:e.payload.doc.data()['image'],
+          img:e.payload.doc.data()['image']
         };
       })
     });

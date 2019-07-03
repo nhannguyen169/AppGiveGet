@@ -8,7 +8,6 @@ import { ValidateProduct } from '../service/validate.product';
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
 import { LoadingController } from '@ionic/angular';
-import { when } from 'q';
 @Component({
   selector: 'app-item-post',
   templateUrl: './item-post.page.html',
@@ -66,6 +65,7 @@ export class ItemPostPage implements OnInit {
        loading.dismiss();
     }, (err) => {
         console.log(err);
+        loading.dismiss();
     });
   }  
 
@@ -101,6 +101,8 @@ export class ItemPostPage implements OnInit {
       this.imgUrl = undefined;
       this.captureDataUrl = "";
       this.hasUpImg = false;
+      this.location.back();
+      this.validateProduct.ToastSuccess();
       console.log(resp);
     })
       .catch(error => {
@@ -127,26 +129,19 @@ export class ItemPostPage implements OnInit {
       this.validated = true;
     }
   }
-  // show loading dang
-  async presentLoadingPost() {
-    const loading = await this.loadingController.create({
-      message: 'Đang xử lý',
-      duration: 3000
-    });
-    await loading.present().then(() => {
-      this.location.back();
-      this.validateProduct.ToastSuccess();
-    });;
-  }
   //function upload anh va thong tin san pham da tao
-  CreateProduct(){
+  async CreateProduct(){
     this.checkValidate();
+    const loading = await this.loadingController.create({
+      message: 'Đang xử lý'
+    });
     if(this.validated == true){
-      this.upload();
+      loading.present();
+      await this.upload();
       if(this.hasUpImg == true){
         var img = this.imgUrl;
-        this.CreateRecord(img);
-        this.presentLoadingPost();
+        await this.CreateRecord(img);
+        await loading.dismiss();
       }
     }
     

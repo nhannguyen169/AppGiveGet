@@ -2,74 +2,70 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ScrollDetail } from '@ionic/core';
 import { AlertController, ActionSheetController } from '@ionic/angular';
+import { CrudProduct } from '../service/crud.product';
+import { GetProducttype } from '../service/get.productype';
 @Component({
   selector: 'app-item-detail',
   templateUrl: './item-detail.page.html',
   styleUrls: ['./item-detail.page.scss'],
 })
 export class ItemDetailPage implements OnInit {
-  products = [
-    {
-      id: 1,
-      name: 'One Question',
-      type: 'Sách',
-      user:'Nguyễn Văn A',
-      date:'14/6/2019',
-      note:'when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s',
-      img:'/assets/img-tmp/sp1.jpg'
-    },
-    {
-      id: 2,
-      name: 'A day for you sdsdsd',
-      type: 'Sách cũ',
-      user:'Nguyễn Văn B',
-      date:'14/6/2019',
-      note:'ai cần liên hệ',
-      img:'/assets/img-tmp/sp2.jpg'
-    },
-    {
-      id: 3,
-      name: 'Java Script For Beginer',
-      type: 'Sách',
-      user:'Trần Văn A',
-      date:'14/6/2019',
-      note:'sách về lập trình ai cần liên hệ',
-      img:'/assets/img-tmp/sp3.jpg'
-    },
-    {
-      id:4,
-      name: 'Sách lập trình WEB',
-      type: 'Sách cũ',
-      user:'Nguyễn Văn A',
-      date:'14/6/2019',
-      note:'Cần giao lại quyển lập trình cho ai mún',
-      img:'/assets/img-tmp/sp4.jpg'
-    },
-    {
-      id: 5,
-      name: 'XPERIA',
-      type: 'Điện Thoại',
-      user:'Nguyễn Văn C',
-      date:'14/6/2019',
-      note:'liên hệ',
-      img:'/assets/img-tmp/sp5.jpg'
-    },
-    {
-      id: 6,
-      name: 'Vợt cũ',
-      type: 'Vợt',
-      user:'Phạm Thế C',
-      date:'14/6/2019',
-      note:'Ai cần liên hệ',
-      img:'/assets/img-tmp/sp6.jpg'
-    }
-  ]
-  itemId = null;
-  constructor(private activatedRoute: ActivatedRoute,public alertController: AlertController,public actionSheetController: ActionSheetController) { }
 
-  ngOnInit() {
-    this.itemId = this.activatedRoute.snapshot.paramMap.get('itemid');
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    public alertController: AlertController,
+    public actionSheetController: ActionSheetController,
+    private crudProduct: CrudProduct,
+    private getProducttype: GetProducttype
+  ) { }
+  itemId = null;
+  products : any;
+  producttype : any;
+  hasLoad = false;
+  sliderConfig = {
+    slidesPerView: 1.6,
+    spaceBetween: 10,
+    centeredSlides: true
+  };
+
+  //trao doi phan tu trong mang
+  shuffle(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
   }
+    
+  ngOnInit() {
+    //lay thong tin san pham tu firebase qua id
+    this.itemId = this.activatedRoute.snapshot.paramMap.get('itemid');
+    this.crudProduct.read_Products().subscribe(data => {
+      this.products = data.map(e => {
+        return {
+          id: e.payload.doc.id,
+          tensp: e.payload.doc.data()['tensp'],
+          loaisp: e.payload.doc.data()['loaisp'],
+          img:e.payload.doc.data()['image'],
+          date:e.payload.doc.data()['ngaytao'].toDate(),
+          note:e.payload.doc.data()['mota'],
+          status:e.payload.doc.data()['tinhtrangsp']
+        };
+      })
+    });
+     //lay du lieu product type tu firebase
+     this.getProducttype.read_Producttype().subscribe(data => {
+      this.producttype = data.map(e => {
+        return {
+          name: e.payload.doc.data()['name'],
+          icon: 'https://firebasestorage.googleapis.com/v0/b/appgiveget.appspot.com/o/Category%2F'+e.payload.doc.data()['icon']+'.png?alt=media'
+        }
+      })
+    });
+  }
+
+  //chuc nang hien thi report
   async showReportAllert() {
     const alert = await this.alertController.create({
       header: 'Xác nhận',
@@ -80,6 +76,8 @@ export class ItemDetailPage implements OnInit {
 
     await alert.present();
   }
+
+  //chuc nang hien thi share
   async showShareAction() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Chia sẻ',
@@ -96,8 +94,14 @@ export class ItemDetailPage implements OnInit {
     await actionSheet.present();
   }
 
+  //chuc nang show toolbar
   showToolbar = false;
+  countShuff = 0;
   onScroll($event: CustomEvent<ScrollDetail>) {
+    this.countShuff++;
+    if(this.countShuff == 1){
+      this.shuffle(this.products);
+    }
     if ($event && $event.detail && $event.detail.scrollTop) {
       const scrollTop = $event.detail.scrollTop;
       this.showToolbar = scrollTop >= 300;

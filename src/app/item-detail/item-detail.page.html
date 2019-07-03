@@ -1,13 +1,13 @@
 <ion-header>
   <ion-toolbar [class.show-background]="showToolbar">
     <ion-buttons slot="start">
-      <ion-back-button style="color: 	#FFE4B5;"></ion-back-button>
+      <ion-back-button style="color:#FFA500"></ion-back-button>
     </ion-buttons>
     <ion-button class="btn-toolbar" (click)="showShareAction()">
-        <ion-icon name="share"></ion-icon>
+        <ion-icon name="share" style="color:#FFA500"></ion-icon>
     </ion-button>
     <ion-button class="btn-toolbar" (click)="showReportAllert()">
-      <ion-icon name="information-circle-outline"></ion-icon>
+      <ion-icon name="information-circle-outline" style="color:#FFA500"></ion-icon>
     </ion-button>
   </ion-toolbar>
 </ion-header>
@@ -19,10 +19,10 @@
             <ion-grid style="background: white;">
                 <ion-row>
                   <ion-col col-10>
-                    <ion-label class="name-detail"> {{i.name}} sdsd sddsd</ion-label>
+                    <ion-label class="name-detail">{{i.tensp}}</ion-label>
                   </ion-col>
                   <ion-col>
-                      <ion-label class="date-detail">{{i.date}}</ion-label>
+                      <ion-label class="date-detail">{{i.date | date:'dd-MM-yyyy'}}</ion-label>
                   </ion-col>
                 </ion-row>
                 <ion-row>
@@ -31,11 +31,17 @@
                       </ion-col>
                 </ion-row>
             </ion-grid>  
+            <ion-item class="item-category">
+                <div *ngFor="let pt of producttype">  
+                  <img style="padding-top: 5px;width:50px;height:50px;" src="{{pt.icon}}" *ngIf="pt.name == i.loaisp">
+                  <ion-label *ngIf="pt.name == i.loaisp" class="lbl-loaisp">{{pt.name}}</ion-label>   
+                </div>
+              </ion-item>
             <ion-grid style="padding-top:30px;">
                 <ion-row>
-                    <ion-col  class="title-lbl">
+                    <ion-col class="title-lbl">
                         <ion-label>Người đăng</ion-label>
-                      </ion-col>
+                    </ion-col>
                 </ion-row>
                 <ion-row>
                     <ion-col>
@@ -45,14 +51,45 @@
                             <img src="/assets/img/user.png">
                           </ion-avatar>
                           <ion-label>{{i.user}}</ion-label>   
-                        </ion-item>  
-                        <img src="/assets/img/light.jpg" id="sky-img">
+                        </ion-item>
                       </div>  
                     </ion-col>
                 </ion-row>
-            </ion-grid>
-            <br style ='line-height:100px;'> 
+            </ion-grid>  
+            
         </div>
+    </div>
+    <div style="background:whitesmoke;">
+        <ion-grid style="padding-top:30px;">
+            <ion-row>
+                <ion-col class="title-lbl">
+                    <ion-label>Các bài đăng khác</ion-label>
+                </ion-col>
+            </ion-row>
+            <div>
+              
+            </div>
+            <ion-row>
+                <ion-col>
+                    <ion-slides [options]="sliderConfig">
+                        <ion-slide *ngFor="let i of products; let n=index">
+                          <div *ngIf="n<6">
+                            <ion-card class="card-product">
+                              <ion-card-header>
+                                  <ion-card-subtitle style="color: coral;">{{i.loaisp}}</ion-card-subtitle>
+                                  <ion-card-title>{{i.tensp}}</ion-card-title>
+                                <ion-card-content>
+                                  <img class="img-item" src='{{i.img}}' routerLink="/item-detail/{{i.id}}" routerDirection="forward"/>
+                                </ion-card-content>
+                              </ion-card-header>
+                            </ion-card>
+                          </div>
+                        </ion-slide>
+                      </ion-slides>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <br style ='line-height:100px;'> 
     </div>
 </ion-content>
 

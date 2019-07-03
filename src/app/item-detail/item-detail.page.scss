@@ -9,9 +9,7 @@ ion-toolbar{
 }
 .show-background {
     border-style: none;
-    background: #aaffa9; 
-    background: -webkit-linear-gradient(to right, #aaffa9, #11ffbd); 
-    background: linear-gradient(to right, #aaffa9, #11ffbd);
+    background:#90EE90;
 }
 /* Remove bottom border on md */
 .header-md::after {
@@ -29,13 +27,12 @@ ion-content{
 
 ion-icon{
     font-size: 30px;
-    color: 	#FFE4B5;
 }
 .btn-toolbar{
-    --background: transparent;
-    border: none;
-    float: right;
-    --box-shadow:none;
+        --background: transparent;
+        border: none;
+        float: right;
+        --box-shadow:none;
 }
 
 .name-detail{
@@ -51,7 +48,7 @@ ion-icon{
     font-size: 13px;
 }
 ion-footer{
-    background:	#FFF5EE;
+    background:	#383a3e;
     text-align:center; 
     padding-top: 10px;
     padding-bottom: 10px;
@@ -63,12 +60,18 @@ ion-footer{
     font:bold 16px Georgia, serif;
     color: gray;
 }
+.item-category{
+    --background:#7CFC00;
+}
 
-#sky-img{
-    width: 90%;
-    border-radius: 10px;
-    display: block;
-    margin: 0 auto;
-    height: 80px;
-    padding-bottom: 20px;
+.lbl-loaisp{
+    float: right;padding-top:20px;padding-left:20px;color:white;
+}
+.img-item{
+    height: 150px;
+    width:150px;
+}
+
+.card-product{
+    background-color: white;
 }
