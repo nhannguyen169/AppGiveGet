@@ -32,7 +32,7 @@ export class ItemPostPage implements OnInit {
   newProductMethod : boolean;
   captureDataUrl: string;
   imgUrl: string;
-  hasUpImg: boolean;
+  hasUpImg = false;
   validated: boolean;
   ngOnInit() {
     //lay du lieu product type tu firebase
@@ -43,7 +43,6 @@ export class ItemPostPage implements OnInit {
         };
       })
     });
-    this.hasUpImg = false;
     this.validated = false;
   }
 
@@ -77,9 +76,10 @@ export class ItemPostPage implements OnInit {
 
     // Create a reference to 'images/todays-date.jpg'
     const imageRef = storageRef.child(`ProductImage/${filename}.jpg`);
-    imageRef.putString(this.captureDataUrl, firebase.storage.StringFormat.DATA_URL);
+    imageRef.putString(this.captureDataUrl, firebase.storage.StringFormat.DATA_URL).then((data) => {
+      this.hasUpImg = true;
+    });
     this.imgUrl = 'https://firebasestorage.googleapis.com/v0/b/appgiveget.appspot.com/o/ProductImage%2F'+filename+'.jpg?alt=media';
-    this.hasUpImg = true;
   }
   //tao san pham 
   CreateRecord(newImage) {
@@ -129,6 +129,11 @@ export class ItemPostPage implements OnInit {
       this.validated = true;
     }
   }
+
+  async loadingSave(){
+    
+   
+  }
   //function upload anh va thong tin san pham da tao
   async CreateProduct(){
     this.checkValidate();
@@ -136,8 +141,8 @@ export class ItemPostPage implements OnInit {
       message: 'Đang xử lý'
     });
     if(this.validated == true){
-      loading.present();
       await this.upload();
+      await loading.present();
       if(this.hasUpImg == true){
         var img = this.imgUrl;
         await this.CreateRecord(img);

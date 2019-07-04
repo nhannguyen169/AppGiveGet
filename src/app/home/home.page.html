@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content padding class=“home-content”>
-    <ion-card class="info-item">
+    <ion-card class="info-item" *ngIf="hasSearch == false;">
         <ion-card-header>
           <ion-card-subtitle style="font-size: 12px;color:white;">Tip!</ion-card-subtitle>
           <ion-card-title style="color:white;font-size: 14px">Hãy cho đi để nhận lại</ion-card-title>
@@ -15,7 +15,7 @@
         </ion-card-header>
       </ion-card>    
     <div style="padding-top: 30px;">
-      <ion-searchbar showCancelButton cancelButtonText="Cancel"></ion-searchbar>
+      <ion-searchbar (ionInput)="searchProduct($event)" [showCancelButton]="shouldShowCancel"></ion-searchbar>
     </div>
     <ion-grid>
         <ion-row>

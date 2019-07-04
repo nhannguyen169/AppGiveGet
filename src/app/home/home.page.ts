@@ -13,11 +13,11 @@ export class HomePage {
    
   }
   products : any;
-
+  initializeProduct : any;
+  hasSearch = false;
   //lay thong tin san pham
   ngOnInit() {   
-    this.crudProduct.read_Products().subscribe(data => {
-      
+    this.crudProduct.read_Products().subscribe(data => { 
       this.products = data.map(e => {
         return {
           id: e.payload.doc.id,
@@ -26,8 +26,28 @@ export class HomePage {
           img:e.payload.doc.data()['image']
         };
       })
+      this.initializeProduct = this.products;
     });
   }
+
+  //load ve du lieu ban dau
+  initialize(){
+    this.products = this.initializeProduct;
+    this.hasSearch = false;
+  }
+  //tim kiem san pham
+  searchProduct(input: any) {
+    this.initialize();
+    let serVal = input.target.value;
+    if (serVal && serVal.trim() != '') {
+      this.hasSearch = true;
+      this.products = this.products.filter((result) => {
+        return (String(result.tensp).toLowerCase().indexOf(serVal.toLowerCase()) > -1);
+      })
+    }
+  }
+
+  //scroll len dau trang 
   scrollToTop() {
     this.content.scrollToTop(400);
   }
