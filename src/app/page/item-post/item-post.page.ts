@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ScrollDetail } from '@ionic/core';
-import { GetProducttype } from '../service/get.productype';
-import { CrudProduct } from '../service/crud.product';
+import { GetProducttype } from '../../service/firestore/get.productype';
+import { CrudProduct } from '../../service/firestore/crud.product';
 import { Camera,CameraOptions } from '@ionic-native/camera/ngx';
 import { Location } from '@angular/common';
-import { ValidateProduct } from '../service/validate.product';
+import { ValidateProduct } from '../../service/firestore/validate.product';
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
 import { LoadingController } from '@ionic/angular';
@@ -32,8 +32,8 @@ export class ItemPostPage implements OnInit {
   newProductMethod : boolean;
   captureDataUrl: string;
   imgUrl: string;
-  hasUpImg = false;
   validated: boolean;
+  hasUpImg = false;
   ngOnInit() {
     //lay du lieu product type tu firebase
     this.getProducttype.read_Producttype().subscribe(data => {
@@ -76,11 +76,11 @@ export class ItemPostPage implements OnInit {
 
     // Create a reference to 'images/todays-date.jpg'
     const imageRef = storageRef.child(`ProductImage/${filename}.jpg`);
-    imageRef.putString(this.captureDataUrl, firebase.storage.StringFormat.DATA_URL).then((data) => {
-      this.hasUpImg = true;
-    });
+    imageRef.putString(this.captureDataUrl, firebase.storage.StringFormat.DATA_URL);
     this.imgUrl = 'https://firebasestorage.googleapis.com/v0/b/appgiveget.appspot.com/o/ProductImage%2F'+filename+'.jpg?alt=media';
+    this.hasUpImg = true;
   }
+
   //tao san pham 
   CreateRecord(newImage) {
     let record = {};
@@ -100,7 +100,6 @@ export class ItemPostPage implements OnInit {
       this.newProductMethod = undefined;
       this.imgUrl = undefined;
       this.captureDataUrl = "";
-      this.hasUpImg = false;
       this.location.back();
       this.validateProduct.ToastSuccess();
       console.log(resp);
@@ -130,26 +129,21 @@ export class ItemPostPage implements OnInit {
     }
   }
 
-  async loadingSave(){
-    
-   
-  }
   //function upload anh va thong tin san pham da tao
   async CreateProduct(){
     this.checkValidate();
     const loading = await this.loadingController.create({
-      message: 'Đang xử lý'
+      message: 'Đang xử lý',
+      duration: 4000
     });
     if(this.validated == true){
-      await this.upload();
-      await loading.present();
+      this.upload();
       if(this.hasUpImg == true){
         var img = this.imgUrl;
-        await this.CreateRecord(img);
-        await loading.dismiss();
+        this.CreateRecord(img);
+        await loading.present();
       }
-    }
-    
+    }  
   }
 
   //chuc nang scroll

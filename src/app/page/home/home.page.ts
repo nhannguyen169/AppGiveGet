@@ -1,6 +1,11 @@
-import { Component, ViewChild} from '@angular/core';
-import { IonContent } from '@ionic/angular';
-import { CrudProduct } from '../service/crud.product';
+import { Component, ViewChild,Injectable} from '@angular/core';
+import { IonContent} from '@ionic/angular';
+import { CrudProduct } from '../../service/firestore/crud.product';
+
+
+@Injectable({
+  providedIn: 'root'
+})
 @Component({  
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -9,14 +14,16 @@ import { CrudProduct } from '../service/crud.product';
 export class HomePage {
   @ViewChild(IonContent) content: IonContent;
 
-  constructor(private crudProduct: CrudProduct) {
-   
-  }
+  constructor(
+    private crudProduct: CrudProduct
+  ){}
   products : any;
   initializeProduct : any;
   hasSearch = false;
-  //lay thong tin san pham
+  userEmail: string;
+
   ngOnInit() {   
+    //lay thong tin san pham
     this.crudProduct.read_Products().subscribe(data => { 
       this.products = data.map(e => {
         return {
@@ -29,7 +36,6 @@ export class HomePage {
       this.initializeProduct = this.products;
     });
   }
-
   //load ve du lieu ban dau
   initialize(){
     this.products = this.initializeProduct;

@@ -1,0 +1,44 @@
+<ion-content padding>
+  <form class="form" [formGroup]="validations_form"  (ngSubmit)="loginUser(validations_form.value)">
+    <ion-grid>
+      <ion-row color="success" justify-content-center>
+        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+          <div text-center>
+            <img src="assets/logo/logo.png"/>
+          </div>
+          <div class="login-input" padding>
+            <ion-item>
+              <ion-input name="email" type="email" placeholder="Email" formControlName="email"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+              <ng-container *ngFor="let validation of validation_messages.email">
+                <div class="error-message" *ngIf="validations_form.get('email').hasError(validation.type) && (validations_form.get('email').dirty || validations_form.get('email').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+            <ion-item>
+              <ion-input name="password" type="password" placeholder="Password" formControlName="password"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+              <ng-container *ngFor="let validation of validation_messages.password">
+                <div class="error-message" *ngIf="validations_form.get('password').hasError(validation.type) && (validations_form.get('password').dirty || validations_form.get('password').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <div class="login-btn" padding>
+            <ion-button size="medium" style="font-size: 13px;" type="submit" [disabled]="!validations_form.valid" expand="block"  >Đăng nhập</ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <div class="txt-register">
+      Không có tài khoản nhấn <a (click)="goToRegisterPage()">
+        Đăng ký</a>!
+        </div>
+    </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

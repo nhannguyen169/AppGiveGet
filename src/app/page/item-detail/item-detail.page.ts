@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ScrollDetail } from '@ionic/core';
 import { AlertController, ActionSheetController } from '@ionic/angular';
-import { CrudProduct } from '../service/crud.product';
-import { GetProducttype } from '../service/get.productype';
+import { CrudProduct } from '../../service/firestore/crud.product';
+import { GetProducttype } from '../../service/firestore/get.productype';
 @Component({
   selector: 'app-item-detail',
   templateUrl: './item-detail.page.html',

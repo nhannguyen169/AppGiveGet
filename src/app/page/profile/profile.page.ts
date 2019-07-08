@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ScrollDetail } from '@ionic/core';
 import { IonSlides } from '@ionic/angular';
-
+import { AuthService } from '../../service/authentication/authentication.service';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -26,9 +26,14 @@ export class ProfilePage implements OnInit {
       mess : "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages"
     },
   ]
-  constructor() { }
 
-  ngOnInit() {
+  constructor(private authService: AuthService) { }
+  userEmail : String;
+
+  ngOnInit() {  
+    if(this.authService.userDetails()){
+      this.userEmail = this.authService.userDetails().email;
+    }
   }
 
   //chuc nang scroll hien toolbar
@@ -46,5 +51,6 @@ export class ProfilePage implements OnInit {
   async slideChanged() {
     this.segment = await this.slider.getActiveIndex();
   }
-
+ 
+  
 }
