@@ -27,7 +27,7 @@ export class AppComponent {
       this.splashScreen.hide();
     });
     if(this.authService.userDetails()){
-      console.log("logged")
+      this.navCtrl.navigateForward('/menu/home');
     }else{
       this.navCtrl.navigateForward('/login');
     }

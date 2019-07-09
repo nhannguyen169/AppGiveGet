@@ -26,4 +26,12 @@ export class CrudProduct {
   delete_Product(record_id) {
     this.firestore.doc('products/' + record_id).delete();
   }
+
+  add_GetProduct(productID,record) {
+    return this.firestore.doc('products/' + productID).collection('listGet').add(record);
+  }
+
+  read_GetProduct(productID){
+    return this.firestore.doc('products/' + productID).collection('listGet').snapshotChanges();
+  }
 }

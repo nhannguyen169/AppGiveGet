@@ -53,7 +53,14 @@ export class ValidateProduct {
   }
   async ToastSuccess() {
     const toast = await this.toastController.create({
-      message: 'Đăng sản phẩm thành công',
+      message: 'Thành công! Vui lòng đợi admin duyệt bài',
+      duration: 3000
+    });
+    toast.present();
+  }
+  async ToastGetSuccess() {
+    const toast = await this.toastController.create({
+      message: 'Đăng ký thành công',
       duration: 2000
     });
     toast.present();

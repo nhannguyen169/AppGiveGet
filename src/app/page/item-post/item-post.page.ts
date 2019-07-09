@@ -33,7 +33,7 @@ export class ItemPostPage implements OnInit {
   captureDataUrl: string;
   imgUrl: string;
   validated: boolean;
-  hasUpImg = false;
+  hasUpProduct = false;
   ngOnInit() {
     //lay du lieu product type tu firebase
     this.getProducttype.read_Producttype().subscribe(data => {
@@ -45,7 +45,7 @@ export class ItemPostPage implements OnInit {
     });
     this.validated = false;
   }
-
+  //lay hinh tu album trong device
   async getPicture(sourceType){
     const cameraOptions: CameraOptions = {
       quality: 100,
@@ -78,7 +78,6 @@ export class ItemPostPage implements OnInit {
     const imageRef = storageRef.child(`ProductImage/${filename}.jpg`);
     imageRef.putString(this.captureDataUrl, firebase.storage.StringFormat.DATA_URL);
     this.imgUrl = 'https://firebasestorage.googleapis.com/v0/b/appgiveget.appspot.com/o/ProductImage%2F'+filename+'.jpg?alt=media';
-    this.hasUpImg = true;
   }
 
   //tao san pham 
@@ -100,6 +99,7 @@ export class ItemPostPage implements OnInit {
       this.newProductMethod = undefined;
       this.imgUrl = undefined;
       this.captureDataUrl = "";
+      this.hasUpProduct = true;
       this.location.back();
       this.validateProduct.ToastSuccess();
       console.log(resp);
@@ -133,15 +133,15 @@ export class ItemPostPage implements OnInit {
   async CreateProduct(){
     this.checkValidate();
     const loading = await this.loadingController.create({
-      message: 'Đang xử lý',
-      duration: 4000
+      message: 'Đang xử lý'
     });
     if(this.validated == true){
       this.upload();
-      if(this.hasUpImg == true){
-        var img = this.imgUrl;
-        this.CreateRecord(img);
-        await loading.present();
+      var img = this.imgUrl;
+      await this.CreateRecord(img);
+      await loading.present();
+      if(this.hasUpProduct == true){
+        loading.dismiss();
       }
     }  
   }

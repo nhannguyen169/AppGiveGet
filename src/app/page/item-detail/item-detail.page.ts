@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ScrollDetail } from '@ionic/core';
-import { AlertController, ActionSheetController } from '@ionic/angular';
+import { AlertController, ActionSheetController,LoadingController } from '@ionic/angular';
 import { CrudProduct } from '../../service/firestore/crud.product';
+import { ValidateProduct } from '../../service/firestore/validate.product';
 import { GetProducttype } from '../../service/firestore/get.productype';
+import { AuthService } from '../../service/authentication/authentication.service';
 @Component({
   selector: 'app-item-detail',
   templateUrl: './item-detail.page.html',
@@ -15,13 +17,20 @@ export class ItemDetailPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     public alertController: AlertController,
     public actionSheetController: ActionSheetController,
+    private loadingController: LoadingController,
     private crudProduct: CrudProduct,
-    private getProducttype: GetProducttype
+    private validateProduct: ValidateProduct,
+    private getProducttype: GetProducttype,
+    private authService: AuthService
   ) { }
   itemId = null;
   products : any;
   producttype : any;
+  userSubmit : any;
+  hasSubmit = false;
   hasLoad = false;
+  userID : any;
+  hasCreated = false;
   sliderConfig = {
     slidesPerView: 1.6,
     spaceBetween: 10,
@@ -37,7 +46,32 @@ export class ItemDetailPage implements OnInit {
         array[j] = temp;
     }
   }
-    
+
+  //lay thong tin nguoi dung da dang ky 
+  getUserHasSubmit(ms){
+    this.crudProduct.read_GetProduct(this.itemId).subscribe(data => {
+      this.userSubmit = data.map(e => {
+        return {
+          user:e.payload.doc.data()['user']
+        };
+      })
+    });
+    return new Promise(r => setTimeout(r, ms))
+  }
+
+  checkUserHasSubmit(){
+    for(var i =0;i<this.userSubmit.length;i++){   
+      console.log(this.userSubmit[i].user);
+      if(this.userSubmit[i].user == this.userID){
+        this.hasSubmit = true;
+      }
+    }
+  }
+
+  async validateSubmit(){
+    await this.getUserHasSubmit(500);
+    await this.checkUserHasSubmit();
+  }
   ngOnInit() {
     //lay thong tin san pham tu firebase qua id
     this.itemId = this.activatedRoute.snapshot.paramMap.get('itemid');
@@ -63,8 +97,15 @@ export class ItemDetailPage implements OnInit {
         }
       })
     });
+    //lay thong tin user dang su dung
+    if(this.authService.userDetails()){
+      this.userID = this.authService.userDetails().uid;
+    }
+    
   }
-
+  ionViewDidEnter(){
+    this.validateSubmit();
+  }
   //chuc nang hien thi report
   async showReportAllert() {
     const alert = await this.alertController.create({
@@ -107,4 +148,26 @@ export class ItemDetailPage implements OnInit {
       this.showToolbar = scrollTop >= 300;
     }
   }
+
+  //lay du lieu san pham de dang ky
+  createGetData(){
+    let record = {};
+    record['user'] = this.userID;
+    this.crudProduct.add_GetProduct(this.itemId,record).then(resp =>{
+      this.hasCreated = true;
+      this.validateProduct.ToastGetSuccess();
+    })  
+  }
+  //gui du lieu len firebase
+  async submitGet(){
+    const loading = await this.loadingController.create({
+      message: 'Đang xử lý'
+    });
+    await this.createGetData();
+    if(this.hasCreated == true){
+      loading.dismiss();
+    }
+  }
+
+
 }
