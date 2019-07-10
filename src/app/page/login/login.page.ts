@@ -32,6 +32,11 @@ export class LoginPage implements OnInit {
         Validators.required
       ])),
     });
+    if(this.authService.userDetails()){
+      this.navCtrl.navigateForward('/menu/home');
+    }else{
+      this.navCtrl.navigateForward('/login');
+    }
   }
  
  

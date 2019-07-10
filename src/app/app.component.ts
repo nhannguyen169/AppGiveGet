@@ -19,17 +19,11 @@ export class AppComponent {
     this.initializeApp();
     
   }
-  userEmail:string;
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.statusBar.backgroundColorByHexString('#90EE90');
       this.splashScreen.hide();
     });
-    if(this.authService.userDetails()){
-      this.navCtrl.navigateForward('/menu/home');
-    }else{
-      this.navCtrl.navigateForward('/login');
-    }
   }
 }

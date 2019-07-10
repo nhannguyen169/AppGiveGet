@@ -12,8 +12,7 @@ ion-content{
     text-align: center;
 }
 ion-toolbar{
-    --background: url('/assets/img/menu-toolbar.jpg') no-repeat center;
-    background-size: cover;
+    --background: url('/assets/img/menu-toolbar.jpg') no-repeat center/cover fixed;
     height: 150px;
     display: flex;
     justify-content: center;

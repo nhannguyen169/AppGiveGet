@@ -1,16 +1,19 @@
 .toolbar-title{
-    --background: lightgreen;
+    --background: #90EE90;
     color: white;
 }
 
 ion-content{
-    --background: #FDF5E6;
+    --background: url(/assets/img/home-background.jpg) no-repeat center/cover fixed;
 }
 
 ion-list ion-item{
     font-size: 12px;
 }
 
+ion-card{
+    --background:#F5F5F5;
+}
 .img-product{
     width: 40px;
     height: 40px;

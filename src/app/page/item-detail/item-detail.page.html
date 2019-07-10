@@ -76,7 +76,7 @@
                 <ion-col>
                     <ion-slides [options]="sliderConfig">
                         <ion-slide *ngFor="let i of products; let n=index">
-                          <div *ngIf="n<6">
+                          <div *ngIf="n<6 && i.id != itemId">
                             <ion-card class="card-product">
                               <ion-card-header>
                                   <ion-card-subtitle style="color: coral;">{{i.loaisp}}</ion-card-subtitle>
