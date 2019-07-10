@@ -9,7 +9,7 @@ export class AuthService {
   SendVerificationMail() {
     return firebase.auth().currentUser.sendEmailVerification()
     .then(() => {
-      this.navCtrl.navigateForward('/register');
+      console.log("send verification");
     })
   }
 

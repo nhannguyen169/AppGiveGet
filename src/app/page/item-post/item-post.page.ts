@@ -136,22 +136,23 @@ export class ItemPostPage implements OnInit {
       this.validated = true;
     }
   }
-
+  
+  async loadingCreate(ms){
+    const loading = await this.loadingController.create({
+      message: 'Đang xử lý',
+      duration: 4000
+    });
+    await loading.present();
+    return new Promise(r => setTimeout(r, ms))
+  }
   //function upload anh va thong tin san pham da tao
   async CreateProduct(){
     this.checkValidate();
-    const loading = await this.loadingController.create({
-      message: 'Đang xử lý'
-    });
     if(this.validated == true){
       this.upload();
       var img = this.imgUrl;
-      var img = "sd";
+      await this.loadingCreate(4000);
       await this.CreateRecord(img);
-      await loading.present();
-      if(this.hasUpProduct == true){
-        loading.dismiss();
-      }
     }  
   }
 

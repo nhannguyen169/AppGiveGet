@@ -15,4 +15,8 @@ export class CrudUser {
   readUser(){
     return this.firestore.collection('user').snapshotChanges();
   }
+
+  createUser(record) {
+    return this.firestore.collection('user').add(record);
+  }
 }

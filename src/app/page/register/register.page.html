@@ -25,7 +25,7 @@
               </ng-container>
             </div>
             <ion-item>
-              <ion-input name="password" type="password" placeholder="Mật khẩu" formControlName="password" class="form-controll"></ion-input>
+              <ion-input name="password" type="password" placeholder="Mật khẩu" formControlName="password" class="form-control"></ion-input>
             </ion-item>
             <div class="validation-errors">
               <ng-container *ngFor="let validation of validation_messages.password">
@@ -35,8 +35,25 @@
               </ng-container>
             </div>
             <ion-item>
-              <ion-input  name="username" type="text" placeholder="Tên tài khoản" required></ion-input>
+              <ion-input  name="username" type="text" placeholder="Tên tài khoản" formControlName="username" class="form-control"></ion-input>
             </ion-item>
+            <div class="validation-errors">
+              <ng-container *ngFor="let validation of validation_messages.username">
+                <div class="error-message" *ngIf="validations_form.get('username').hasError(validation.type) && (validations_form.get('username').dirty || validations_form.get('username').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+            <ion-item>
+              <ion-input  name="mssv" type="text" placeholder="Mã số sinh viên" formControlName="mssv" class="form-control"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+              <ng-container *ngFor="let validation of validation_messages.mssv">
+                <div class="error-message" *ngIf="validations_form.get('mssv').hasError(validation.type) && (validations_form.get('mssv').dirty || validations_form.get('mssv').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
           </div>
           <div padding>
             <ion-button class="register-btn"  size="medium" class="submit-btn" type="submit"  [disabled]="!validations_form.valid" expand="block">Đăng ký</ion-button>
