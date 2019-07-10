@@ -8,6 +8,7 @@ import { ValidateProduct } from '../../service/firestore/validate.product';
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
 import { LoadingController } from '@ionic/angular';
+import { AuthService } from '../../service/authentication/authentication.service';
 @Component({
   selector: 'app-item-post',
   templateUrl: './item-post.page.html',
@@ -21,9 +22,11 @@ export class ItemPostPage implements OnInit {
     private camera : Camera, 
     private location: Location ,
     private validateProduct: ValidateProduct,
+    private authService: AuthService,
     private loadingController: LoadingController
   ) { }
-
+  
+  userID : any;
   producttype : any;
   newProductName : string;
   newProductDescribe : string;
@@ -44,6 +47,10 @@ export class ItemPostPage implements OnInit {
       })
     });
     this.validated = false;
+     //lay thong tin user dang su dung
+     if(this.authService.userDetails()){
+      this.userID = this.authService.userDetails().uid;
+    }
   }
   //lay hinh tu album trong device
   async getPicture(sourceType){
@@ -89,6 +96,7 @@ export class ItemPostPage implements OnInit {
     record['tinhtrangsp'] = this.newProductStatus;
     record['cachthucnhan'] = this.newProductMethod;
     record['image'] = newImage;
+    record['user'] = this.userID;
     var today = new Date();
     record['ngaytao'] = today;
     this.crudProduct.create_NewProduct(record).then(resp => {
@@ -138,6 +146,7 @@ export class ItemPostPage implements OnInit {
     if(this.validated == true){
       this.upload();
       var img = this.imgUrl;
+      var img = "sd";
       await this.CreateRecord(img);
       await loading.present();
       if(this.hasUpProduct == true){

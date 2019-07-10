@@ -54,7 +54,11 @@ ion-footer{
     padding-bottom: 10px;
 }
 .user-detail{
-    background:white;
+    --background: #fc4a1a;
+    --background: -webkit-linear-gradient(to right, #fc4a1a, #f7b733);
+    --background: linear-gradient(to right, #fc4a1a, #f7b733);
+    color: white;
+    font:14px Georgia,serif;
 }
 .title-lbl{
     font:bold 16px Georgia, serif;

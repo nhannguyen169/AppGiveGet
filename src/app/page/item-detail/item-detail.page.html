@@ -45,12 +45,15 @@
                 </ion-row>
                 <ion-row>
                     <ion-col>
-                      <div class="user-detail">
-                        <ion-item lines="none" style=" font:bold 14px Georgia, serif;">
+                      <div>
+                        <ion-item class="user-detail" lines="none">
                           <ion-avatar slot="start">
                             <img src="/assets/img/user.png">
                           </ion-avatar>
-                          <ion-label>{{i.user}}</ion-label>   
+                          <div *ngFor="let u of users">
+                            <ion-label *ngIf="u.userID == i.user">Email: {{u.email}}</ion-label>   
+                            <ion-label *ngIf="u.userID == i.user">User: {{u.username}}</ion-label>
+                          </div>
                         </ion-item>
                       </div>  
                     </ion-col>
@@ -94,5 +97,5 @@
 </ion-content>
 
 <ion-footer>
-  <ion-button class="offer-btn" (click)="submitGet()" *ngIf="!hasSubmit">Đăng ký nhận</ion-button>
+  <ion-button class="offer-btn" [class.button-disabled]="disableBtn" (click)="submitGet()">{{nameSubmitBtn}}</ion-button>
 </ion-footer>
