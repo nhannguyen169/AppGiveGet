@@ -12,12 +12,7 @@ const routes: Routes = [
     path: '',
     component: MenuPage,
     children: [
-      { 
-        path: 'home', loadChildren: '../home/home.module#HomePageModule' 
-      },
-      { 
-        path: 'about', loadChildren: '../about/about.module#AboutPageModule' 
-      },
+      { path: '', loadChildren: '../home/home.module#HomePageModule'}
     ]
   }
 ];

@@ -3,11 +3,10 @@ import { ScrollDetail } from '@ionic/core';
 import { GetProducttype } from '../../service/firestore/get.productype';
 import { CrudProduct } from '../../service/firestore/crud.product';
 import { Camera,CameraOptions } from '@ionic-native/camera/ngx';
-import { Location } from '@angular/common';
 import { ValidateProduct } from '../../service/firestore/validate.product';
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
-import { LoadingController } from '@ionic/angular';
+import { NavController,LoadingController } from '@ionic/angular';
 import { AuthService } from '../../service/authentication/authentication.service';
 @Component({
   selector: 'app-item-post',
@@ -20,7 +19,7 @@ export class ItemPostPage implements OnInit {
     private getProducttype: GetProducttype,
     private crudProduct: CrudProduct,
     private camera : Camera, 
-    private location: Location ,
+    private navCtrl: NavController,
     private validateProduct: ValidateProduct,
     private authService: AuthService,
     private loadingController: LoadingController
@@ -108,7 +107,7 @@ export class ItemPostPage implements OnInit {
       this.imgUrl = undefined;
       this.captureDataUrl = "";
       this.hasUpProduct = true;
-      this.location.back();
+      this.navCtrl.navigateForward('/tabs/menu');
       this.validateProduct.ToastSuccess();
       console.log(resp);
     })

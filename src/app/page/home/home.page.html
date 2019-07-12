@@ -6,7 +6,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding class=“home-content”>
+<ion-content padding class=“home-content” (ionScroll)="onScroll($event)" [scrollEvents]="true">
     <ion-card class="info-item" *ngIf="hasSearch == false;">
         <ion-card-header>
           <ion-card-subtitle style="font-size: 12px;color:white;">Típ</ion-card-subtitle>
@@ -30,7 +30,7 @@
           </ion-col>
         </ion-row>  
     </ion-grid>
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!disableFab">
         <ion-fab-button  (click)="scrollToTop()">
           <ion-icon name="arrow-round-up"></ion-icon>
         </ion-fab-button>
@@ -38,26 +38,5 @@
 </ion-content>
 
 <ion-footer>
-    <ion-toolbar>
-        <ion-tabs>
-            <ion-tab-bar slot="bottom" color="tint">
-              <ion-tab-button>
-                <ion-icon name="home"></ion-icon>
-                <ion-label>Home</ion-label>
-              </ion-tab-button>
-              <ion-tab-button [routerLink]="['/item-post']">
-                <ion-icon name="today"></ion-icon>
-                <ion-label>Post</ion-label>
-              </ion-tab-button>
-              <ion-tab-button [routerLink]="['/listgiveget']">
-                <ion-icon name="list"></ion-icon>
-                <ion-label>List deal</ion-label>
-              </ion-tab-button>
-              <ion-tab-button [routerLink]="['/profile']">
-                <ion-icon name="contact"></ion-icon>
-                <ion-label>Profile</ion-label>
-              </ion-tab-button>
-            </ion-tab-bar>
-        </ion-tabs>
-    </ion-toolbar>
+   
 </ion-footer>

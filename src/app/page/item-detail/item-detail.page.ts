@@ -69,8 +69,6 @@ export class ItemDetailPage implements OnInit {
       if(this.userSubmit[i].user == this.userID){
         this.disableBtn = true;
         this.nameSubmitBtn = "Đã đăng ký nhận";
-      }else{
-        this.nameSubmitBtn = "Đăng ký nhận";
       }
     }
   }
@@ -87,8 +85,6 @@ export class ItemDetailPage implements OnInit {
         if(this.products[i].user == this.userID){
           this.disableBtn = true;
           this.nameSubmitBtn = "Bài đăng này là của bạn";
-        }else{
-          this.nameSubmitBtn = "Đăng ký nhận";
         }
       }
     }
@@ -132,6 +128,9 @@ export class ItemDetailPage implements OnInit {
     //lay thong tin user dang su dung app
     if(this.authService.userDetails()){
       this.userID = this.authService.userDetails().uid;
+    }
+    if(this.disableBtn == false){
+      this.nameSubmitBtn = "Đăng ký nhận";
     }
   }
   ionViewDidEnter(){

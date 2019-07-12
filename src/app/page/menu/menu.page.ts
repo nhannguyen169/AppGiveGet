@@ -11,13 +11,8 @@ export class MenuPage implements OnInit {
   
   pages = [
     {
-      title: 'Trang chủ',
-      url:'/menu/home',
-      icon:'home'
-    },
-    {
       title: 'About',
-      url:'/menu/about',
+      url:'/about',
       icon:'information-circle-outline'
     }
   ]

@@ -1,4 +1,5 @@
 import { Component, ViewChild,Injectable} from '@angular/core';
+import { ScrollDetail } from '@ionic/core';
 import { IonContent} from '@ionic/angular';
 import { CrudProduct } from '../../service/firestore/crud.product';
 
@@ -61,4 +62,16 @@ export class HomePage {
     this.scrollToTop();
   }
  
+   //chuc nang scroll
+   disableFab = true;
+   onScroll($event: CustomEvent<ScrollDetail>) {
+     if ($event && $event.detail && $event.detail.scrollTop) {
+       const scrollTop = $event.detail.scrollTop;
+       if(scrollTop >= 100){
+        this.disableFab = false;
+       }else{
+        this.disableFab = true;
+       }
+     }
+   }
 }

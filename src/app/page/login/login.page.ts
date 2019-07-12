@@ -33,7 +33,7 @@ export class LoginPage implements OnInit {
       ])),
     });
     if(this.authService.userDetails()){
-      this.navCtrl.navigateForward('/menu/home');
+      this.navCtrl.navigateForward('/tabs/menu');
     }else{
       this.navCtrl.navigateForward('/login');
     }
@@ -66,7 +66,7 @@ export class LoginPage implements OnInit {
         this.ToastError("Tài khoản chưa được kích hoạt.Vui lòng kiểm tra email");
       }else{
         console.log(res);
-        this.navCtrl.navigateForward('/menu/home');
+        this.navCtrl.navigateForward('/tabs/menu');
       }
     }, err => {
       this.ToastError(err.message);

@@ -1,9 +1,6 @@
 <ion-header>
   <ion-toolbar class="toolbar-title">
-        <ion-buttons slot="start">
-          <ion-back-button style="color:white;"></ion-back-button>
-        </ion-buttons>
-        <ion-title>Danh sách đang giao dịch</ion-title>
+    <ion-title style="text-align: center;">Danh sách đang giao dịch</ion-title>
   </ion-toolbar>
   <ion-toolbar>
       <ion-segment (ionChange)="segmentChanged()" [(ngModel)]="segment" color="Tertiary">
@@ -20,65 +17,69 @@
 <ion-content>
     <ion-slides #slides (ionSlideDidChange)="slideChanged()">
         <ion-slide>
-          <ion-card *ngFor="let i of products">
-            <span>
-              <div *ngIf="i.user == userID">
-                <ion-card-header>
-                  <ion-row>
-                    <ion-col>
-                      <img src="{{i.img}}" style="width: 100px;height:100px;"/>
-                    </ion-col>
-                    <ion-col>
-                      <ion-card-subtitle>{{i.loaisp}}</ion-card-subtitle>
-                      <ion-card-title>{{i.tensp}}</ion-card-title>
-                      <ion-card-subtitle style="color: chartreuse;">{{i.date | date:'dd-MM-yyyy'}}</ion-card-subtitle>
-                    </ion-col>
-                  </ion-row>
-                </ion-card-header>
-                <ion-card-content>
-                  <ion-button shape="round" color="primary" size="small" routerLink="/item-detail/{{i.id}}" routerDirection="forward">
-                    <ion-icon size="small" slot="icon-only" name="eye"></ion-icon>
-                  </ion-button>
-                  <ion-button shape="round" color="secondary" size="small">
-                    <ion-icon size="small" slot="icon-only" name="create"></ion-icon>
-                  </ion-button>
-                  <ion-button shape="round" color="danger" size="small">
-                    <ion-icon size="small" slot="icon-only" name="trash"></ion-icon>
-                  </ion-button>
-                </ion-card-content>
-              </div>
-            </span>
-          </ion-card>
+          <ion-list style="background: transparent;">
+              <ion-card *ngFor="let i of products">
+                  <span>
+                    <div *ngIf="i.user == userID">
+                      <ion-card-header>
+                        <ion-row>
+                          <ion-col>
+                            <img src="{{i.img}}" style="width: 100px;height:100px;"/>
+                          </ion-col>
+                          <ion-col>
+                            <ion-card-subtitle>{{i.loaisp}}</ion-card-subtitle>
+                            <ion-card-title>{{i.tensp}}</ion-card-title>
+                            <ion-card-subtitle style="color: chartreuse;">{{i.date | date:'dd-MM-yyyy'}}</ion-card-subtitle>
+                          </ion-col>
+                        </ion-row>
+                      </ion-card-header>
+                      <ion-card-content>
+                        <ion-button shape="round" color="primary" size="small" routerLink="/item-detail/{{i.id}}" routerDirection="forward">
+                          <ion-icon size="small" slot="icon-only" name="eye"></ion-icon>
+                        </ion-button>
+                        <ion-button shape="round" color="secondary" size="small">
+                          <ion-icon size="small" slot="icon-only" name="create"></ion-icon>
+                        </ion-button>
+                        <ion-button shape="round" color="danger" size="small">
+                          <ion-icon size="small" slot="icon-only" name="trash"></ion-icon>
+                        </ion-button>
+                      </ion-card-content>
+                    </div>
+                  </span>
+                </ion-card>
+          </ion-list>
         </ion-slide>
         <ion-slide>
-          <ion-card *ngFor="let i of products">
-            <span>
-              <div *ngFor="let u of userSubmit">
-                <div *ngIf="u.user == userID">
-                  <ion-card-header>
-                    <ion-row>
-                      <ion-col>
-                        <img src="{{i.img}}" style="width: 100px;height:100px;"/>
-                      </ion-col>
-                      <ion-col>
-                        <ion-card-subtitle>{{i.loaisp}}</ion-card-subtitle>
-                        <ion-card-title>{{i.tensp}}</ion-card-title>
-                        <ion-card-subtitle style="color: chartreuse;">{{i.date | date:'dd-MM-yyyy'}}</ion-card-subtitle>
-                      </ion-col>
-                    </ion-row>
-                  </ion-card-header>
-                  <ion-card-content>
-                    <ion-button shape="round" color="primary" size="small" routerLink="/item-detail/{{i.id}}" routerDirection="forward">
-                      <ion-icon size="small" slot="icon-only" name="eye"></ion-icon>
-                    </ion-button>
-                    <ion-button shape="round" color="danger" size="small">
-                      <ion-icon size="small" slot="icon-only" name="trash"></ion-icon>
-                    </ion-button>
-                  </ion-card-content>
-                </div>
-              </div>
-            </span>
-          </ion-card>
+          <ion-list style="background: transparent;">
+              <ion-card *ngFor="let i of products">
+                  <span>
+                    <div *ngFor="let u of userSubmit">
+                      <div *ngIf="u.user == userID">
+                        <ion-card-header>
+                          <ion-row>
+                            <ion-col>
+                              <img src="{{i.img}}" style="width: 100px;height:100px;"/>
+                            </ion-col>
+                            <ion-col>
+                              <ion-card-subtitle>{{i.loaisp}}</ion-card-subtitle>
+                              <ion-card-title>{{i.tensp}}</ion-card-title>
+                              <ion-card-subtitle style="color: chartreuse;">{{i.date | date:'dd-MM-yyyy'}}</ion-card-subtitle>
+                            </ion-col>
+                          </ion-row>
+                        </ion-card-header>
+                        <ion-card-content>
+                          <ion-button shape="round" color="primary" size="small" routerLink="/item-detail/{{i.id}}" routerDirection="forward">
+                            <ion-icon size="small" slot="icon-only" name="eye"></ion-icon>
+                          </ion-button>
+                          <ion-button shape="round" color="danger" size="small">
+                            <ion-icon size="small" slot="icon-only" name="trash"></ion-icon>
+                          </ion-button>
+                        </ion-card-content>
+                      </div>
+                    </div>
+                  </span>
+                </ion-card>
+          </ion-list>  
         </ion-slide>
       </ion-slides>
 </ion-content>

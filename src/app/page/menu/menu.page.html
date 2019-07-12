@@ -7,7 +7,7 @@
     </ion-header>
     <ion-content>
       <ion-menu-toggle  auto-hide="false">
-        <ion-item *ngFor="let p of pages" class="menu-lst" lines="none" [routerLink]= "p.url" routerDirection="root" [class.active-item]="selectedPath === p.url">
+        <ion-item *ngFor="let p of pages" class="menu-lst" lines="none" [routerLink]= "p.url" [class.active-item]="selectedPath === p.url">
           <ion-icon style="font-size:25px;padding-right:15px" [name]="p.icon"></ion-icon>
           {{p.title}}
         </ion-item>
