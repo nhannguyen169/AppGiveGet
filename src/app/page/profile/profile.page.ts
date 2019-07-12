@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ScrollDetail } from '@ionic/core';
 import { IonSlides } from '@ionic/angular';
 import { AuthService } from '../../service/authentication/authentication.service';
+import { CrudUser } from  '../../service/authentication/crud.user';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -26,22 +26,31 @@ export class ProfilePage implements OnInit {
       mess : "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages"
     },
   ]
+  users : any;
 
-  constructor(private authService: AuthService) { }
-  userEmail : String;
-
+  constructor(
+    private authService: AuthService,
+    private crudUser : CrudUser
+  ){}
+  userEmail : any;
+  userID : any
+  userDateCreate : any;
   ngOnInit() {  
+     //lay thong tin user tu firebase
+    this.crudUser.readUser().subscribe(data => {
+      this.users = data.map(e => {
+        return {
+          userID: e.payload.doc.data()['userID'],
+          email: e.payload.doc.data()['email'],
+          username: e.payload.doc.data()['username'],
+          mssv: e.payload.doc.data()['mssv']
+        }
+      })
+    });
     if(this.authService.userDetails()){
+      this.userID = this.authService.userDetails().uid;
       this.userEmail = this.authService.userDetails().email;
-    }
-  }
-
-  //chuc nang scroll hien toolbar
-  showToolbar = false;
-  onScroll($event: CustomEvent<ScrollDetail>) {
-    if ($event && $event.detail && $event.detail.scrollTop) {
-      const scrollTop = $event.detail.scrollTop;
-      this.showToolbar = scrollTop >= 20;
+      this.userDateCreate = this.authService.userDetails().metadata.creationTime;
     }
   }
 

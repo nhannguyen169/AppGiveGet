@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { NavController,ToastController } from '@ionic/angular';
+import { NavController,ToastController,LoadingController } from '@ionic/angular';
 import { AuthService } from '../../service/authentication/authentication.service';
 @Component({
   selector: 'app-login',
@@ -16,7 +16,8 @@ export class LoginPage implements OnInit {
     private navCtrl: NavController,
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    public toastController: ToastController
+    public toastController: ToastController,
+    private loadingController: LoadingController
  
   ) { }
  
@@ -59,16 +60,23 @@ export class LoginPage implements OnInit {
     toast.present();
   }
 
-  loginUser(value){
+  async loginUser(value){
+    const loading = await this.loadingController.create({
+      message: 'Đang đăng nhập'
+    });
+    await loading.present();
     this.authService.loginUser(value)
     .then(res => {
       if (res.user.emailVerified !== true) {
+        loading.dismiss();
         this.ToastError("Tài khoản chưa được kích hoạt.Vui lòng kiểm tra email");
       }else{
         console.log(res);
+        loading.dismiss();
         this.navCtrl.navigateForward('/tabs/menu');
       }
     }, err => {
+      loading.dismiss();
       this.ToastError(err.message);
     })
   }

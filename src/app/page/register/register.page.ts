@@ -1,6 +1,6 @@
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AuthService } from '../../service/authentication/authentication.service';
-import { NavController,ToastController } from '@ionic/angular';
+import { NavController,ToastController,LoadingController  } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { CrudUser } from  '../../service/authentication/crud.user';
 @Component({
@@ -36,7 +36,8 @@ export class RegisterPage implements OnInit {
     private authService: AuthService,
     private formBuilder: FormBuilder,
     public toastController: ToastController,
-    private crudUser : CrudUser
+    private crudUser : CrudUser,
+    private loadingController: LoadingController
   ) {}
  
   ngOnInit(){
@@ -99,13 +100,19 @@ export class RegisterPage implements OnInit {
       });
   }
 
-  registerWithEmailPassword(value){
+  async registerWithEmailPassword(value){
+    const loading = await this.loadingController.create({
+      message: 'Đang đăng nhập'
+    });
+    await loading.present();
     this.authService.registerUser(value)
      .then(res => {
        console.log(res);
        this.CreateRecord(value,this.authService.userDetails().uid);
+       loading.dismiss();
      }, err => {
        console.log(err);
+       loading.dismiss();
        this.ToastMess(err.message);
      })
   }

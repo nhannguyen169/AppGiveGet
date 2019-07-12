@@ -24,6 +24,11 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.statusBar.backgroundColorByHexString('#90EE90');
       this.splashScreen.hide();
+      if(this.authService.userDetails()){
+        this.navCtrl.navigateForward('/tabs/menu');
+      }else{
+        this.navCtrl.navigateForward('/login');
+      }
     });
   }
 }
