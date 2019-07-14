@@ -1,0 +1,24 @@
+#thumb-item{
+    background-color:	#F5F5F5;
+    width: auto;
+}
+ion-card-title{
+    font-size:14px;
+    color: white;
+    font-weight: bold;
+}
+ion-card-header{
+    text-align: center;
+}
+.img-item{
+    height: 100px;
+    width: 100px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+ion-content{
+    --background: url(/assets/img/home-background.jpg) no-repeat center/cover fixed;
+}
+

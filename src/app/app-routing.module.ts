@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: 'item-detail/:itemid', loadChildren: './page/item-detail/item-detail.module#ItemDetailPageModule' },
   { path: 'about', loadChildren: './page/about/about.module#AboutPageModule'},
   { path: 'tabs', loadChildren: './page/tabs/tabs.module#TabsPageModule' },
+  { path: 'category-detail/:categoryName', loadChildren: './page/category/detail/detail.module#DetailPageModule' },
 ];
 
 @NgModule({

@@ -22,7 +22,6 @@ export class LoginPage implements OnInit {
   ) { }
  
   ngOnInit() {
- 
     this.validations_form = this.formBuilder.group({
       email: new FormControl('', Validators.compose([
         Validators.required,
@@ -33,14 +32,7 @@ export class LoginPage implements OnInit {
         Validators.required
       ])),
     });
-    if(this.authService.userDetails()){
-      this.navCtrl.navigateForward('/tabs/menu');
-    }else{
-      this.navCtrl.navigateForward('/login');
-    }
   }
- 
- 
   validation_messages = {
     'email': [
       { type: 'required', message: 'Yêu cầu nhập email.' },

@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar [class.show-background]="showToolbar">
+      <ion-buttons slot="start">
+          <ion-back-button style="color:white"></ion-back-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content (ionScroll)="onScroll($event)" [scrollEvents]="true" fullscreen>
+
+    <div style="padding-top: 30px;">
+        <ion-searchbar (ionInput)="searchProduct($event)" [showCancelButton]="shouldShowCancel"></ion-searchbar>
+    </div>
+    <ion-list style="background: transparent;">
+        <ion-card *ngFor="let i of products" routerLink="/item-detail/{{i.id}}" routerDirection="forward">
+            <span>
+              <div *ngIf="i.loaisp == categoryName">
+                <ion-card-header>
+                  <ion-row>
+                    <ion-col>
+                      <img src="{{i.img}}" class="img-product"/>
+                    </ion-col>
+                    <ion-col>
+                      <ion-card-subtitle id="subtitle-loaisp">{{i.loaisp}}</ion-card-subtitle>
+                      <ion-card-title style="padding-top: 10px;">{{i.tensp}}</ion-card-title>
+                      <ion-card-subtitle style="color: chartreuse;padding-top: 10px;">{{i.date | date:'dd-MM-yyyy'}}</ion-card-subtitle>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-header>
+              </div>
+            </span>
+          </ion-card>
+    </ion-list>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!disableFab">
+        <ion-fab-button  (click)="scrollToTop()">
+          <ion-icon name="arrow-round-up"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>

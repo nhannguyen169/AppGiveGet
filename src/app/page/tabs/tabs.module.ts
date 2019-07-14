@@ -15,6 +15,7 @@ const routes: Routes = [
         { path: 'profile', loadChildren: '../profile/profile.module#ProfilePageModule'},
         { path: 'listgiveget', loadChildren: '../listgiveget/listgiveget.module#ListgivegetPageModule' },
         { path: 'menu', loadChildren: '../menu/menu.module#MenuPageModule' },
+        { path: 'category-index', loadChildren: '../category/index/index.module#IndexPageModule' }
     ]
   }
 ];

@@ -3,7 +3,7 @@
     <ion-title style="text-align: center;">Danh sách đang giao dịch</ion-title>
   </ion-toolbar>
   <ion-toolbar>
-      <ion-segment (ionChange)="segmentChanged()" [(ngModel)]="segment" color="Tertiary">
+      <ion-segment (ionChange)="segmentChanged()" [(ngModel)]="segment"  color="secondary">
         <ion-segment-button value="0">
           <p>Give</p>
         </ion-segment-button>
@@ -24,7 +24,7 @@
                       <ion-card-header>
                         <ion-row>
                           <ion-col>
-                            <img src="{{i.img}}" style="width: 100px;height:100px;"/>
+                            <img src="{{i.img}}" class="img-product"/>
                           </ion-col>
                           <ion-col>
                             <ion-card-subtitle>{{i.loaisp}}</ion-card-subtitle>
@@ -58,7 +58,7 @@
                         <ion-card-header>
                           <ion-row>
                             <ion-col>
-                              <img src="{{i.img}}" style="width: 100px;height:100px;"/>
+                              <img src="{{i.img}}" class="img-product" />
                             </ion-col>
                             <ion-col>
                               <ion-card-subtitle>{{i.loaisp}}</ion-card-subtitle>

@@ -28,15 +28,15 @@
                 <ion-row>
                     <ion-col>
                         <ion-label>{{i.note}}</ion-label>
-                      </ion-col>
+                    </ion-col>
                 </ion-row>
             </ion-grid>  
             <ion-item class="item-category">
-                <div *ngFor="let pt of producttype">  
+                <div *ngFor="let pt of producttype;"> 
                   <img style="padding-top: 5px;width:50px;height:50px;" src="{{pt.icon}}" *ngIf="pt.name == i.loaisp">
                   <ion-label *ngIf="pt.name == i.loaisp" class="lbl-loaisp">{{pt.name}}</ion-label>   
                 </div>
-              </ion-item>
+            </ion-item>
             <ion-grid style="padding-top:30px;">
                 <ion-row>
                     <ion-col class="title-lbl">
@@ -77,12 +77,12 @@
                     <ion-slides [options]="sliderConfig">
                         <ion-slide *ngFor="let i of products; let n=index">
                           <div *ngIf="n<6 && i.id != itemId">
-                            <ion-card class="card-product">
+                            <ion-card class="card-product" routerLink="/item-detail/{{i.id}}" routerDirection="forward">
                               <ion-card-header>
                                   <ion-card-subtitle style="color: coral;">{{i.loaisp}}</ion-card-subtitle>
                                   <ion-card-title>{{i.tensp}}</ion-card-title>
                                 <ion-card-content>
-                                  <img class="img-item" src='{{i.img}}' routerLink="/item-detail/{{i.id}}" routerDirection="forward"/>
+                                  <img class="img-item" src='{{i.img}}'/>
                                 </ion-card-content>
                               </ion-card-header>
                             </ion-card>

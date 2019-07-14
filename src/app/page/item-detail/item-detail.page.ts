@@ -25,6 +25,7 @@ export class ItemDetailPage implements OnInit {
     private authService: AuthService,
     private crudUser : CrudUser
   ) { }
+  colors = ["#3880ff","#0cd1e8","#7044ff","#10dc60","#ffce00","#f04141","#F0E68C","#FFB6C1","#20B2AA"];
   itemId = null;
   products : any;
   producttype : any;
@@ -132,6 +133,8 @@ export class ItemDetailPage implements OnInit {
     if(this.disableBtn == false){
       this.nameSubmitBtn = "Đăng ký nhận";
     }
+
+    this.shuffle(this.colors);
   }
   ionViewDidEnter(){
     this.validateSubmit();
@@ -166,6 +169,7 @@ export class ItemDetailPage implements OnInit {
     await actionSheet.present();
   }
 
+  
   //chuc nang show toolbar
   showToolbar = false;
   countShuff = 0;

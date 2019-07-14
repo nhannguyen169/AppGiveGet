@@ -1,0 +1,14 @@
+<ion-content>
+    <ion-grid>
+        <ion-row>
+          <ion-col size="6" col-sm-4 *ngFor="let i of producttype;let c = index"  no-padding>
+                <ion-card id="category-card" [style.background] = "colors[c]" routerLink="/category-detail/{{i.name}}" routerDirection="forward">
+                    <ion-card-header>
+                      <img class="img-item" src='{{i.icon}}'/>
+                      <ion-card-title class="name-item">{{i.name}}</ion-card-title>
+                    </ion-card-header>
+                  </ion-card>    
+          </ion-col>
+        </ion-row>  
+    </ion-grid>
+</ion-content>

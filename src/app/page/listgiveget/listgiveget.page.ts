@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, AlertController } from '@ionic/angular';
 import { CrudProduct } from '../../service/firestore/crud.product';
 import { AuthService } from '../../service/authentication/authentication.service';
+import { promise } from 'protractor';
 @Component({
   selector: 'app-listgiveget',
   templateUrl: './listgiveget.page.html',
@@ -31,6 +32,7 @@ export class ListgivegetPage implements OnInit {
       })
     });
   }
+
   ngOnInit() {
     this.crudProduct.read_Products().subscribe(data => {
       this.products = data.map(e => {

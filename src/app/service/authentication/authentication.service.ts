@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { NavController} from '@ionic/angular';
 import * as firebase from 'firebase/app';
+import { Router } from '@angular/router';
 @Injectable()
 export class AuthService {
  
-  constructor(private navCtrl: NavController){}
+  constructor(private navCtrl: NavController,private router: Router){}
   
   SendVerificationMail() {
     return firebase.auth().currentUser.sendEmailVerification()
@@ -48,5 +49,4 @@ export class AuthService {
   userDetails(){
     return firebase.auth().currentUser;
   }
-
 }
