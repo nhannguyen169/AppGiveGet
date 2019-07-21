@@ -19,11 +19,13 @@
 }
 .name-item{
     text-align: center;
-    font-size: 9px;
-    color:#696969;
+    font: bold;
+    font-size: 12px;
+    color:black;
 }
 .info-item{
-    --background: url(/assets/img/light.jpg) no-repeat center/cover fixed;
+    background: url(/assets/img/banner.jpg) no-repeat center;
+    background-size: cover;
     --border-radius: 5px;
     margin: 0 auto;
     display: block;
@@ -38,10 +40,11 @@ ion-content{
 }
 
 #subtitle-product{
-    background:#FFA500;
+    background:#3CB371;
     color: white;
     border-radius:15px;
     text-align: center;
+    font-size: 8px;
 }
 
 ion-fab-button{

@@ -29,44 +29,41 @@
     </ion-toolbar>
     <ion-slides #slides (ionSlideDidChange)="slideChanged()">
       <ion-slide class="slide1">
-        <div style="padding-top:20px;" *ngFor="let u of users">
-          <div *ngIf="u.userID == userID">
-            <ion-card>
-              <ion-card-header>
-                <ion-card-title>Thông tin cá nhân</ion-card-title>
-              </ion-card-header>
-              <ion-card-content>
-                <ion-row>
-                  <ion-col>
-                    <ion-icon name="at"></ion-icon>
-                    <h4>Tài khoản email</h4>
-                  </ion-col>
-                  <ion-col size="6">
-                    <ion-label text-wrap>{{userEmail}}</ion-label>
-                  </ion-col>
-                </ion-row>
-                <ion-row>
-                  <ion-col>
-                    <ion-icon name="person"></ion-icon>
-                    <h4>Mã số sinh viên</h4>
-                  </ion-col>
-                  <ion-col>
-                    <ion-label>{{u.mssv}}</ion-label>
-                  </ion-col>
-                </ion-row>
-                <ion-row>
-                  <ion-col>
-                    <ion-icon name="calendar"></ion-icon>
-                    <h4>Đã tham gia vào ngày</h4>
-                  </ion-col>
-                  <ion-col>
-                    <ion-label>{{userDateCreate | date:'dd-MM-yyyy'}}</ion-label>
-                  </ion-col>
-                </ion-row>
-              </ion-card-content>
-            </ion-card>
-          </div> 
-        </div>
+        <ion-card>
+            <div style="padding-top:20px;" *ngFor="let u of users">
+              <div *ngIf="u.userID == userID">
+                <ion-card-header>
+                  <ion-card-title>Thông tin cá nhân</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  <ion-row>
+                    <ion-col>
+                      <ion-icon name="at"></ion-icon>
+                    </ion-col>
+                    <ion-col size="8">
+                      <ion-label text-wrap>{{userEmail}}</ion-label>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col >
+                      <ion-icon name="person"></ion-icon>
+                    </ion-col>
+                    <ion-col size="8">
+                      <ion-label>{{u.mssv}}</ion-label>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <ion-icon name="calendar"></ion-icon>
+                    </ion-col>
+                    <ion-col size="8">
+                      <ion-label>{{userDateCreate | date:'dd-MM-yyyy'}}</ion-label>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </div>
+            </div>
+        </ion-card>
       </ion-slide>
       <ion-slide class="slide2">
         <div>

@@ -9,13 +9,12 @@
 <ion-content padding class=“home-content” (ionScroll)="onScroll($event)" [scrollEvents]="true">
     <ion-card class="info-item" *ngIf="hasSearch == false;">
         <ion-card-header>
-          <ion-card-subtitle style="font-size: 12px;color:white;">Mẹo !</ion-card-subtitle>
           <ion-card-title style="color:white;font-size: 14px">Hãy cho đi để nhận lại</ion-card-title>
           <img src="/assets/img/pet.jpg" style="width: 50px;float:right;">
         </ion-card-header>
       </ion-card>    
     <div style="padding-top: 30px;">
-      <ion-searchbar (ionInput)="searchProduct($event)" [showCancelButton]="shouldShowCancel"></ion-searchbar>
+      <ion-searchbar (ionInput)="searchProduct($event)"></ion-searchbar>
     </div>
     <ion-grid>
         <ion-row>
@@ -23,7 +22,7 @@
               <ion-card id="thumb-item" routerLink="/item-detail/{{i.id}}" routerDirection="forward">
                 <img class="img-item" src='{{i.img}}'/>
                 <ion-card-header>
-                  <ion-card-subtitle id="subtitle-product" style="font-size: 8px;">{{i.loaisp}}</ion-card-subtitle>
+                  <ion-card-subtitle id="subtitle-product">{{i.loaisp}}</ion-card-subtitle>
                   <ion-card-title class="name-item">{{i.tensp}}</ion-card-title>
                 </ion-card-header>
               </ion-card>    

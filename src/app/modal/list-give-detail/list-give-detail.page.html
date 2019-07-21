@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button slot="end" (click)="dismissModal()" class="close-btn">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let i of listUserSubmit">
+      <ion-avatar slot="start">
+        <img src="../../../assets/img/user.png">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{i.username}}</h2>
+        <h3>{{i.email}}</h3>
+      </ion-label>
+    </ion-item>      
+  </ion-list>
+</ion-content>

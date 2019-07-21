@@ -2,8 +2,6 @@ import { Component, ViewChild,Injectable} from '@angular/core';
 import { ScrollDetail } from '@ionic/core';
 import { IonContent} from '@ionic/angular';
 import { CrudProduct } from '../../service/firestore/crud.product';
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -74,4 +72,6 @@ export class HomePage {
        }
      }
    }
+
+   
 }

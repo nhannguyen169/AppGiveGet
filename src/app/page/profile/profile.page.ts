@@ -47,13 +47,15 @@ export class ProfilePage implements OnInit {
         }
       })
     });
+    
+  }
+  ionViewDidEnter(){
     if(this.authService.userDetails()){
       this.userID = this.authService.userDetails().uid;
       this.userEmail = this.authService.userDetails().email;
       this.userDateCreate = this.authService.userDetails().metadata.creationTime;
     }
   }
-
   async segmentChanged() {
     await this.slider.slideTo(this.segment);
   }

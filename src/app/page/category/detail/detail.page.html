@@ -8,12 +8,13 @@
 <ion-content (ionScroll)="onScroll($event)" [scrollEvents]="true" fullscreen>
 
     <div style="padding-top: 30px;">
-        <ion-searchbar (ionInput)="searchProduct($event)" [showCancelButton]="shouldShowCancel"></ion-searchbar>
+        <ion-searchbar (ionInput)="searchProduct($event)"></ion-searchbar>
     </div>
-    <ion-list style="background: transparent;">
-        <ion-card *ngFor="let i of products" routerLink="/item-detail/{{i.id}}" routerDirection="forward">
+    <ion-grid>
+      <ion-row *ngFor="let i of products">
+          <ion-card *ngIf="i.loaisp == categoryName" routerLink="/item-detail/{{i.id}}" routerDirection="forward">
             <span>
-              <div *ngIf="i.loaisp == categoryName">
+              <div >
                 <ion-card-header>
                   <ion-row>
                     <ion-col>
@@ -29,7 +30,9 @@
               </div>
             </span>
           </ion-card>
-    </ion-list>
+      </ion-row>
+    </ion-grid>
+
     <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!disableFab">
         <ion-fab-button  (click)="scrollToTop()">
           <ion-icon name="arrow-round-up"></ion-icon>

@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ScrollDetail } from '@ionic/core';
-import { AlertController, ActionSheetController,LoadingController } from '@ionic/angular';
+import { AlertController, ActionSheetController,LoadingController,ModalController } from '@ionic/angular';
 import { CrudProduct } from '../../service/firestore/crud.product';
 import { ValidateProduct } from '../../service/firestore/validate.product';
 import { GetProducttype } from '../../service/firestore/get.productype';
 import { AuthService } from '../../service/authentication/authentication.service';
 import { CrudUser } from  '../../service/authentication/crud.user';
+import { ListGiveDetailPage } from '../../modal/list-give-detail/list-give-detail.page';
 @Component({
   selector: 'app-item-detail',
   templateUrl: './item-detail.page.html',
@@ -19,6 +20,7 @@ export class ItemDetailPage implements OnInit {
     public alertController: AlertController,
     public actionSheetController: ActionSheetController,
     private loadingController: LoadingController,
+    private modalController: ModalController,
     private crudProduct: CrudProduct,
     private validateProduct: ValidateProduct,
     private getProducttype: GetProducttype,
@@ -28,9 +30,11 @@ export class ItemDetailPage implements OnInit {
   colors = ["#3880ff","#0cd1e8","#7044ff","#10dc60","#ffce00","#f04141","#F0E68C","#FFB6C1","#20B2AA"];
   itemId = null;
   products : any;
+  differentProducts : any;
   producttype : any;
   users : any;
   userSubmit : any;
+  numberUserSubmit : any;
   disableBtn = false;
   hasLoad = false;
   nameSubmitBtn : string;
@@ -74,9 +78,13 @@ export class ItemDetailPage implements OnInit {
     }
   }
   
+  getNumberUserSubmit(){
+    this.numberUserSubmit = this.userSubmit.length;
+  }
   async validateSubmit(){
     await this.getUserHasSubmit(300);
     await this.checkUserHasSubmit();
+    await this.getNumberUserSubmit();
   }
 
   //kiem tra nguoi dung co phai la nguoi dang khong
@@ -87,6 +95,21 @@ export class ItemDetailPage implements OnInit {
           this.disableBtn = true;
           this.nameSubmitBtn = "Bài đăng này là của bạn";
         }
+      }
+    }
+  }
+
+  getDifferentProducts(){
+    this.differentProducts = [];
+    this.shuffle(this.products);
+    for(var i = 0;i<this.products.length;i++){
+      if(this.products[i].id != this.itemId){
+        this.differentProducts.push({
+          id: this.products[i].id,
+          loaisp: this.products[i].loaisp,
+          tensp: this.products[i].tensp,
+          img: this.products[i].img
+        });
       }
     }
   }
@@ -126,10 +149,7 @@ export class ItemDetailPage implements OnInit {
         }
       })
     });
-    //lay thong tin user dang su dung app
-    if(this.authService.userDetails()){
-      this.userID = this.authService.userDetails().uid;
-    }
+    
     if(this.disableBtn == false){
       this.nameSubmitBtn = "Đăng ký nhận";
     }
@@ -137,8 +157,14 @@ export class ItemDetailPage implements OnInit {
     this.shuffle(this.colors);
   }
   ionViewDidEnter(){
+    //lay thong tin user dang su dung app
+    if(this.authService.userDetails()){
+      this.userID = this.authService.userDetails().uid;
+    }
     this.validateSubmit();
     this.checkUserIsGive();
+    this.getDifferentProducts();
+   
   }
   //chuc nang hien thi report
   async showReportAllert() {
@@ -174,10 +200,6 @@ export class ItemDetailPage implements OnInit {
   showToolbar = false;
   countShuff = 0;
   onScroll($event: CustomEvent<ScrollDetail>) {
-    this.countShuff++;
-    if(this.countShuff == 1){
-      this.shuffle(this.products);
-    }
     if ($event && $event.detail && $event.detail.scrollTop) {
       const scrollTop = $event.detail.scrollTop;
       this.showToolbar = scrollTop >= 300;
@@ -191,6 +213,8 @@ export class ItemDetailPage implements OnInit {
     this.crudProduct.add_GetProduct(this.itemId,record).then(resp =>{
       this.hasCreated = true;
       this.validateProduct.ToastGetSuccess();
+      this.validateSubmit();
+      this.checkUserIsGive();
     })  
   }
   //gui du lieu len firebase
@@ -204,5 +228,15 @@ export class ItemDetailPage implements OnInit {
     }
   }
 
+  //show modal danh sach dang dang ky
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: ListGiveDetailPage,
+      componentProps: {
+        "productID": this.itemId
+      }
+    });
+    return await modal.present();
+  }
 
 }

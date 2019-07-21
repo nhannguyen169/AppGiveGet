@@ -6,10 +6,8 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
-
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from '../environments/environment';
@@ -17,6 +15,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AuthService } from '../app/service/authentication/authentication.service';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { ReactiveFormsModule} from '@angular/forms';
+import { ListGiveDetailPageModule } from './modal/list-give-detail/list-give-detail.module';
 import * as firebase from 'firebase';
 firebase.initializeApp(environment.firebase);
 @NgModule({
@@ -30,7 +29,9 @@ firebase.initializeApp(environment.firebase);
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+
+    ListGiveDetailPageModule
   ],
   providers: [
     StatusBar,

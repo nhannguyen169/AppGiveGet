@@ -33,14 +33,14 @@
               <ion-item>
                   <ion-icon name="clipboard" style="padding-right: 20px;"></ion-icon>
                   <ion-label style="color:#C0C0C0">Loại sản phẩm</ion-label>
-                  <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Chọn" [(ngModel)]="newProductType">
+                  <ion-select interface="action-sheet" placeholder="Chọn" [(ngModel)]="newProductType">
                     <ion-select-option *ngFor="let pt of producttype" value="{{pt.name}}">{{pt.name}}</ion-select-option>
                   </ion-select>
               </ion-item>
               <ion-item style="padding-top:3%;">
                 <ion-icon name="card" style="padding-right: 20px;"></ion-icon>
                 <ion-label style="color:#C0C0C0">Cách thức nhận</ion-label>
-                <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Chọn" [(ngModel)]="newProductMethod">
+                <ion-select interface="action-sheet" placeholder="Chọn" [(ngModel)]="newProductMethod">
                   <ion-select-option value="true">Hệ thống tự chọn</ion-select-option>
                   <ion-select-option value="false">Chọn thủ công</ion-select-option>
                 </ion-select>
@@ -48,7 +48,7 @@
               <ion-item style="padding-top:3%;">
                 <ion-icon name="heart-half" style="padding-right: 20px;"></ion-icon>
                 <ion-label style="color:#C0C0C0">Tình trạng sản phẩm</ion-label>
-                <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Chọn" [(ngModel)]="newProductStatus">
+                <ion-select interface="action-sheet" placeholder="Chọn" [(ngModel)]="newProductStatus">
                   <ion-select-option value="new">Mới</ion-select-option>
                   <ion-select-option value="old">Cũ</ion-select-option>
                 </ion-select>
@@ -63,11 +63,9 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-      <br style ='line-height:100px;'> 
+      <br style ='line-height:50px;'> 
+    </div>
+    <div class="div-button">
+      <ion-button class="offer-btn" (click)="CreateProduct()" >Đăng</ion-button>
     </div>
   </ion-content>
-  
-<ion-footer>
-  <ion-button class="offer-btn" (click)="CreateProduct()" >Đăng</ion-button>
-</ion-footer>
-  

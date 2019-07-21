@@ -102,7 +102,7 @@ export class RegisterPage implements OnInit {
 
   async registerWithEmailPassword(value){
     const loading = await this.loadingController.create({
-      message: 'Đang đăng nhập'
+      message: 'Đang đăng ký'
     });
     await loading.present();
     this.authService.registerUser(value)

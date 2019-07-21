@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, AlertController } from '@ionic/angular';
 import { CrudProduct } from '../../service/firestore/crud.product';
 import { AuthService } from '../../service/authentication/authentication.service';
-import { promise } from 'protractor';
 @Component({
   selector: 'app-listgiveget',
   templateUrl: './listgiveget.page.html',
@@ -16,6 +15,7 @@ export class ListgivegetPage implements OnInit {
   products : any;
   userID : any;
   userSubmit : any;
+  listUserSubmit : any;
   constructor(
     public alertController: AlertController,
     private crudProduct: CrudProduct,
@@ -23,12 +23,18 @@ export class ListgivegetPage implements OnInit {
   ){}
 
    //lay thong tin nguoi dung da dang ky 
-  getUserHasSubmit(productID){
+  getUserHasSubmit(productID,loaisp,tensp,date,img){
+    this.listUserSubmit = [];
     this.crudProduct.read_GetProduct(productID).subscribe(data => {
-      this.userSubmit = data.map(e => {
-        return {
+      data.map(e => {
+        this.listUserSubmit.push({
+          id: productID,
+          loaisp : loaisp,
+          tensp : tensp,
+          date : date,
+          img : img,
           user:e.payload.doc.data()['user']
-        };
+        });
       })
     });
   }
@@ -49,13 +55,13 @@ export class ListgivegetPage implements OnInit {
       })
     });
 
+  }
+  ionViewDidEnter(){
     if(this.authService.userDetails()){
       this.userID = this.authService.userDetails().uid;
     }
-  }
-  ionViewDidEnter(){
-    for(var i =0;i<this.products.length;i++){
-      this.getUserHasSubmit(this.products[i].id);
+    for(var i =0;i<this.products.length;i++){ 
+      this.getUserHasSubmit(this.products[i].id,this.products[i].loaisp,this.products[i].tensp,this.products[i].date,this.products[i].img); 
     }
   }
   async segmentChanged() {

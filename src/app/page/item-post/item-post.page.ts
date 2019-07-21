@@ -46,8 +46,11 @@ export class ItemPostPage implements OnInit {
       })
     });
     this.validated = false;
-     //lay thong tin user dang su dung
-     if(this.authService.userDetails()){
+    
+  }
+  ionViewDidEnter(){ 
+    //lay thong tin user dang su dung
+    if(this.authService.userDetails()){
       this.userID = this.authService.userDetails().uid;
     }
   }
@@ -139,7 +142,7 @@ export class ItemPostPage implements OnInit {
   async loadingCreate(ms){
     const loading = await this.loadingController.create({
       message: 'Đang xử lý',
-      duration: 4000
+      duration: 15000
     });
     await loading.present();
     return new Promise(r => setTimeout(r, ms))
@@ -150,7 +153,7 @@ export class ItemPostPage implements OnInit {
     if(this.validated == true){
       this.upload();
       var img = this.imgUrl;
-      await this.loadingCreate(4000);
+      await this.loadingCreate(15000);
       await this.CreateRecord(img);
     }  
   }
