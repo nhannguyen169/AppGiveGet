@@ -53,11 +53,10 @@ export class ListGiveDetailPage implements OnInit {
             id: this.users[i].userID,
             email: this.users[i].email,
             username: this.users[i].username
-          });
-        }
+        });
       }
     }
-
+  }
   ngOnInit() {
     this.getUserHasSubmit();
     this.getAllUser();
@@ -65,6 +64,10 @@ export class ListGiveDetailPage implements OnInit {
 
   ionViewDidEnter(){
     this.showListUserSubmit();
+  }
+
+  checkClick(){
+    this.dismissModal();
   }
 
   dismissModal() {

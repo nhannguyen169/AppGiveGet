@@ -1,5 +1,6 @@
 <ion-header>
   <ion-toolbar>
+    <ion-title style="color: white;">Đang đăng ký nhận</ion-title>
     <ion-button slot="end" (click)="dismissModal()" class="close-btn">
         <ion-icon slot="icon-only" name="close"></ion-icon>
     </ion-button>
@@ -8,12 +9,12 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let i of listUserSubmit">
+    <ion-item *ngFor="let i of listUserSubmit" routerLink="/profile/{{i.id}}" routerDirection="forward" (click)="checkClick()">
       <ion-avatar slot="start">
         <img src="../../../assets/img/user.png">
       </ion-avatar>
       <ion-label>
-        <h2>{{i.username}}</h2>
+        <h2 style="font: bold;">{{i.username}}</h2>
         <h3>{{i.email}}</h3>
       </ion-label>
     </ion-item>      

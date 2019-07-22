@@ -1,4 +1,11 @@
-<ion-content>
+<ion-header>
+  <ion-toolbar class="toolbar-header">
+    <ion-buttons slot="start">
+      <ion-back-button style="color:whitesmoke"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
   <div class="avatar">
       <ion-item lines="none" color="transparent" class="item-avt">
           <ion-avatar slot="start" style="width: 60px;height:60px;">
@@ -16,7 +23,7 @@
         <ion-segment-button mode="ios" value="0">
           <p><ion-icon name="contact"></ion-icon> Profile</p>
         </ion-segment-button>
-        <ion-segment-button mode="ios" value="1">
+        <ion-segment-button mode="ios" value="1" *ngIf="profilePrivate == true">
           <p><ion-icon name="notifications-outline"></ion-icon> News</p>
         </ion-segment-button>
         <ion-segment-button mode="ios" value="2">

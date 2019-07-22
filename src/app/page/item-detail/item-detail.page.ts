@@ -39,6 +39,7 @@ export class ItemDetailPage implements OnInit {
   hasLoad = false;
   nameSubmitBtn : string;
   userID : any;
+  userGivenID : any;
   hasCreated = false;
   sliderConfig = {
     slidesPerView: 1.6,
@@ -113,6 +114,15 @@ export class ItemDetailPage implements OnInit {
       }
     }
   }
+
+  getUserGivenID(){
+    for(var i = 0;i<this.products.length;i++){
+      if(this.products[i].id == this.itemId){ 
+        this.userGivenID = this.products[i].user;
+      }
+    }
+  }
+
   ngOnInit() {
     //lay thong tin san pham tu firebase qua id
     this.itemId = this.activatedRoute.snapshot.paramMap.get('itemid');
@@ -163,8 +173,8 @@ export class ItemDetailPage implements OnInit {
     }
     this.validateSubmit();
     this.checkUserIsGive();
-    this.getDifferentProducts();
-   
+    this.getDifferentProducts(); 
+    this.getUserGivenID();
   }
   //chuc nang hien thi report
   async showReportAllert() {

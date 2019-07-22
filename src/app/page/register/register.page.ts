@@ -56,7 +56,7 @@ export class RegisterPage implements OnInit {
         Validators.required
       ])),
       mssv: new FormControl('', Validators.compose([
-        Validators.minLength(6),
+        Validators.minLength(7),
         Validators.required
       ])),
     });
@@ -83,12 +83,13 @@ export class RegisterPage implements OnInit {
     this.navCtrl.navigateForward('/login');
   }
 
-  CreateRecord(value,uid) {
+  CreateRecord(value,uid,ucreatedate) {
     let record = {};
     record['userID'] = uid;
     record['email'] = value.email;
     record['mssv'] = value.mssv;
     record['username'] = value.username;
+    record['createDate'] = ucreatedate;
     this.crudUser.createUser(record).then(resp => {
       console.log(resp);
       this.ToastMess("Tài khoản tạo thành công. Mời bạn xác nhận email !");
@@ -108,7 +109,7 @@ export class RegisterPage implements OnInit {
     this.authService.registerUser(value)
      .then(res => {
        console.log(res);
-       this.CreateRecord(value,this.authService.userDetails().uid);
+       this.CreateRecord(value,this.authService.userDetails().uid,this.authService.userDetails().metadata.creationTime);
        loading.dismiss();
      }, err => {
        console.log(err);

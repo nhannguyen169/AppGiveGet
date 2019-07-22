@@ -1,13 +1,13 @@
 <ion-header>
   <ion-toolbar [class.show-background]="showToolbar">
     <ion-buttons slot="start">
-      <ion-back-button style="color:#FFA500"></ion-back-button>
+      <ion-back-button style="color:whitesmoke"></ion-back-button>
     </ion-buttons>
     <ion-button class="btn-toolbar" (click)="showShareAction()">
-        <ion-icon name="share" style="color:#FFA500"></ion-icon>
+        <ion-icon name="share" style="color:whitesmoke"></ion-icon>
     </ion-button>
     <ion-button class="btn-toolbar" (click)="showReportAllert()">
-      <ion-icon name="information-circle-outline" style="color:#FFA500"></ion-icon>
+      <ion-icon name="information-circle-outline" style="color:whitesmoke"></ion-icon>
     </ion-button>
   </ion-toolbar>
 </ion-header>
@@ -48,7 +48,7 @@
                 <ion-row>
                     <ion-col>
                       <div>
-                        <ion-item class="user-detail" lines="none">
+                        <ion-item class="user-detail" lines="none" routerLink="/profile/{{userGivenID}}" routerDirection="forward">
                           <ion-avatar slot="start">
                             <img src="/assets/img/user.png">
                           </ion-avatar>
@@ -66,7 +66,7 @@
                 <ion-col>
                   <ion-button color="success" style="font-size:12px; " (click)="presentModal()">
                     <ion-icon slot="start" name="eye"></ion-icon>
-                    Xem danh sách đang đăng ký ({{numberUserSubmit}} người)
+                    Lượt người đang đăng ký ({{numberUserSubmit}} người)
                   </ion-button>
                 </ion-col>
               </ion-row>
