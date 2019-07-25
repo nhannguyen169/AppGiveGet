@@ -65,7 +65,7 @@ export class LoginPage implements OnInit {
       }else{
         console.log(res);
         loading.dismiss();
-        this.navCtrl.navigateForward('/tabs/menu');
+        this.navCtrl.navigateRoot('/tabs/menu');
       }
     }, err => {
       loading.dismiss();

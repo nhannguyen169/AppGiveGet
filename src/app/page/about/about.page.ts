@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { SendNotification } from'../../service/notification/send.notification'
 @Component({
   selector: 'app-about',
   templateUrl: './about.page.html',
@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AboutPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private sendNotification: SendNotification
+  ) { }
 
   ngOnInit() {
   }
-
+  
+  demo(){
+    this.sendNotification.notifyPost();
+  }
 }
