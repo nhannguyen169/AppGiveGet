@@ -52,7 +52,7 @@ export class AppComponent {
       this.splashScreen.hide();
       this.checkUserLogin();
       this.getNotification();
-      this.sendNotification.notifyPost();
+      //this.sendNotification.notifyPost();
     });
   }
 }

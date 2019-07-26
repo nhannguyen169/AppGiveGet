@@ -220,6 +220,7 @@ export class ItemDetailPage implements OnInit {
   createGetData(){
     let record = {};
     record['user'] = this.userID;
+    record['hasChosen'] = false; 
     this.crudProduct.add_GetProduct(this.itemId,record).then(resp =>{
       this.hasCreated = true;
       this.validateProduct.ToastGetSuccess();

@@ -9,19 +9,13 @@ export class SendNotification {
     ) {}
 
     notifyPost(){
-      firebase.firestore().collection("demo").where("trigger", "==" ,false).onSnapshot(data => {
-        if(data.metadata != null){
-          this.localNotifications.schedule({
-            id: 1,
-            text: 'Single ILocalNotification',
-            sound: 'file://assets/sounds/notification.mp3',
-            data: { secret: 'key_data' }
-          });
-        }
-       
-        
-      });
      
+      this.localNotifications.schedule({
+        id: 1,
+        text: 'Single ILocalNotification',
+        sound: 'file://assets/sounds/notification.mp3',
+        data: { secret: 'key_data' }
+      });
     }
 
     

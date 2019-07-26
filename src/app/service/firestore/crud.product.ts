@@ -34,4 +34,8 @@ export class CrudProduct {
   read_GetProduct(productID){
     return this.firestore.doc('products/' + productID).collection('listGet').snapshotChanges();
   }
+
+  update_GetProduct(productID,recordID,record){
+    this.firestore.doc('products/'+productID+'/listGet/'+recordID).update(record);
+  }
 }
