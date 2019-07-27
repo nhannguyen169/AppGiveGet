@@ -33,15 +33,12 @@
                               <ion-card-subtitle style="color: chartreuse;">{{i.date | date:'dd-MM-yyyy'}}</ion-card-subtitle>
                             </ion-col>
                           </ion-row>
-                          <ion-row *ngFor="let m of listUserSubmit;">
-                            <h6 *ngIf="m.id == i.id">{{m.subcriberChosen}}</h6>
-                          </ion-row>
                         </ion-card-header>
                         <ion-card-content>
                           <ion-button shape="round" color="warning" size="small" *ngIf="i.method == 'false'" (click)="presentChooseSubcriber(i.id)">
                             <ion-icon size="small" slot="icon-only" name="contacts"></ion-icon>
                           </ion-button>
-                          <ion-button shape="round" color="success" size="small" (click)="showPopupConfirm(i.id)">
+                          <ion-button shape="round" color="success" size="small" (click)="showPopupConfirmGive(i.id)">
                             <ion-icon size="small" slot="icon-only" name="checkbox-outline"></ion-icon>
                           </ion-button>
                           <ion-button shape="round" color="primary" size="small" routerLink="/item-detail/{{i.id}}" routerDirection="forward">
@@ -80,8 +77,14 @@
                                 <ion-card-subtitle style="color: chartreuse;">{{i.date | date:'dd-MM-yyyy'}}</ion-card-subtitle>
                               </ion-col>
                             </ion-row>
+                            <ion-row *ngIf="i.hasChosen == true" style="color:#1E90FF;">
+                              <h6 style="margin: auto;margin-top: 15px;">Bạn đã được chọn</h6>
+                            </ion-row>
                           </ion-card-header>
                           <ion-card-content>
+                            <ion-button shape="round" color="success" size="small" (click)="showPopupConfirmGet(i.id)" *ngIf="i.hasChosen == true">
+                              <ion-icon size="small" slot="icon-only" name="checkbox-outline"></ion-icon>
+                            </ion-button>
                             <ion-button shape="round" color="primary" size="small" routerLink="/item-detail/{{i.id}}" routerDirection="forward">
                               <ion-icon size="small" slot="icon-only" name="eye"></ion-icon>
                             </ion-button>

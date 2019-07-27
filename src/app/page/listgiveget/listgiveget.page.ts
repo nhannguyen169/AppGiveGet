@@ -34,6 +34,9 @@ export class ListgivegetPage implements OnInit {
           note:e.payload.doc.data()['mota'],
           status:e.payload.doc.data()['tinhtrangsp'],
           method:e.payload.doc.data()['cachthucnhan'],
+          confirmGive:e.payload.doc.data()['confirmGiven'],
+          confirmGet:e.payload.doc.data()['confirmGotten'],
+          hasRated:e.payload.doc.data()['rated'],
           user:e.payload.doc.data()['user']
         };
       })
@@ -156,37 +159,201 @@ export class ListgivegetPage implements OnInit {
     await alert.present();
   }
 
-  async showPopupConfirm(productid){
+  //kiem tra co xac nhan cho va nhan hay khong
+  checkGiveAndGetConfirm(productid){
+    for(var i =0;i<this.products.length;i++){
+      if(this.products[i].id == productid){
+        if(this.products[i].confirmGet == true && this.products[i].confirmGive == true){
+          return "Người nhận đã xác nhận <br/> Người cho đã xác nhận";
+        }else if(this.products[i].confirmGet == true && this.products[i].confirmGive == false){
+          return "Người nhận đã xác nhận <br/> Người cho chưa xác nhận";
+        }else if(this.products[i].confirmGet == false && this.products[i].confirmGive == true){
+          return "Người nhận chưa xác nhận <br/> Người cho đã xác nhận";
+        }else if(this.products[i].confirmGet == false && this.products[i].confirmGive == false){
+          return "Người nhận chưa xác nhận <br/> Người cho chưa xác nhận";
+        }
+      }
+    }
+
+  }
+
+  //kiem tra nguoi dung da rate chua
+  checkUserHasRate(productid){
+    for(var i =0;i<this.products.length;i++){
+      if(this.products[i].id == productid){ 
+        if(this.products[i].hasRated == true){
+          return true;
+        }else if(this.products[i].hasRated == false){
+          return false;
+        }
+      }
+    }
+  }
+
+  //hien thi popup xac nhan cho nguoi dang
+  async showPopupConfirmGive(productid){
     var fieldChosen = 'Chưa có người đăng ký';
+    var fieldConfirm ;
+    var hasUserConfirm = false;
+    var hasRated = false;
+    var confirmDone = false;
+    var arr;
     for(var j =0;j<this.listUserSubmit.length;j++){
       for(var i =0;i<this.listAllUser.length;i++){
         if(this.listUserSubmit[j].id == productid){
           if(this.listUserSubmit[j].user == this.listAllUser[i].userID && this.listUserSubmit[j].hasChosen == true){
             fieldChosen = 'Người được nhận: '+ this.listAllUser[i].email;
+            fieldConfirm = this.checkGiveAndGetConfirm(productid);
+            if(fieldConfirm == "Người nhận đã xác nhận <br/> Người cho đã xác nhận"){
+              confirmDone = true;
+              if(this.checkUserHasRate(productid) == true){
+                hasRated = true;
+              }
+            }
+            hasUserConfirm = true;
           }else if(this.listUserSubmit[j].user == this.listAllUser[i].userID && this.listUserSubmit[j].hasChosen != true){
             fieldChosen = 'Chưa có người được nhận';
           }
         }
       }
     }
-    const alert = await this.alertController.create({
-      header: 'Xác nhận giao dịch',
-      message: fieldChosen,
-      buttons: [
+    if(confirmDone == true && hasUserConfirm == true && hasRated == true){
+      arr = [
         {
-          text: 'Cancel',
+          text: 'Đóng',
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
             console.log('Confirm Cancel');
           }
         }, {
-          text: 'Ok',
+          text: 'Hoàn tất',
           handler: data => {
+            let record = {};
+            record['disable'] = true;
+            this.crudProduct.update_Product(productid,record);
             console.log('Confirm Ok');
           }
         }
       ]
+    }else if(confirmDone == true && hasUserConfirm == true && hasRated == false){
+      arr = [
+        {
+          text: 'Đóng',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Đợi người dùng đánh giá',
+          handler: data => {
+            console.log('Confirm xác nhận');
+          }
+        }
+      ]
+    }else if(confirmDone == false && hasUserConfirm == true){
+      arr = [
+        {
+          text: 'Đóng',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Xác nhận',
+          handler: data => {
+            let record = {};
+            record['confirmGiven'] = true;
+            this.crudProduct.update_Product(productid,record);
+            console.log('Confirm xác nhận');
+          }
+        }
+      ]
+    }else if(hasUserConfirm == false){
+      arr = [
+        {
+          text: 'Đóng',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }
+      ]
+    }
+   
+    const alert = await this.alertController.create({
+      header: 'Xác nhận giao dịch',
+      subHeader: fieldChosen,
+      message: fieldConfirm,
+      buttons: arr
+    });
+    await alert.present();
+  }
+
+  //hien thi popup xac nhan cho nguoi nhan
+  async showPopupConfirmGet(productid){
+    var fieldGiven;
+    var fieldConfirm ;
+    var confirmDone = false;
+    var arr;
+    for(var i =0;i<this.products.length;i++){
+      for(var j =0;j<this.listAllUser.length;j++){
+        if(this.products[i].id == productid && this.products[i].user == this.listAllUser[j].userID){
+          fieldGiven = "Người cho: " +this.listAllUser[j].email;
+        }
+      }
+    }
+    fieldConfirm = this.checkGiveAndGetConfirm(productid);
+    if(fieldConfirm == "Người nhận đã xác nhận <br/> Người cho đã xác nhận"){
+      confirmDone = true;
+    }
+    if(confirmDone == true){
+      arr = [
+        {
+          text: 'Đóng',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Đánh giá',
+          handler: data => {
+            let record = {};
+            record['rated'] = true;
+            this.crudProduct.update_Product(productid,record);
+            console.log('Confirm xác nhận');
+          }
+        }
+      ]
+    }else{
+      arr = [
+        {
+          text: 'Đóng',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Xác nhận',
+          handler: data => {
+            let record = {};
+            record['confirmGotten'] = true;
+            this.crudProduct.update_Product(productid,record);
+            console.log('Confirm xác nhận');
+          }
+        }
+      ]
+    }
+    const alert = await this.alertController.create({
+      header: 'Xác nhận giao dịch',
+      subHeader: fieldGiven,
+      message: fieldConfirm,
+      buttons: arr
     });
     await alert.present();
   }

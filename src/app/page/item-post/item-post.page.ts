@@ -101,6 +101,10 @@ export class ItemPostPage implements OnInit {
     record['user'] = this.userID;
     var today = new Date();
     record['ngaytao'] = today;
+    record['confirmGiven'] = false;
+    record['confirmGotten']  = false;
+    record['rated']  = false;
+    record['disable']  = false;
     this.crudProduct.create_NewProduct(record).then(resp => {
       this.newProductName = "";
       this.newProductDescribe = "";
