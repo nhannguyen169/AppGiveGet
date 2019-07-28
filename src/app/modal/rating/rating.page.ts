@@ -17,9 +17,26 @@ export class RatingPage implements OnInit {
   ) {}
 
   listAllUser:any;
-  userID:any;
+  products:any;
+  giveUserID:any;
+  getUserID:any;
   rate:any;
   ngOnInit() {
+    this.crudProduct.read_Products().subscribe(data => { 
+      this.products = data.map(e => {
+          return {
+            id: e.payload.doc.id,
+            tensp: e.payload.doc.data()['tensp'],
+            loaisp: e.payload.doc.data()['loaisp'],
+            img:e.payload.doc.data()['image'],
+            date:e.payload.doc.data()['ngaytao'].toDate(),
+            note:e.payload.doc.data()['mota'],
+            status:e.payload.doc.data()['tinhtrangsp'],
+            method:e.payload.doc.data()['cachthucnhan'],
+            user:e.payload.doc.data()['user']
+          };
+      })
+    });
     this.crudUser.readUser().subscribe(data => {
       this.listAllUser = data.map(e => {
         return {
@@ -32,7 +49,8 @@ export class RatingPage implements OnInit {
         };
       })
     });
-    this.userID = this.navParams.data.userID;
+    this.giveUserID = this.navParams.data.giveUserID;
+    this.getUserID = this.navParams.data.getUserID;
   }
 
   onRateChange(event){
@@ -41,13 +59,32 @@ export class RatingPage implements OnInit {
 
   saveRate(ms){
     var docUserID;
+    var today = new Date();
     let recordProduct = {};
     let recordUser = {};
-    recordProduct['rated'] = true;
-    recordProduct['disable'] = true;
-    this.crudProduct.update_Product(this.navParams.data.productID,recordProduct);
+    for(var i=0;i<this.products.length;i++){
+      if(this.products[i].id == this.navParams.data.productID){
+        recordProduct['tensp'] = this.products[i].tensp;
+        recordProduct['mota'] = this.products[i].note;
+        recordProduct['loaisp'] = this.products[i].loaisp;
+        recordProduct['tinhtrangsp'] = this.products[i].status;
+        recordProduct['cachthucnhan'] = this.products[i].method;
+        recordProduct['image'] = this.products[i].img;
+        recordProduct['nguoicho'] = this.giveUserID;
+        recordProduct['nguoinhan'] = this.getUserID;
+        recordProduct['ngaytao'] = this.products[i].date;
+        recordProduct['ngayketthuc'] = today;
+      }
+    }
+    this.crudProduct.create_NewHistoryProduct(recordProduct).then(resp => {
+      this.crudProduct.delete_Product(this.navParams.data.productID);
+      console.log(resp);
+    }).catch(error => {
+        console.log(error);
+    });
+
     for(var i=0;i<this.listAllUser.length;i++){
-      if(this.listAllUser[i].userID == this.userID){
+      if(this.listAllUser[i].userID == this.giveUserID){
         if(this.listAllUser[i].rating == 0){
           recordUser['rating'] = this.rate;
         }else if(this.listAllUser[i].rating > 0){

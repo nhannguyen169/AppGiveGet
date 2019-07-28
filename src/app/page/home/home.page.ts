@@ -25,16 +25,17 @@ export class HomePage {
     //lay thong tin san pham
     this.crudProduct.read_Products().subscribe(data => { 
       this.products = data.map(e => {
-        return {
-          id: e.payload.doc.id,
-          tensp: e.payload.doc.data()['tensp'],
-          loaisp: e.payload.doc.data()['loaisp'],
-          img:e.payload.doc.data()['image']
-        };
+          return {
+            id: e.payload.doc.id,
+            tensp: e.payload.doc.data()['tensp'],
+            loaisp: e.payload.doc.data()['loaisp'],
+            img:e.payload.doc.data()['image']
+          };
       })
       this.initializeProduct = this.products;
     });
   }
+
   //load ve du lieu ban dau
   initialize(){
     this.products = this.initializeProduct;

@@ -307,7 +307,7 @@ export class ListgivegetPage implements OnInit {
         }, {
           text: 'Đánh giá',
           handler: data => {
-            this.presentRatingModal(productid,userID);
+            this.presentRatingModal(productid,userID,this.userID);
             console.log('Confirm xác nhận');
           }
         }
@@ -342,11 +342,12 @@ export class ListgivegetPage implements OnInit {
   }
 
   //show modal rating
-  async presentRatingModal(productid,userid) {
+  async presentRatingModal(productid,giveUserid,getUserid) {
     const modal = await this.modalController.create({
       component: RatingPage,
       componentProps: {
-        "userID": userid,
+        "giveUserID": giveUserid,
+        "getUserID": getUserid,
         "productID": productid
       }
     });
