@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonSlides, AlertController } from '@ionic/angular';
+import { IonSlides, AlertController,ModalController } from '@ionic/angular';
 import { CrudProduct } from '../../service/firestore/crud.product';
 import { CrudUser } from  '../../service/authentication/crud.user';
 import { AuthService } from '../../service/authentication/authentication.service';
+import { RatingPage } from '../../modal/rating/rating.page';
 @Component({
   selector: 'app-listgiveget',
   templateUrl: './listgiveget.page.html',
@@ -17,6 +18,7 @@ export class ListgivegetPage implements OnInit {
     public alertController: AlertController,
     private crudProduct: CrudProduct,
     private crudUser: CrudUser,
+    private modalController: ModalController,
     private authService: AuthService
   ){}
 
@@ -217,26 +219,7 @@ export class ListgivegetPage implements OnInit {
         }
       }
     }
-    if(confirmDone == true && hasUserConfirm == true && hasRated == true){
-      arr = [
-        {
-          text: 'Đóng',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Confirm Cancel');
-          }
-        }, {
-          text: 'Hoàn tất',
-          handler: data => {
-            let record = {};
-            record['disable'] = true;
-            this.crudProduct.update_Product(productid,record);
-            console.log('Confirm Ok');
-          }
-        }
-      ]
-    }else if(confirmDone == true && hasUserConfirm == true && hasRated == false){
+    if(confirmDone == true && hasUserConfirm == true && hasRated == false){
       arr = [
         {
           text: 'Đóng',
@@ -299,10 +282,12 @@ export class ListgivegetPage implements OnInit {
     var fieldConfirm ;
     var confirmDone = false;
     var arr;
+    var userID;
     for(var i =0;i<this.products.length;i++){
       for(var j =0;j<this.listAllUser.length;j++){
         if(this.products[i].id == productid && this.products[i].user == this.listAllUser[j].userID){
           fieldGiven = "Người cho: " +this.listAllUser[j].email;
+          userID = this.products[i].user;
         }
       }
     }
@@ -322,9 +307,7 @@ export class ListgivegetPage implements OnInit {
         }, {
           text: 'Đánh giá',
           handler: data => {
-            let record = {};
-            record['rated'] = true;
-            this.crudProduct.update_Product(productid,record);
+            this.presentRatingModal(productid,userID);
             console.log('Confirm xác nhận');
           }
         }
@@ -358,6 +341,18 @@ export class ListgivegetPage implements OnInit {
     await alert.present();
   }
 
+  //show modal rating
+  async presentRatingModal(productid,userid) {
+    const modal = await this.modalController.create({
+      component: RatingPage,
+      componentProps: {
+        "userID": userid,
+        "productID": productid
+      }
+    });
+    return await modal.present();
+  }
+  
   async segmentChanged() {
     await this.slider.slideTo(this.segment);
   }
@@ -375,4 +370,5 @@ export class ListgivegetPage implements OnInit {
 
     await alert.present();
   }
+
 }

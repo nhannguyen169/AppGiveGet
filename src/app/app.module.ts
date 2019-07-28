@@ -17,8 +17,9 @@ import { SendNotification } from '../app/service/notification/send.notification'
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { Firebase } from '@ionic-native/firebase/ngx';
 import { ReactiveFormsModule} from '@angular/forms';
-import { ListGiveDetailPageModule } from './modal/list-give-detail/list-give-detail.module';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { ListGiveDetailPageModule } from './modal/list-give-detail/list-give-detail.module';
+import { RatingPageModule } from './modal/rating/rating.module';
 import * as firebase from 'firebase';
 firebase.initializeApp(environment.firebase);
 @NgModule({
@@ -33,7 +34,8 @@ firebase.initializeApp(environment.firebase);
     AngularFirestoreModule,
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    ListGiveDetailPageModule
+    ListGiveDetailPageModule,
+    RatingPageModule
   ],
   providers: [
     StatusBar,

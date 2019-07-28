@@ -90,6 +90,8 @@ export class RegisterPage implements OnInit {
     record['mssv'] = value.mssv;
     record['username'] = value.username;
     record['createDate'] = ucreatedate;
+    record['rating'] = 0;
+    record['numberUserRate'] = 0;
     this.crudUser.createUser(record).then(resp => {
       console.log(resp);
       this.ToastMess("Tài khoản tạo thành công. Mời bạn xác nhận email !");

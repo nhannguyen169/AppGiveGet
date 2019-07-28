@@ -155,7 +155,9 @@ export class ItemDetailPage implements OnInit {
         return {
           userID: e.payload.doc.data()['userID'],
           email: e.payload.doc.data()['email'],
-          username: e.payload.doc.data()['username']
+          username: e.payload.doc.data()['username'],
+          rating:e.payload.doc.data()['rating'],
+          numUserRate:e.payload.doc.data()['numberUserRate']
         }
       })
     });

@@ -19,4 +19,8 @@ export class CrudUser {
   createUser(record) {
     return this.firestore.collection('user').add(record);
   }
+
+  updateUser(recordID,record){
+    this.firestore.doc('user/' + recordID).update(record);
+  }
 }

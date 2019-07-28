@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button slot="end" (click)="dismissModal()" class="close-btn">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <ion-list class="list-userinfo">
+    <div *ngFor="let i of listAllUser">
+      <div *ngIf="i.userID == userID" class="div-userinfo">
+        <ion-avatar style="margin: auto;">
+          <img src="../../../assets/img/user.png">
+        </ion-avatar>
+        <ion-label>
+          <h1 style="font: bold;">{{i.username}}</h1>
+          <h2>{{i.email}}</h2>
+        </ion-label>
+        <div class="rate">
+          <rating [(ngModel)]="rate" readonly="false" size="default" (ngModelChange)="onRateChange($event)"></rating>
+        </div>
+        <div>
+          <ion-button class="save-btn" (click)="confirmSave()">Đánh giá</ion-button>
+        </div>
+      </div>
+    </div>
+  </ion-list>
+</ion-content>

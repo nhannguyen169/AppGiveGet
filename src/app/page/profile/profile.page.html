@@ -14,6 +14,13 @@
           <div *ngFor="let u of users">
             <div *ngIf="u.userID == userID" style="font-size: 18px;">
               <ion-label>{{u.username}}</ion-label>
+              <ion-row>
+                <ionic4-star-rating activeIcon = "ios-star" defaultIcon = "ios-star-outline" activeColor = "#FFD700" defaultColor = "#f4f4f4" readonly="true" rating="{{u.rating}}" fontSize = "16px">
+                </ionic4-star-rating>
+                <ion-label style="padding-left:5px;font-size: 16px;">
+                    ({{u.numUserRate}})
+                </ion-label>
+              </ion-row>
             </div>
           </div>
       </ion-item>

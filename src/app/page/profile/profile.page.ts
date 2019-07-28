@@ -48,7 +48,9 @@ export class ProfilePage implements OnInit {
           email: e.payload.doc.data()['email'],
           username: e.payload.doc.data()['username'],
           mssv: e.payload.doc.data()['mssv'],
-          date: e.payload.doc.data()['createDate']
+          date: e.payload.doc.data()['createDate'],
+          rating:e.payload.doc.data()['rating'],
+          numUserRate:e.payload.doc.data()['numberUserRate']
         }
       })
     });
