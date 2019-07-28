@@ -7,79 +7,79 @@
 </ion-header>
 <ion-content fullscreen>
   <div class="avatar">
-      <ion-item lines="none" color="transparent" class="item-avt">
-          <ion-avatar slot="start" style="width: 60px;height:60px;">
-            <img src="/assets/img/user.png" style="border:solid white;">
-          </ion-avatar>
-          <div *ngFor="let u of users">
-            <div *ngIf="u.userID == userID" style="font-size: 18px;">
-              <ion-label>{{u.username}}</ion-label>
-              <ion-row>
-                <ionic4-star-rating activeIcon = "ios-star" defaultIcon = "ios-star-outline" activeColor = "#FFD700" defaultColor = "#f4f4f4" readonly="true" rating="{{u.rating}}" fontSize = "16px">
-                </ionic4-star-rating>
-                <ion-label style="padding-left:5px;font-size: 16px;">
-                    ({{u.numUserRate}})
-                </ion-label>
-              </ion-row>
-            </div>
-          </div>
-      </ion-item>
+    <ion-item lines="none" color="transparent" class="item-avt">
+      <ion-avatar slot="start" style="width: 60px;height:60px;">
+        <img src="/assets/img/user.png" style="border:solid white;">
+      </ion-avatar>
+      <div *ngFor="let u of users">
+        <div *ngIf="u.userID == userID" style="font-size: 18px;">
+          <ion-label>{{u.username}}</ion-label>
+          <ion-row>
+            <ionic4-star-rating activeIcon = "ios-star" defaultIcon = "ios-star-outline" activeColor = "#FFD700" defaultColor = "#f4f4f4" readonly="true" rating="{{u.rating}}" fontSize = "16px">
+            </ionic4-star-rating>
+            <ion-label style="padding-left:5px;font-size: 16px;">
+              ({{u.numUserRate}})
+            </ion-label>
+          </ion-row>
+        </div>
+      </div>
+    </ion-item>
   </div>
   <ion-toolbar class="segment-toolbar">
-      <ion-segment mode="ios" (ionChange)="segmentChanged()" [(ngModel)]="segment" color="success">
-        <ion-segment-button mode="ios" value="0">
-          <p><ion-icon name="contact"></ion-icon> Profile</p>
-        </ion-segment-button>
-        <ion-segment-button mode="ios" value="1" *ngIf="profilePrivate == true">
-          <p><ion-icon name="notifications-outline"></ion-icon> News</p>
-        </ion-segment-button>
-        <ion-segment-button mode="ios" value="2">
-          <p><ion-icon name="list-box"></ion-icon> Get</p>
-        </ion-segment-button>
-        <ion-segment-button mode="ios" value="3">
-          <p><ion-icon name="list-box"></ion-icon> Give</p>
-        </ion-segment-button>
-      </ion-segment>
-    </ion-toolbar>
-    <ion-slides #slides (ionSlideDidChange)="slideChanged()">
-      <ion-slide class="slide1">
-        <ion-card>
-            <div style="padding-top:20px;" *ngFor="let u of users">
-              <div *ngIf="u.userID == userID">
-                <ion-card-header>
-                  <ion-card-title>Thông tin cá nhân</ion-card-title>
-                </ion-card-header>
-                <ion-card-content>
-                  <ion-row>
-                    <ion-col>
-                      <ion-icon name="at"></ion-icon>
-                    </ion-col>
-                    <ion-col size="8">
-                      <ion-label text-wrap>{{userEmail}}</ion-label>
-                    </ion-col>
-                  </ion-row>
-                  <ion-row>
-                    <ion-col >
-                      <ion-icon name="person"></ion-icon>
-                    </ion-col>
-                    <ion-col size="8">
-                      <ion-label>{{u.mssv}}</ion-label>
-                    </ion-col>
-                  </ion-row>
-                  <ion-row>
-                    <ion-col>
-                      <ion-icon name="calendar"></ion-icon>
-                    </ion-col>
-                    <ion-col size="8">
-                      <ion-label>{{userDateCreate | date:'dd-MM-yyyy'}}</ion-label>
-                    </ion-col>
-                  </ion-row>
-                </ion-card-content>
-              </div>
-            </div>
-        </ion-card>
-      </ion-slide>
-      <ion-slide class="slide2">
+    <ion-segment mode="ios" (ionChange)="segmentChanged()" [(ngModel)]="segment" color="success">
+      <ion-segment-button mode="ios" value="0">
+        <p><ion-icon name="contact"></ion-icon> Profile</p>
+      </ion-segment-button>
+      <ion-segment-button mode="ios" value="1" *ngIf="profilePrivate == true">
+        <p><ion-icon name="notifications-outline"></ion-icon> News</p>
+      </ion-segment-button>
+      <ion-segment-button mode="ios" value="2">
+        <p><ion-icon name="list-box"></ion-icon> Give</p>
+      </ion-segment-button>
+      <ion-segment-button mode="ios" value="3">
+        <p><ion-icon name="list-box"></ion-icon> Get</p>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  <ion-slides #slides (ionSlideDidChange)="slideChanged()">
+    <ion-slide class="slide1">
+      <ion-card>
+        <div style="padding-top:20px;" *ngFor="let u of users">
+          <div *ngIf="u.userID == userID">
+            <ion-card-header>
+              <ion-card-title>Thông tin cá nhân</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-row>
+                <ion-col>
+                  <ion-icon name="at"></ion-icon>
+                </ion-col>
+                <ion-col size="8">
+                  <ion-label text-wrap>{{userEmail}}</ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col >
+                  <ion-icon name="person"></ion-icon>
+                </ion-col>
+                <ion-col size="8">
+                  <ion-label>{{u.mssv}}</ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-icon name="calendar"></ion-icon>
+                </ion-col>
+                <ion-col size="8">
+                  <ion-label>{{userDateCreate | date:'dd-MM-yyyy'}}</ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </div>
+        </div>
+      </ion-card>
+    </ion-slide>
+    <ion-slide class="slide2">
         <div>
           <ion-grid>
             <ion-row>
@@ -102,13 +102,50 @@
             </ion-row>
           </ion-grid>
         </div>
-      </ion-slide>
-      <ion-slide>
-       
-      </ion-slide>
-      <ion-slide>
-      
-      </ion-slide>
-      
-    </ion-slides>
+    </ion-slide>
+    <ion-slide>
+      <ion-list style="background: transparent">
+        <div class="title-history">
+          <ion-label>Lịch sử các sản phẩm đã cho</ion-label>
+        </div>
+        <div *ngFor="let i of HistoryProduct">
+          <ion-item *ngIf="i.nguoicho == userID">
+            <img slot="start" src="{{i.img}}" style="width: 50px;height:50px;">
+            <ion-label>
+              <ion-row>
+                <h2 style="font: bold;padding-right: 15px;">{{i.tensp}}</h2>
+                <h5 style="color: chocolate;">({{i.loaisp}})</h5>
+              </ion-row>
+              <div *ngFor="let u of users">
+                <h3 *ngIf="u.userID == i.nguoinhan">Người nhận: {{u.email}}</h3>
+              </div>
+              <h3 style="color:#7CFC00">{{i.ngaytao | date:'dd-MM-yyyy'}} tới {{i.ngayketthuc | date:'dd-MM-yyyy'}}</h3>
+            </ion-label>
+          </ion-item>
+        </div>      
+      </ion-list>
+    </ion-slide>
+    <ion-slide>
+      <ion-list style="background: transparent">
+        <div class="title-history">
+          <ion-label>Lịch sử các sản phẩm đã nhận</ion-label>
+        </div>
+        <div *ngFor="let i of HistoryProduct">
+          <ion-item *ngIf="i.nguoinhan == userID">
+            <img slot="start" src="{{i.img}}" style="width: 50px;height:50px;">
+            <ion-label>
+              <ion-row>
+                <h2 style="font: bold;padding-right: 15px;">{{i.tensp}}</h2>
+                <h5 style="color: chocolate;">({{i.loaisp}})</h5>
+              </ion-row>
+              <div *ngFor="let u of users">
+                <h3 *ngIf="u.userID == i.nguoicho">Người cho: {{u.email}}</h3>
+              </div>
+              <h3 style="color:#7CFC00">{{i.ngaytao | date:'dd-MM-yyyy'}} tới {{i.ngayketthuc | date:'dd-MM-yyyy'}}</h3>
+            </ion-label>
+          </ion-item>
+        </div>      
+      </ion-list>
+    </ion-slide>
+  </ion-slides>
 </ion-content>

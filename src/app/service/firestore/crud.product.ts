@@ -42,4 +42,7 @@ export class CrudProduct {
   create_NewHistoryProduct(record) {
     return this.firestore.collection('HistoryProducts').add(record);
   }
+  read_HistoryProduct() {
+    return this.firestore.collection('HistoryProducts').snapshotChanges();
+  }
 }

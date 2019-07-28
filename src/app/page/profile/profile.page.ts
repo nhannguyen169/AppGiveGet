@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IonSlides } from '@ionic/angular';
 import { AuthService } from '../../service/authentication/authentication.service';
 import { CrudUser } from  '../../service/authentication/crud.user';
+import { CrudProduct } from '../../service/firestore/crud.product';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -32,6 +33,7 @@ export class ProfilePage implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
+    private crudProduct: CrudProduct,
     private crudUser : CrudUser
   ){}
   userEmail : any;
@@ -39,6 +41,7 @@ export class ProfilePage implements OnInit {
   userIdGet : any;
   profilePrivate : boolean;
   userDateCreate : any;
+  HistoryProduct : any;
   ngOnInit() {  
      //lay thong tin user tu firebase
     this.crudUser.readUser().subscribe(data => {
@@ -51,6 +54,22 @@ export class ProfilePage implements OnInit {
           date: e.payload.doc.data()['createDate'],
           rating:e.payload.doc.data()['rating'],
           numUserRate:e.payload.doc.data()['numberUserRate']
+        }
+      })
+    });
+    this.crudProduct.read_HistoryProduct().subscribe(data => {
+      this.HistoryProduct = data.map(e => {
+        return {
+          id: e.payload.doc.id,
+          tensp: e.payload.doc.data()['tensp'],
+          loaisp: e.payload.doc.data()['loaisp'],
+          img:e.payload.doc.data()['image'],
+          ngaytao:e.payload.doc.data()['ngaytao'].toDate(),
+          ngayketthuc:e.payload.doc.data()['ngayketthuc'].toDate(),
+          status:e.payload.doc.data()['tinhtrangsp'],
+          method:e.payload.doc.data()['cachthucnhan'],
+          nguoicho:e.payload.doc.data()['nguoicho'],
+          nguoinhan:e.payload.doc.data()['nguoinhan']
         }
       })
     });
@@ -78,6 +97,8 @@ export class ProfilePage implements OnInit {
     }
    
   }
+
+
   ionViewDidEnter(){
     this.checkUserProfile();
   }
