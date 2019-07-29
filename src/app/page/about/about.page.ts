@@ -15,6 +15,8 @@ export class AboutPage implements OnInit {
   }
   
   demo(){
-    this.sendNotification.notifyPost();
+    var str = "https://firebasestorage.googleapis.com/v0/b/appgiveget.appspot.com/o/ProductImage%2F1563164918.jpg?alt=media";
+    var str2 =str.substr(84,10);
+    console.log(str2);
   }
 }

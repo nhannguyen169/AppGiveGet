@@ -57,7 +57,7 @@ export class ItemPostPage implements OnInit {
   //lay hinh tu album trong device
   async getPicture(sourceType){
     const cameraOptions: CameraOptions = {
-      quality: 100,
+      quality: 20,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
@@ -104,6 +104,7 @@ export class ItemPostPage implements OnInit {
     record['confirmGiven'] = false;
     record['confirmGotten']  = false;
     record['rated']  = false;
+    record['numberEdit']  = 0;
     this.crudProduct.create_NewProduct(record).then(resp => {
       this.newProductName = "";
       this.newProductDescribe = "";
@@ -145,7 +146,7 @@ export class ItemPostPage implements OnInit {
   async loadingCreate(ms){
     const loading = await this.loadingController.create({
       message: 'Đang xử lý',
-      duration: 15000
+      duration: 10000
     });
     await loading.present();
     return new Promise(r => setTimeout(r, ms))
@@ -156,7 +157,7 @@ export class ItemPostPage implements OnInit {
     if(this.validated == true){
       this.upload();
       var img = this.imgUrl;
-      await this.loadingCreate(15000);
+      await this.loadingCreate(10000);
       await this.CreateRecord(img);
     }  
   }

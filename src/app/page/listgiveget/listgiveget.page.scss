@@ -15,6 +15,12 @@ ion-card{
     --background:#F5F5F5;
 }
 
+.photo-camera{
+    width: 150px;
+    height: 100px;
+    border-radius: 15px; 
+}
+
 ion-card{
     display: flex;
     flex-direction: column;
