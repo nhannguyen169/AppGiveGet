@@ -31,7 +31,6 @@ export class ItemDetailPage implements OnInit {
   itemId = null;
   products : any;
   differentProducts : any;
-  producttype : any;
   users : any;
   userSubmit : any;
   numberUserSubmit : any;
@@ -138,15 +137,6 @@ export class ItemDetailPage implements OnInit {
           status:e.payload.doc.data()['tinhtrangsp'],
           user:e.payload.doc.data()['user']
         };
-      })
-    });
-     //lay du lieu product type tu firebase
-    this.getProducttype.read_Producttype().subscribe(data => {
-      this.producttype = data.map(e => {
-        return {
-          name: e.payload.doc.data()['name'],
-          icon: 'https://firebasestorage.googleapis.com/v0/b/appgiveget.appspot.com/o/Category%2F'+e.payload.doc.data()['icon']+'.png?alt=media'
-        }
       })
     });
     //lay thong tin user tu firebase

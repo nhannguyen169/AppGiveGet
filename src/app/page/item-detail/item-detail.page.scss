@@ -37,10 +37,6 @@ ion-icon{
 .name-detail{
     font:bold 20px Georgia, serif;
 }
-.date-detail{
-    color: 	#00FA9A;
-    float: right;
-}
 .offer-btn{
     --background: #00FA9A;
     width: 80%;
@@ -63,13 +59,10 @@ ion-footer{
     font:bold 16px Georgia, serif;
     color: gray;
 }
-.item-category{
-    --background:#7CFC00;
+.lbl-chitietsp{
+    font-size: 14px;
 }
 
-.lbl-loaisp{
-    float: right;padding-top:20px;padding-left:20px;color:white;
-}
 .img-item{
     height: 150px;
     width:150px;

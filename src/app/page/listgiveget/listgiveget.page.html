@@ -20,7 +20,7 @@
       <ion-grid>
         <ion-row *ngFor="let i of products">
           <ion-card *ngIf="i.user == userID">
-            <span *ngIf="!i.isEdit; else elseBlock">
+            <span *ngIf="!i.isEdit; else elseBlock" (click)="presentOptionsCardGet(i,i.id,i.method)">
               <div>
                 <ion-card-header>
                   <ion-row>
@@ -34,23 +34,6 @@
                     </ion-col>
                   </ion-row>
                 </ion-card-header>
-                <ion-card-content>
-                  <ion-button shape="round" color="warning" size="small" *ngIf="i.method == 'false'" (click)="presentChooseSubcriber(i.id)">
-                    <ion-icon size="small" slot="icon-only" name="contacts"></ion-icon>
-                  </ion-button>
-                  <ion-button shape="round" color="success" size="small" (click)="showPopupConfirmGive(i.id)">
-                    <ion-icon size="small" slot="icon-only" name="checkbox-outline"></ion-icon>
-                  </ion-button>
-                  <ion-button shape="round" color="primary" size="small" routerLink="/item-detail/{{i.id}}" routerDirection="forward">
-                    <ion-icon size="small" slot="icon-only" name="eye"></ion-icon>
-                  </ion-button>
-                  <ion-button shape="round" color="secondary" size="small" (click)="editProduct(i)">
-                    <ion-icon size="small" slot="icon-only" name="create"></ion-icon>
-                  </ion-button>
-                  <ion-button shape="round" color="danger" size="small" (click)="showDeleteAllert(i.id)">
-                    <ion-icon size="small" slot="icon-only" name="trash"></ion-icon>
-                  </ion-button>
-                </ion-card-content>
               </div>
             </span>
             <ng-template #elseBlock>
@@ -59,7 +42,7 @@
                   <ion-grid>
                     <ion-row>
                       <ion-col>
-                        <ion-button fill="outline" color="danger" size="small" (click)="i.isEdit = false">
+                        <ion-button fill="outline" color="danger" size="small" (click)="i.isEdit = false;captureDataUrl = undefined">
                           Cancel
                         </ion-button>
                       </ion-col>
@@ -131,7 +114,7 @@
       <ion-grid >
         <ion-row *ngFor="let i of listUserSubmit">
           <ion-card *ngIf="i.user == userID">
-            <span>
+            <span (click)="presentOptionsCardGive(i.id,i.hasChosen)">
               <ion-card-header>
                 <ion-row>
                   <ion-col>
@@ -147,17 +130,6 @@
                   <h6 style="margin: auto;margin-top: 15px;">Bạn đã được chọn</h6>
                 </ion-row>
               </ion-card-header>
-              <ion-card-content>
-                <ion-button shape="round" color="success" size="small" (click)="showPopupConfirmGet(i.id)" *ngIf="i.hasChosen == true">
-                  <ion-icon size="small" slot="icon-only" name="checkbox-outline"></ion-icon>
-                </ion-button>
-                <ion-button shape="round" color="primary" size="small" routerLink="/item-detail/{{i.id}}" routerDirection="forward">
-                  <ion-icon size="small" slot="icon-only" name="eye"></ion-icon>
-                </ion-button>
-                <ion-button shape="round" color="danger" size="small">
-                  <ion-icon size="small" slot="icon-only" name="trash"></ion-icon>
-                </ion-button>
-              </ion-card-content>
             </span>
           </ion-card>
         </ion-row>

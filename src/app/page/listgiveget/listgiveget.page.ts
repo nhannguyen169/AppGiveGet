@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonSlides, AlertController,ModalController,LoadingController} from '@ionic/angular';
+import { IonSlides, AlertController,ModalController,LoadingController,ActionSheetController} from '@ionic/angular';
 import { Camera,CameraOptions } from '@ionic-native/camera/ngx';
 import { CrudProduct } from '../../service/firestore/crud.product';
 import { CrudUser } from  '../../service/authentication/crud.user';
@@ -8,6 +8,7 @@ import { AuthService } from '../../service/authentication/authentication.service
 import { ValidateProduct } from '../../service/firestore/validate.product';
 import { RatingPage } from '../../modal/rating/rating.page';
 import * as firebase from 'firebase/app';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-listgiveget',
   templateUrl: './listgiveget.page.html',
@@ -20,6 +21,8 @@ export class ListgivegetPage implements OnInit {
 
   constructor(
     public alertController: AlertController,
+    public actionSheetController: ActionSheetController,
+    private router : Router,
     private camera : Camera,
     private crudProduct: CrudProduct,
     private crudUser: CrudUser,
@@ -27,7 +30,7 @@ export class ListgivegetPage implements OnInit {
     private modalController: ModalController,
     private loadingController: LoadingController,
     private validateProduct: ValidateProduct,
-    private authService: AuthService
+    private authService: AuthService,
   ){}
 
   products : any;
@@ -140,7 +143,7 @@ export class ListgivegetPage implements OnInit {
             type: 'radio',
             value : this.listUserSubcribe[i].id,
             label : ''+this.listAllUser[j].email,
-            checked : checked
+            checked : this.listUserSubcribe[i].hasChosen
           });
         }
       }
@@ -234,12 +237,14 @@ export class ListgivegetPage implements OnInit {
     var fieldConfirm ;
     var hasUserConfirm = false;
     var hasRated = false;
+    var hasChosen = false;
     var confirmDone = false;
     var arr;
     for(var j =0;j<this.listUserSubmit.length;j++){
       for(var i =0;i<this.listAllUser.length;i++){
         if(this.listUserSubmit[j].id == productid){
           if(this.listUserSubmit[j].user == this.listAllUser[i].userID && this.listUserSubmit[j].hasChosen == true){
+            hasChosen = true;
             fieldChosen = 'Người được nhận: '+ this.listAllUser[i].email;
             fieldConfirm = this.checkGiveAndGetConfirm(productid);
             if(fieldConfirm == "Người nhận đã xác nhận <br/> Người cho đã xác nhận"){
@@ -249,7 +254,7 @@ export class ListgivegetPage implements OnInit {
               }
             }
             hasUserConfirm = true;
-          }else if(this.listUserSubmit[j].user == this.listAllUser[i].userID && this.listUserSubmit[j].hasChosen != true){
+          }else if(this.listUserSubmit[j].user == this.listAllUser[i].userID && this.listUserSubmit[j].hasChosen != true && hasChosen == false){
             fieldChosen = 'Chưa có người được nhận';
           }
         }
@@ -522,6 +527,154 @@ export class ListgivegetPage implements OnInit {
       ]
     });
     await alert.present();
+  }
+
+  async presentOptionsCardGet(products,productID,productMethod) {
+    var arr;
+    if(productMethod == "false"){
+      arr = [
+        {
+        text: 'Chọn người nhận',
+        icon: 'contacts',
+        handler: () => {
+          this.presentChooseSubcriber(productID);
+        }
+      }, {
+        text: 'Trạng thái sản phẩm',
+        icon: 'checkbox-outline',
+        handler: () => {
+          this.showPopupConfirmGive(productID)
+        }
+      }, {
+        text: 'Xem chi tiết sản phẩm',
+        icon: 'eye',
+        handler: () => {
+          this.router.navigateByUrl("/item-detail/"+productID);
+        }
+      }, {
+        text: 'Sửa thông tin sản phẩm',
+        icon: 'create',
+        handler: () => {
+          this.editProduct(products);
+        }
+      },{
+        text: 'Xóa sản phẩm',
+        icon: 'trash',
+        handler: () => {
+          this.showDeleteAllert(productID);
+        }
+      }, {
+        text: 'Đóng',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      }]
+    }else if(productMethod == "true"){
+      arr = [
+       {
+        text: 'Trạng thái sản phẩm',
+        icon: 'checkbox-outline',
+        handler: () => {
+          this.showPopupConfirmGive(productID)
+        }
+      }, {
+        text: 'Xem chi tiết sản phẩm',
+        icon: 'eye',
+        handler: () => {
+          this.router.navigateByUrl("/item-detail/"+productID);
+        }
+      }, {
+        text: 'Sửa thông tin sản phẩm',
+        icon: 'create',
+        handler: () => {
+          this.editProduct(products);
+        }
+      },{
+        text: 'Xóa sản phẩm',
+        icon: 'trash',
+        handler: () => {
+          this.showDeleteAllert(productID);
+        }
+      }, {
+        text: 'Đóng',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      }]
+    }
+  
+   
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Thao tác',
+      buttons: arr
+    });
+    await actionSheet.present();
+  }
+
+  async presentOptionsCardGive(productID,hasChosen) {
+    var arr;
+    if(hasChosen == true){
+      arr = [
+        {
+        text: 'Tình trạng giao dịch',
+        icon: 'checkbox-outline',
+        handler: () => {
+          this.showPopupConfirmGet(productID)
+        }
+      }, {
+        text: 'Xem chi tiết sản phẩm',
+        icon: 'eye',
+        handler: () => {
+          this.router.navigateByUrl("/item-detail/"+productID);
+        }
+      }, {
+        text: 'Hủy nhận sản phẩm',
+        icon: 'trash',
+        handler: () => {
+         
+        }
+      }, {
+        text: 'Đóng',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      }]
+    }else if(hasChosen == false){
+      arr = [
+        {
+          text: 'Xem chi tiết sản phẩm',
+          icon: 'eye',
+          handler: () => {
+            this.router.navigateByUrl("/item-detail/"+productID);
+          }
+        }, {
+          text: 'Hủy nhận sản phẩm',
+          icon: 'trash',
+          handler: () => {
+           
+          }
+        }, {
+          text: 'Đóng',
+          icon: 'close',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }]
+    }
+  
+   
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Thao tác',
+      buttons: arr
+    });
+    await actionSheet.present();
   }
 
 }

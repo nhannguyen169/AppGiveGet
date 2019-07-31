@@ -83,14 +83,14 @@ export class ProfilePage implements OnInit {
         this.userID = this.authService.userDetails().uid;
         this.userEmail = this.authService.userDetails().email;
         this.userDateCreate = this.authService.userDetails().metadata.creationTime;
-        this.profilePrivate = true;
+        this.profilePrivate = false;
       }else{
         for(var i = 0;i<this.users.length;i++){
           if(this.users[i].userID == this.userIdGet){
             this.userID = this.userIdGet;
             this.userEmail = this.users[i].email;
             this.userDateCreate = this.users[i].date;
-            this.profilePrivate = false;
+            this.profilePrivate = true;
           }
         }
       }
