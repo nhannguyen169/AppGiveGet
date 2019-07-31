@@ -26,7 +26,7 @@ export class AppComponent {
     const navctrl =  this.navCtrl;
     const ngzone = this.ngZone;
     firebase.auth().onAuthStateChanged(function(user){      
-      if(user == null){
+      if(user == null || user.emailVerified != true){
         ngzone.run(() =>  navctrl.navigateRoot('/login').then());
       }else{
         ngzone.run(() =>  navctrl.navigateRoot('/tabs/menu').then());

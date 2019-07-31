@@ -54,6 +54,51 @@
                 </div>
               </ng-container>
             </div>
+            <ion-item>
+              <ion-input  name="fullname" type="text" placeholder="Họ và tên" formControlName="fullname" class="form-control"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+              <ng-container *ngFor="let validation of validation_messages.fullname">
+                <div class="error-message" *ngIf="validations_form.get('fullname').hasError(validation.type) && (validations_form.get('fullname').dirty || validations_form.get('fullname').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+            <ion-item>
+              <ion-input name="phone" type="text" placeholder="Số điện thoại" formControlName="phone" class="form-control"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+              <ng-container *ngFor="let validation of validation_messages.phone">
+                <div class="error-message" *ngIf="validations_form.get('phone').hasError(validation.type) && (validations_form.get('phone').dirty || validations_form.get('phone').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+            <ion-item>
+              <ion-select interface="action-sheet" placeholder="Chọn khoa" formControlName="khoa" class="form-control" style="max-width: 100%;width: 100%;">
+                <ion-select-option *ngFor="let i of khoa" value="{{i.value}}">{{i.value}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <div class="validation-errors">
+              <ng-container *ngFor="let validation of validation_messages.khoa">
+                <div class="error-message" *ngIf="validations_form.get('khoa').hasError(validation.type) && (validations_form.get('khoa').dirty || validations_form.get('khoa').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+            <ion-item>
+              <ion-select interface="action-sheet" placeholder="Chọn giới tính" formControlName="gender" class="form-control" style="max-width: 100%;width: 100%;">
+                <ion-select-option value="Nam">Nam</ion-select-option>
+                <ion-select-option value="Nữ">Nữ</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <div class="validation-errors">
+              <ng-container *ngFor="let validation of validation_messages.gender">
+                <div class="error-message" *ngIf="validations_form.get('gender').hasError(validation.type) && (validations_form.get('gender').dirty || validations_form.get('gender').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
           </div>
           <div padding>
             <ion-button class="register-btn"  size="medium" class="submit-btn" type="submit"  [disabled]="!validations_form.valid" expand="block">Đăng ký</ion-button>

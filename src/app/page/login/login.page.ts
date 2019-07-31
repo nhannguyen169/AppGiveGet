@@ -59,7 +59,7 @@ export class LoginPage implements OnInit {
     await loading.present();
     this.authService.loginUser(value)
     .then(res => {
-      if (res.user.emailVerified !== true) {
+      if (res.user.emailVerified != true) {
         loading.dismiss();
         this.ToastError("Tài khoản chưa được kích hoạt.Vui lòng kiểm tra email");
       }else{

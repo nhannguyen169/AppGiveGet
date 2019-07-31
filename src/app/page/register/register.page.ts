@@ -28,9 +28,42 @@ export class RegisterPage implements OnInit {
     'mssv': [
       { type: 'required', message: 'Yêu cầu nhập mã số sinh viên.' },
       { type: 'minlength', message: 'Mã số sinh viên cần trên 7 ký tự.' }
-    ]
- };
- 
+    ],
+    'fullname': [
+      { type: 'required', message: 'Yêu cầu nhập họ tên.' }
+    ],
+    'phone': [
+      { type: 'required', message: 'Yêu cầu nhập số điện thoại.' },
+      { type: 'minlength', message: 'Số điện thoại phải là 10 số' },
+      { type: 'maxlength', message: 'Số điện thoại phải là 10 số' },
+      { type: 'pattern', message: 'Số điện thoại không được chứa kí tự' }
+    ],
+    'khoa': [
+      { type: 'required', message: 'Yêu cầu chọn khoa.' }
+    ],
+    'gender': [
+      { type: 'required', message: 'Yêu cầu chọn giới tính.' }
+    ],
+  };
+
+  khoa = [
+  { value : "Công nghệ thông tin"},
+  { value : "Kiến trúc"},
+  { value : "Xây dựng"},
+  { value : "Môi trường & Công nghệ sinh học"},
+  { value : "Ngoại ngữ"},
+  { value : "Quan hệ Công chúng – Truyền thông & Nghệ thuật"},
+  { value : "Tài chính - Kế toán"},
+  { value : "Luật"},
+  { value : "Thương mại & Quản trị kinh doanh"},
+  { value : "Mỹ thuật công nghiệp"},
+  { value : "Kỹ thuật"},
+  { value : "Du lịch"},
+  { value : "Xã hội & Nhân văn  "},
+  { value : "Y dược"},
+  { value : "Đào tạo Văn hóa, Nghệ thuật & Truyền thông"},
+  { value : "Khoa học cơ bản"}
+  ];
   constructor(
     private navCtrl: NavController,
     private authService: AuthService,
@@ -57,6 +90,21 @@ export class RegisterPage implements OnInit {
       ])),
       mssv: new FormControl('', Validators.compose([
         Validators.minLength(7),
+        Validators.required
+      ])),
+      fullname: new FormControl('', Validators.compose([
+        Validators.required
+      ])),
+      phone: new FormControl('', Validators.compose([
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern('^[0-9]+$'),
+        Validators.required
+      ])),
+      khoa: new FormControl('', Validators.compose([
+        Validators.required
+      ])),
+      gender: new FormControl('', Validators.compose([
         Validators.required
       ])),
     });
@@ -89,6 +137,10 @@ export class RegisterPage implements OnInit {
     record['email'] = value.email;
     record['mssv'] = value.mssv;
     record['username'] = value.username;
+    record['fullname'] = value.fullname;
+    record['phone'] = value.phone;
+    record['khoa'] = value.khoa;
+    record['gender'] = value.gender;
     record['createDate'] = ucreatedate;
     record['rating'] = 0;
     record['numberUserRate'] = 0;

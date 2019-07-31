@@ -59,6 +59,14 @@
                 </ion-col>
               </ion-row>
               <ion-row>
+                <ion-col>
+                  <ion-icon name="person"></ion-icon>
+                </ion-col>
+                <ion-col size="8">
+                  <ion-label>{{u.fullname}}</ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
                 <ion-col >
                   <ion-icon name="person"></ion-icon>
                 </ion-col>
@@ -72,6 +80,30 @@
                 </ion-col>
                 <ion-col size="8">
                   <ion-label>{{userDateCreate | date:'dd-MM-yyyy'}}</ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-icon name="call"></ion-icon>
+                </ion-col>
+                <ion-col size="8">
+                  <ion-label>{{u.phone}}</ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-icon name="school"></ion-icon>
+                </ion-col>
+                <ion-col size="8">
+                  <ion-label>{{u.khoa}}</ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-icon name="transgender"></ion-icon>
+                </ion-col>
+                <ion-col size="8">
+                  <ion-label>{{u.gender}}</ion-label>
                 </ion-col>
               </ion-row>
             </ion-card-content>
