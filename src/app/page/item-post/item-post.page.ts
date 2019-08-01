@@ -8,6 +8,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/storage';
 import { NavController,LoadingController } from '@ionic/angular';
 import { AuthService } from '../../service/authentication/authentication.service';
+import { SendNotification } from '../../service/notification//send.notification';
 @Component({
   selector: 'app-item-post',
   templateUrl: './item-post.page.html',
@@ -22,10 +23,12 @@ export class ItemPostPage implements OnInit {
     private navCtrl: NavController,
     private validateProduct: ValidateProduct,
     private authService: AuthService,
+    private sendNotification : SendNotification,
     private loadingController: LoadingController
   ) { }
   
   userID : any;
+  userEmail : any;
   producttype : any;
   newProductName : string;
   newProductDescribe : string;
@@ -52,6 +55,7 @@ export class ItemPostPage implements OnInit {
     //lay thong tin user dang su dung
     if(this.authService.userDetails()){
       this.userID = this.authService.userDetails().uid;
+      this.userEmail = this.authService.userDetails().email;
     }
   }
   //lay hinh tu album trong device
@@ -61,6 +65,8 @@ export class ItemPostPage implements OnInit {
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
+      allowEdit : true,
+      correctOrientation : true,
       sourceType: sourceType
     };
     const loading = await this.loadingController.create({
@@ -92,6 +98,7 @@ export class ItemPostPage implements OnInit {
   //tao san pham 
   CreateRecord(newImage) {
     let record = {};
+    var message = "Thông tin: "+this.newProductName+" - "+this.newProductType;
     record['tensp'] = this.newProductName;
     record['mota'] = this.newProductDescribe;
     record['loaisp'] = this.newProductType;
@@ -106,6 +113,7 @@ export class ItemPostPage implements OnInit {
     record['rated']  = false;
     record['numberEdit']  = 0;
     this.crudProduct.create_NewProduct(record).then(resp => {
+      this.sendNotification.sendNotification("post","Có bài đăng mới!",message);
       this.newProductName = "";
       this.newProductDescribe = "";
       this.newProductType = "";

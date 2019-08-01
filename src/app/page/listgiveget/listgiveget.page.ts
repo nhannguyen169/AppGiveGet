@@ -422,6 +422,8 @@ export class ListgivegetPage implements OnInit {
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
+      allowEdit : true,
+      correctOrientation : true,
       sourceType: sourceType
     };
     const loading = await this.loadingController.create({

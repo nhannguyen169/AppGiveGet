@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController,NavParams } from '@ionic/angular';
 import { CrudProduct } from '../../service/firestore/crud.product';
 import { CrudUser } from  '../../service/authentication/crud.user';
+import { SendNotification } from '../../service/notification//send.notification';
 @Component({
   selector: 'app-rating',
   templateUrl: './rating.page.html',
@@ -13,6 +14,7 @@ export class RatingPage implements OnInit {
     private modalController: ModalController,
     private crudProduct: CrudProduct,
     private crudUser : CrudUser,
+    private sendNotification : SendNotification,
     private navParams: NavParams
   ) {}
 
@@ -44,6 +46,8 @@ export class RatingPage implements OnInit {
           userID: e.payload.doc.data()['userID'],
           email: e.payload.doc.data()['email'],
           username: e.payload.doc.data()['username'],
+          fullname: e.payload.doc.data()['fullname'],
+          khoa:e.payload.doc.data()['khoa'],
           rating:e.payload.doc.data()['rating'],
           numUserRate:e.payload.doc.data()['numberUserRate'],
         };
@@ -59,6 +63,7 @@ export class RatingPage implements OnInit {
 
   saveRate(ms){
     var docUserID;
+    var message;
     var today = new Date();
     let recordProduct = {};
     let recordUser = {};
@@ -85,6 +90,7 @@ export class RatingPage implements OnInit {
 
     for(var i=0;i<this.listAllUser.length;i++){
       if(this.listAllUser[i].userID == this.giveUserID){
+        message = "Cảm ơn bạn "+this.listAllUser[i].fullname+", Khoa "+this.listAllUser[i].khoa+ " đã cho thành công";
         if(this.listAllUser[i].rating == 0){
           recordUser['rating'] = this.rate;
         }else if(this.listAllUser[i].rating > 0){
@@ -95,6 +101,7 @@ export class RatingPage implements OnInit {
       }
     }
     this.crudUser.updateUser(docUserID,recordUser);
+    this.sendNotification.sendNotification("thank","Cảm ơn!",message);
     return new Promise(r => setTimeout(r, ms))
   }
   

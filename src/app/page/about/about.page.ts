@@ -14,9 +14,4 @@ export class AboutPage implements OnInit {
   ngOnInit() {
   }
   
-  demo(){
-    var str = "https://firebasestorage.googleapis.com/v0/b/appgiveget.appspot.com/o/ProductImage%2F1563164918.jpg?alt=media";
-    var str2 =str.substr(84,10);
-    console.log(str2);
-  }
 }

@@ -24,7 +24,8 @@ export class ListGiveDetailPage implements OnInit {
     this.crudProduct.read_GetProduct(this.navParams.data.productID).subscribe(data => {
       this.userSubmit = data.map(e => {
         return {
-          user:e.payload.doc.data()['user']
+          user:e.payload.doc.data()['user'],
+          hasChosen:e.payload.doc.data()['hasChosen']
         };
       })
     });
@@ -52,7 +53,8 @@ export class ListGiveDetailPage implements OnInit {
           this.listUserSubmit.push({
             id: this.users[i].userID,
             email: this.users[i].email,
-            username: this.users[i].username
+            username: this.users[i].username,
+            hasChosen:this.userSubmit[j].hasChosen
         });
       }
     }

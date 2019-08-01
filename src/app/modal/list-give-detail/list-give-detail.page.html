@@ -16,6 +16,7 @@
       <ion-label>
         <h2 style="font: bold;">{{i.username}}</h2>
         <h3>{{i.email}}</h3>
+        <h6 *ngIf="i.hasChosen == true" style="color: red">Đã được chọn</h6>
       </ion-label>
     </ion-item>      
   </ion-list>
