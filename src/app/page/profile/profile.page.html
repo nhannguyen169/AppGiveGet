@@ -44,7 +44,7 @@
   <ion-slides #slides (ionSlideDidChange)="slideChanged()">
     <ion-slide class="slide1">
       <ion-card>
-        <div style="padding-top:20px;" *ngFor="let u of users">
+        <div *ngFor="let u of users">
           <div *ngIf="u.userID == userID">
             <ion-card-header>
               <ion-card-title>Thông tin cá nhân</ion-card-title>

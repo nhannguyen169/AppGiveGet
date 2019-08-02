@@ -4,7 +4,6 @@ import { ScrollDetail } from '@ionic/core';
 import { AlertController, ActionSheetController,LoadingController,ModalController } from '@ionic/angular';
 import { CrudProduct } from '../../service/firestore/crud.product';
 import { ValidateProduct } from '../../service/firestore/validate.product';
-import { GetProducttype } from '../../service/firestore/get.productype';
 import { AuthService } from '../../service/authentication/authentication.service';
 import { CrudUser } from  '../../service/authentication/crud.user';
 import { ListGiveDetailPage } from '../../modal/list-give-detail/list-give-detail.page';
@@ -23,7 +22,6 @@ export class ItemDetailPage implements OnInit {
     private modalController: ModalController,
     private crudProduct: CrudProduct,
     private validateProduct: ValidateProduct,
-    private getProducttype: GetProducttype,
     private authService: AuthService,
     private crudUser : CrudUser
   ) { }
@@ -34,7 +32,7 @@ export class ItemDetailPage implements OnInit {
   users : any;
   userSubmit : any;
   numberUserSubmit : any;
-  disableBtn = false;
+  disableBtn = true;
   hasLoad = false;
   nameSubmitBtn : string;
   userID : any;
@@ -49,54 +47,51 @@ export class ItemDetailPage implements OnInit {
   //trao doi phan tu trong mang
   shuffle(array) {
     for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
     }
-  }
-
-  //lay thong tin nguoi dung da dang ky 
-  getUserHasSubmit(ms){
-    this.crudProduct.read_GetProduct(this.itemId).subscribe(data => {
-      this.userSubmit = data.map(e => {
-        return {
-          user:e.payload.doc.data()['user']
-        };
-      })
-    });
-    return new Promise(r => setTimeout(r, ms))
   }
 
   //kiem tra nguoi dung co submit hay khong
-  checkUserHasSubmit(){
-    for(var i =0;i<this.userSubmit.length;i++){   
-      if(this.userSubmit[i].user == this.userID){
-        this.disableBtn = true;
-        this.nameSubmitBtn = "Đã đăng ký nhận";
+  checkUserSubmitOrGive(){
+    var checkGet;
+    var checkGive;
+    if(this.userSubmit.length > 0){
+      for(var i =0;i<this.userSubmit.length;i++){   
+        if(this.userSubmit[i].user == this.userID){
+          this.disableBtn = true;
+          this.nameSubmitBtn = "Đã đăng ký nhận";
+        }else if(this.userSubmit[i].hasChosen == true){
+          this.disableBtn = true;
+          this.nameSubmitBtn = "Đã có người được nhận sản phẩm này";
+        }else{
+          console.log("haha")
+          checkGet = false;
+        }
       }
+    }else{
+      checkGet = false;
     }
-  }
-  
-  getNumberUserSubmit(){
-    this.numberUserSubmit = this.userSubmit.length;
-  }
-  async validateSubmit(){
-    await this.getUserHasSubmit(300);
-    await this.checkUserHasSubmit();
-    await this.getNumberUserSubmit();
-  }
-
-  //kiem tra nguoi dung co phai la nguoi dang khong
-  checkUserIsGive(){
     for(var i =0;i<this.products.length;i++){   
       if(this.products[i].id == this.itemId){
         if(this.products[i].user == this.userID){
           this.disableBtn = true;
           this.nameSubmitBtn = "Bài đăng này là của bạn";
+        }else{
+          checkGive = false;
         }
       }
     }
+    if(checkGive == false && checkGet == false){
+      this.disableBtn = false;
+      this.nameSubmitBtn = "Đăng ký nhận";
+    }
+  }
+  
+  getNumberUserSubmit(){
+    this.numberUserSubmit = this.userSubmit.length;
   }
 
   getDifferentProducts(){
@@ -152,10 +147,15 @@ export class ItemDetailPage implements OnInit {
       })
     });
     
-    if(this.disableBtn == false){
-      this.nameSubmitBtn = "Đăng ký nhận";
-    }
-
+    //lay thong tin user submit
+    this.crudProduct.read_GetProduct(this.itemId).subscribe(data => {
+      this.userSubmit = data.map(e => {
+        return {
+          user:e.payload.doc.data()['user'],
+          hasChosen:e.payload.doc.data()['hasChosen']
+        };
+      })
+    });
     this.shuffle(this.colors);
   }
   ionViewDidEnter(){
@@ -163,8 +163,8 @@ export class ItemDetailPage implements OnInit {
     if(this.authService.userDetails()){
       this.userID = this.authService.userDetails().uid;
     }
-    this.validateSubmit();
-    this.checkUserIsGive();
+    this.getNumberUserSubmit();
+    this.checkUserSubmitOrGive();
     this.getDifferentProducts(); 
     this.getUserGivenID();
   }
@@ -213,11 +213,11 @@ export class ItemDetailPage implements OnInit {
     let record = {};
     record['user'] = this.userID;
     record['hasChosen'] = false; 
+    this.disableBtn = true;
     this.crudProduct.add_GetProduct(this.itemId,record).then(resp =>{
       this.hasCreated = true;
       this.validateProduct.ToastGetSuccess();
-      this.validateSubmit();
-      this.checkUserIsGive();
+      this.checkUserSubmitOrGive();
     })  
   }
   //gui du lieu len firebase
