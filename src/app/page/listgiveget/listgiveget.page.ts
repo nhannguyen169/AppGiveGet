@@ -7,6 +7,7 @@ import { GetProducttype } from '../../service/firestore/get.productype';
 import { AuthService } from '../../service/authentication/authentication.service';
 import { ValidateProduct } from '../../service/firestore/validate.product';
 import { RatingPage } from '../../modal/rating/rating.page';
+import { SendNotification } from '../../service/notification//send.notification';
 import * as firebase from 'firebase/app';
 import { Router } from '@angular/router';
 @Component({
@@ -26,6 +27,7 @@ export class ListgivegetPage implements OnInit {
     private camera : Camera,
     private crudProduct: CrudProduct,
     private crudUser: CrudUser,
+    private sendNotification : SendNotification,
     private getProducttype: GetProducttype,
     private modalController: ModalController,
     private loadingController: LoadingController,
@@ -63,7 +65,9 @@ export class ListgivegetPage implements OnInit {
         return {
           userID: e.payload.doc.data()['userID'],
           email: e.payload.doc.data()['email'],
-          username: e.payload.doc.data()['username']
+          username: e.payload.doc.data()['username'],
+          fullname: e.payload.doc.data()['fullname'],
+          khoa: e.payload.doc.data()['khoa'],
         };
       })
     });
@@ -497,13 +501,27 @@ export class ListgivegetPage implements OnInit {
       await this.UpdateRecord(recordRow);
     }  
   }
-  async showDeleteAllert(productid) {
+  async showDeleteGiveAllert(productid) {
     var fieldChosen = 'Bạn có muốn xoá !';
+    var fullname;
+    var khoa;
+    var username;
+    var title;
+    var message;
     for(var j =0;j<this.listUserSubmit.length;j++){
       for(var i =0;i<this.listAllUser.length;i++){
+        if(this.userID == this.listAllUser[i].userID){
+          fullname = this.listAllUser[i].fullname;
+          khoa = this.listAllUser[i].khoa;
+          username = this.listAllUser[i].username;
+        }
         if(this.listUserSubmit[j].id == productid){
+          title = username+" đã xóa bài đăng: "+this.listUserSubmit[j].tensp+" !;"
           if(this.listUserSubmit[j].user == this.listAllUser[i].userID && this.listUserSubmit[j].hasChosen == true){
             fieldChosen = 'Đang có người đang thực hiện giao dịch với bạn. <br/> Bạn có mún xóa !';
+            message = "Cảm ơn bạn "+fullname+" Khoa "+khoa+" đã đăng bài trên Give Get và xin lỗi bạn "+this.listAllUser[i].fullname+" đang thực hiện giao dịch này.";
+          }else{
+            message = "Cảm ơn bạn "+fullname+" Khoa "+khoa+" đã đăng bài trên Give Get";
           }
         }
       }
@@ -524,6 +542,7 @@ export class ListgivegetPage implements OnInit {
             text: 'Xóa',
             handler: data => {
               this.crudProduct.delete_Product(productid);
+              this.sendNotification.sendNotification("thank",title,message);
             }
           }
       ]
@@ -531,7 +550,59 @@ export class ListgivegetPage implements OnInit {
     await alert.present();
   }
 
-  async presentOptionsCardGet(products,productID,productMethod) {
+  async showDeleteGetAllert(productid) {
+    var fieldChosen = 'Bạn có muốn hủy nhận sản phẩm !';
+    var userHasChosen = false;
+    var docID;
+    var username;
+    var title;
+    var message;
+    for(var j =0;j<this.listUserSubmit.length;j++){
+      for(var i =0;i<this.listAllUser.length;i++){
+        if(this.userID == this.listAllUser[i].userID){
+          username = this.listAllUser[i].username;
+        }
+        if(this.listUserSubmit[j].id == productid){
+          title = username+" đã hủy nhận: "+this.listUserSubmit[j].tensp+" !";
+          if(this.listUserSubmit[j].user == this.userID && this.listUserSubmit[j].hasChosen == true){ 
+            fieldChosen = 'Bạn đã được chọn nhận sản phẩm <br/> Bạn có chắc mún hủy nhận !';
+            message = "Sản phẩm trên đã không có người được chọn nên các bạn vẫn còn cơ hội để đăng ký nhận sản phẩm này nhé!";
+            userHasChosen = true;
+            docID = this.listUserSubmit[j].userid;
+          }else if(this.listUserSubmit[j].user == this.userID && this.listUserSubmit[j].hasChosen == false){
+            docID = this.listUserSubmit[j].userid;
+          }
+        }
+      }
+    }
+    const alert = await this.alertController.create({
+      header: 'Xác nhận',
+      subHeader: '',
+      message: fieldChosen,
+      buttons: [
+          {
+            text: 'Hủy',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              console.log('Confirm Cancel');
+            }
+          }, {
+            text: 'Xóa',
+            handler: data => {
+              this.crudProduct.delete_GetProduct(productid,docID);
+              if(userHasChosen == true){
+                this.sendNotification.sendNotification("abort",title,message)
+              }
+              this.router.navigateByUrl('/tabs/menu');
+            }
+          }
+      ]
+    });
+    await alert.present();
+  }
+
+  async presentOptionsCardGive(products,productID,productMethod) {
     var arr;
     if(productMethod == "false"){
       arr = [
@@ -563,7 +634,7 @@ export class ListgivegetPage implements OnInit {
         text: 'Xóa sản phẩm',
         icon: 'trash',
         handler: () => {
-          this.showDeleteAllert(productID);
+          this.showDeleteGiveAllert(productID);
         }
       }, {
         text: 'Đóng',
@@ -597,7 +668,7 @@ export class ListgivegetPage implements OnInit {
         text: 'Xóa sản phẩm',
         icon: 'trash',
         handler: () => {
-          this.showDeleteAllert(productID);
+          this.showDeleteGiveAllert(productID);
         }
       }, {
         text: 'Đóng',
@@ -617,7 +688,7 @@ export class ListgivegetPage implements OnInit {
     await actionSheet.present();
   }
 
-  async presentOptionsCardGive(productID,hasChosen) {
+  async presentOptionsCardGet(productID,hasChosen) {
     var arr;
     if(hasChosen == true){
       arr = [
@@ -637,7 +708,7 @@ export class ListgivegetPage implements OnInit {
         text: 'Hủy nhận sản phẩm',
         icon: 'trash',
         handler: () => {
-         
+          this.showDeleteGetAllert(productID);
         }
       }, {
         text: 'Đóng',
@@ -659,7 +730,7 @@ export class ListgivegetPage implements OnInit {
           text: 'Hủy nhận sản phẩm',
           icon: 'trash',
           handler: () => {
-           
+            this.showDeleteGetAllert(productID);
           }
         }, {
           text: 'Đóng',

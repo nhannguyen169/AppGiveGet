@@ -218,6 +218,7 @@ export class ItemDetailPage implements OnInit {
       this.hasCreated = true;
       this.validateProduct.ToastGetSuccess();
       this.checkUserSubmitOrGive();
+      this.getNumberUserSubmit();
     })  
   }
   //gui du lieu len firebase

@@ -11,6 +11,11 @@ export class SendNotification {
 
     mess : any;
     messageRef: any;  
+
+    readMessage(){
+      this.messageRef =  this.afs.collection('message', ref => ref.orderBy('ngaytao', 'asc'));
+      return this.messageRef.snapshotChanges();
+    }
     getNotification(){
       this.messageRef =  this.afs.collection('message', ref => ref.orderBy('ngaytao', 'asc'));
       this.messageRef.snapshotChanges().subscribe(data => {
@@ -33,6 +38,8 @@ export class SendNotification {
               this.notifyPost(this.mess[i].title,this.mess[i].content);
             }else if (this.mess[i].type == "thank" && currentDate == currentMessDate){
               this.notifyThank(this.mess[i].title,this.mess[i].content)
+            }else if (this.mess[i].type == "abort" && currentDate == currentMessDate){
+              this.notifyAbort(this.mess[i].title,this.mess[i].content)
             }
           }
         }
@@ -70,5 +77,15 @@ export class SendNotification {
         data: { secret: 'key_data' }
       });
     }
-    
+    notifyAbort(title,content){
+      this.localNotifications.schedule({
+        id: 1,
+        title: title,
+        text: content,
+        sound: 'file://assets/sounds/notification.mp3',
+        icon: 'file://assets/icon/mdpi.png',
+        smallIcon: 'file://assets/icon/ldpi.png',
+        data: { secret: 'key_data' }
+      });
+    }
 }

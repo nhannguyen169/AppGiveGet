@@ -15,7 +15,7 @@ export class CrudProduct {
   }
  
   read_Products() {
-    return this.firestore.collection('products').snapshotChanges();
+    return this.firestore.collection('products',ref => ref.orderBy('ngaytao', 'desc')).snapshotChanges();
   }
 
   update_Product(recordID,record){
@@ -36,6 +36,10 @@ export class CrudProduct {
 
   update_GetProduct(productID,recordID,record){
     this.firestore.doc('products/'+productID+'/listGet/'+recordID).update(record);
+  }
+
+  delete_GetProduct(productID,recordID) {
+    this.firestore.doc('products/'+productID+'/listGet/'+recordID).delete();
   }
 
   create_NewHistoryProduct(record) {

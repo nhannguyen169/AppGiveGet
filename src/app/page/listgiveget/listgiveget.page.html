@@ -20,7 +20,7 @@
       <ion-grid>
         <ion-row *ngFor="let i of products">
           <ion-card *ngIf="i.user == userID">
-            <span *ngIf="!i.isEdit; else elseBlock" (click)="presentOptionsCardGet(i,i.id,i.method)">
+            <span *ngIf="!i.isEdit; else elseBlock" (click)="presentOptionsCardGive(i,i.id,i.method)">
               <div>
                 <ion-card-header>
                   <ion-row>
@@ -114,7 +114,7 @@
       <ion-grid >
         <ion-row *ngFor="let i of listUserSubmit">
           <ion-card *ngIf="i.user == userID">
-            <span (click)="presentOptionsCardGive(i.id,i.hasChosen)">
+            <span (click)="presentOptionsCardGet(i.id,i.hasChosen)">
               <ion-card-header>
                 <ion-row>
                   <ion-col>
