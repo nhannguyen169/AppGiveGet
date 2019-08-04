@@ -13,7 +13,7 @@ export class SendNotification {
     messageRef: any;  
 
     readMessage(){
-      this.messageRef =  this.afs.collection('message', ref => ref.orderBy('ngaytao', 'asc'));
+      this.messageRef =  this.afs.collection('message', ref => ref.orderBy('ngaytao', 'desc'));
       return this.messageRef.snapshotChanges();
     }
     getNotification(){

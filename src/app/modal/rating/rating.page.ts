@@ -101,7 +101,7 @@ export class RatingPage implements OnInit {
       }
     }
     this.crudUser.updateUser(docUserID,recordUser);
-    this.sendNotification.sendNotification("thank","Cảm ơn!",message);
+    this.sendNotification.sendNotification("thank","Cảm ơn",message);
     return new Promise(r => setTimeout(r, ms))
   }
   

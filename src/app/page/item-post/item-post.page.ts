@@ -113,7 +113,7 @@ export class ItemPostPage implements OnInit {
     record['rated']  = false;
     record['numberEdit']  = 0;
     this.crudProduct.create_NewProduct(record).then(resp => {
-      this.sendNotification.sendNotification("post","Có bài đăng mới!",message);
+      this.sendNotification.sendNotification("post","Có bài đăng mới",message);
       this.newProductName = "";
       this.newProductDescribe = "";
       this.newProductType = "";

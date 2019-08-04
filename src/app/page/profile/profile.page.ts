@@ -4,6 +4,7 @@ import { IonSlides } from '@ionic/angular';
 import { AuthService } from '../../service/authentication/authentication.service';
 import { CrudUser } from  '../../service/authentication/crud.user';
 import { CrudProduct } from '../../service/firestore/crud.product';
+import { SendNotification } from '../../service/notification//send.notification';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -14,31 +15,22 @@ export class ProfilePage implements OnInit {
   @ViewChild('slides') slider: IonSlides;
   segment = 0;
 
-  messages = [
-    {
-      mess : "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-    },
-    {
-      mess : "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
-    },
-    {
-      mess : "but also the leap into electronic typesetting, remaining essentially unchanged."
-    },
-    {
-      mess : "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages"
-    },
-  ]
-  users : any;
+  
+  
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
+    private sendNotification : SendNotification,
     private crudProduct: CrudProduct,
     private crudUser : CrudUser
   ){}
+
+  users : any;
   userEmail : any;
   userID : any;
   userIdGet : any;
+  message : any;
   profilePrivate : boolean;
   userDateCreate : any;
   HistoryProduct : any;
@@ -77,7 +69,16 @@ export class ProfilePage implements OnInit {
         }
       })
     });
+    this.sendNotification.readMessage().subscribe(data => {
+      this.message = data.map(e => {
+        return {
+          title : e.payload.doc.data()['title'],
+          content : e.payload.doc.data()['content']
+        }
+      })
+    });
     this.userIdGet = this.activatedRoute.snapshot.paramMap.get('userId');
+  
   }
 
   checkUserProfile(){

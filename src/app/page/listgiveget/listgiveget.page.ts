@@ -68,6 +68,8 @@ export class ListgivegetPage implements OnInit {
           username: e.payload.doc.data()['username'],
           fullname: e.payload.doc.data()['fullname'],
           khoa: e.payload.doc.data()['khoa'],
+          rating :e.payload.doc.data()['rating'],
+          numberUserRate: e.payload.doc.data()['numberUserRate']
         };
       })
     });
@@ -131,23 +133,54 @@ export class ListgivegetPage implements OnInit {
     return new Promise(r => setTimeout(r, ms))
    
   }
-
-  listShowUserSubcribe : any;
+  
+  listRandomUser: any;
+  listButtonRandomUserSubcribe : any;
+  listButtonManualUserSubcribe : any;
   //hien thi thong tin nguoi dung len popup
   getUserSubcribe(){
-    this.listShowUserSubcribe = [];
+    this.listButtonRandomUserSubcribe = [];
+    this.listButtonManualUserSubcribe = [];
+    this.listRandomUser = [];
     var checked = false;
+    var ratioTotalGive;
     for(var i =0;i<this.listUserSubcribe.length;i++){
       for(var j = 0;j<this.listAllUser.length;j++){
         if(this.listUserSubcribe[i].user == this.listAllUser[j].userID){
           if(this.listUserSubcribe[i].hasChosen == true){
             checked = true
           }
-          this.listShowUserSubcribe.push({
+          this.listButtonManualUserSubcribe.push({
             type: 'radio',
             value : this.listUserSubcribe[i].id,
             label : ''+this.listAllUser[j].email,
             checked : this.listUserSubcribe[i].hasChosen
+          });
+          this.listButtonRandomUserSubcribe.push({
+            type: 'radio',
+            disabled: true,
+            value : this.listUserSubcribe[i].id,
+            label : ''+this.listAllUser[j].email,
+            checked : this.listUserSubcribe[i].hasChosen
+          });
+
+          if(this.listAllUser[j].numberUserRate > 15){
+            ratioTotalGive = 5;
+          }else if(this.listAllUser[j].numberUserRate > 10 && this.listAllUser[j].numberUserRate <= 15){
+            ratioTotalGive = 4;
+          }else if(this.listAllUser[j].numberUserRate > 5 && this.listAllUser[j].numberUserRate <= 10){
+            ratioTotalGive = 3;
+          }else if(this.listAllUser[j].numberUserRate > 3 && this.listAllUser[j].numberUserRate <= 5){ 
+            ratioTotalGive = 2;
+          }else if(this.listAllUser[j].numberUserRate > 0 && this.listAllUser[j].numberUserRate <= 3){
+            ratioTotalGive = 1;
+          }else{
+            ratioTotalGive = 0;
+          }
+        
+          this.listRandomUser.push({
+            userId:this.listUserSubcribe[i].id,
+            ratioRandom:this.listAllUser[j].rating + ratioTotalGive
           });
         }
       }
@@ -155,7 +188,73 @@ export class ListgivegetPage implements OnInit {
     return checked;
   }
   
-  
+   //trao doi phan tu trong mang
+   shuffle(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+  }
+  randomChooseUser(){
+    this.shuffle(this.listRandomUser);
+    this.listRandomUser.sort((a, b) => (a.ratioRandom > b.ratioRandom) ? 1 : -1)
+    for(var i =0;i<this.listRandomUser.length;i++){
+      if(i = this.listRandomUser.length - 1){
+        return this.listRandomUser[i].userId;
+      }
+    }
+  }
+
+   //hien thi popup chon nguoi nhan
+  async presentRandomSubcriber(productId) {
+    var arr;
+    await this.getUserInformation(productId,500);
+    await this.getUserSubcribe();
+    if(this.getUserSubcribe() != true && this.listUserSubcribe.length > 0){
+      arr = [
+        {
+          text: 'Đóng',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        },{
+          text: 'Quay ngẫu nhiên',
+          handler: data => {
+            let record = {};
+            record['hasChosen'] = true;
+            if(this.getUserSubcribe() != true){
+              var data = this.randomChooseUser();
+              this.crudProduct.update_GetProduct(productId,data,record);
+            }else{
+              console.log('da dk');
+            }
+          }
+        }
+      ]
+    }else if(this.getUserSubcribe() == true || this.listUserSubcribe.length == 0){
+      arr = [
+        {
+          text: 'Đóng',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }
+      ]
+    }
+    const alert = await this.alertController.create({
+      header: 'Random người nhận',
+      inputs: this.listButtonRandomUserSubcribe,
+      buttons: arr
+    });
+    await alert.present();
+  }
+
   //hien thi popup chon nguoi nhan
   async presentChooseSubcriber(productId) {
     var arr;
@@ -198,7 +297,7 @@ export class ListgivegetPage implements OnInit {
     }
     const alert = await this.alertController.create({
       header: 'Chọn người nhận',
-      inputs: this.listShowUserSubcribe,
+      inputs: this.listButtonManualUserSubcribe,
       buttons: arr
     });
     await alert.present();
@@ -516,7 +615,7 @@ export class ListgivegetPage implements OnInit {
           username = this.listAllUser[i].username;
         }
         if(this.listUserSubmit[j].id == productid){
-          title = username+" đã xóa bài đăng: "+this.listUserSubmit[j].tensp+" !;"
+          title = username+" đã xóa bài đăng: "+this.listUserSubmit[j].tensp ;
           if(this.listUserSubmit[j].user == this.listAllUser[i].userID && this.listUserSubmit[j].hasChosen == true){
             fieldChosen = 'Đang có người đang thực hiện giao dịch với bạn. <br/> Bạn có mún xóa !';
             message = "Cảm ơn bạn "+fullname+" Khoa "+khoa+" đã đăng bài trên Give Get và xin lỗi bạn "+this.listAllUser[i].fullname+" đang thực hiện giao dịch này.";
@@ -563,10 +662,10 @@ export class ListgivegetPage implements OnInit {
           username = this.listAllUser[i].username;
         }
         if(this.listUserSubmit[j].id == productid){
-          title = username+" đã hủy nhận: "+this.listUserSubmit[j].tensp+" !";
+          title = username+" đã hủy nhận: "+this.listUserSubmit[j].tensp ;
           if(this.listUserSubmit[j].user == this.userID && this.listUserSubmit[j].hasChosen == true){ 
             fieldChosen = 'Bạn đã được chọn nhận sản phẩm <br/> Bạn có chắc mún hủy nhận !';
-            message = "Sản phẩm trên đã không có người được chọn nên các bạn vẫn còn cơ hội để đăng ký nhận sản phẩm này nhé!";
+            message = "Sản phẩm trên đã không có người được chọn nên các bạn vẫn còn cơ hội để đăng ký nhận sản phẩm này nhé !";
             userHasChosen = true;
             docID = this.listUserSubmit[j].userid;
           }else if(this.listUserSubmit[j].user == this.userID && this.listUserSubmit[j].hasChosen == false){
@@ -646,7 +745,13 @@ export class ListgivegetPage implements OnInit {
       }]
     }else if(productMethod == "true"){
       arr = [
-       {
+        {
+          text: 'Random chọn người nhận',
+          icon: 'contacts',
+          handler: () => {
+            this.presentRandomSubcriber(productID);
+          }
+      }, {
         text: 'Trạng thái sản phẩm',
         icon: 'checkbox-outline',
         handler: () => {
