@@ -14,6 +14,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AuthService } from '../app/service/authentication/authentication.service';
 import { FcmService } from '../app/service/notification/fcm.service';
 import { SendNotification } from '../app/service/notification/send.notification';
+import { ReportService } from '../app/service/report/report';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { Firebase } from '@ionic-native/firebase/ngx';
 import { ReactiveFormsModule} from '@angular/forms';
@@ -51,6 +52,7 @@ firebase.initializeApp(environment.firebase);
     SocialMedia,
     Deeplinks,
     SendNotification,
+    ReportService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Camera
   ],

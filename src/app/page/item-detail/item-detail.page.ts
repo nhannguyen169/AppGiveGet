@@ -6,6 +6,7 @@ import { CrudProduct } from '../../service/firestore/crud.product';
 import { ValidateProduct } from '../../service/firestore/validate.product';
 import { AuthService } from '../../service/authentication/authentication.service';
 import { CrudUser } from  '../../service/authentication/crud.user';
+import { ReportService } from  '../../service/report/report';
 import { ListGiveDetailPage } from '../../modal/list-give-detail/list-give-detail.page';
 import { SocialMedia } from "../../service/social-media/social.media";
 @Component({
@@ -23,6 +24,7 @@ export class ItemDetailPage implements OnInit {
     private modalController: ModalController,
     private socialMedia : SocialMedia,
     private crudProduct: CrudProduct,
+    private report: ReportService,
     private validateProduct: ValidateProduct,
     private authService: AuthService,
     private crudUser : CrudUser
@@ -40,6 +42,7 @@ export class ItemDetailPage implements OnInit {
   userID : any;
   userGivenID : any;
   hasCreated = false;
+  listReport : any;
   sliderConfig = {
     slidesPerView: 1.6,
     spaceBetween: 10,
@@ -158,6 +161,15 @@ export class ItemDetailPage implements OnInit {
         };
       })
     });
+
+    this.report.read_Report().subscribe(data=>{
+      this.listReport = data.map(e => {
+        return {
+          masp:e.payload.doc.data()['masp'],
+          reporterid:e.payload.doc.data()['reporterid'],
+        };
+      })
+    })
     this.shuffle(this.colors);
   }
   ionViewDidEnter(){
@@ -173,14 +185,61 @@ export class ItemDetailPage implements OnInit {
   }
   //chuc nang hien thi report
   async showReportAllert() {
-    const alert = await this.alertController.create({
-      header: 'Xác nhận',
-      subHeader: '',
-      message: 'Bạn có muốn report bài đăng !',
-      buttons: ['Không', 'Có']
-    });
-
-    await alert.present();
+    var bool = false;
+    for(var i =0;i<this.listReport.length;i++){
+      if(this.listReport[i].masp == this.itemId){
+        if(this.listReport[i].reporterid == this.userID){
+          bool = true;
+        }
+      }
+    }
+    if(bool == true){
+      this.report.ToastMessage("Bạn đã tố cáo bài đăng này");
+    }else if(bool == false){
+      const alert = await this.alertController.create({
+        header: 'Xác nhận',
+        subHeader: 'Chú ý: tố cáo sai sẽ bị phạt nhé !',
+        message: 'Bạn có muốn report bài đăng',
+        inputs: [
+          {
+            name: 'reportInput',
+            type: 'text',
+            placeholder: 'Nhập nội dung tố cáo'
+          }
+        ],
+        buttons: [
+          {
+            text: 'Hủy',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'Xác nhận',
+            handler: data => {
+              if(data.reportInput == ""){
+                this.report.ToastMessage('Mời nhập nội dung tố cáo !');
+              }else if(data.reportInput.length > 100){
+                this.report.ToastMessage('Nội dung tố cáo không được quá 100 ký tự');
+              }else{
+                let record = {};
+                record['content'] = data.reportInput;
+                record['masp'] = this.itemId;
+                var today = new Date();
+                record['ngaytocao'] = today;
+                record['reporterid'] = this.userID;
+                record['userid'] = this.userGivenID;
+                this.report.create_NewReport(record).then(res =>{
+                  this.report.ToastMessage('Đã gửi,chờ admin duyệt tố cáo !');
+                });
+              }
+            }
+          }
+        ]
+      });
+      await alert.present();
+    }
   }
 
   subjectShare : string;

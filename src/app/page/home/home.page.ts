@@ -1,7 +1,9 @@
 import { Component, ViewChild,Injectable} from '@angular/core';
 import { ScrollDetail } from '@ionic/core';
-import { IonContent} from '@ionic/angular';
+import { IonContent,NavController} from '@ionic/angular';
 import { CrudProduct } from '../../service/firestore/crud.product';
+import { CrudUser } from  '../../service/authentication/crud.user';
+import { AuthService } from '../../service/authentication/authentication.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,12 +16,16 @@ export class HomePage {
   @ViewChild(IonContent) content: IonContent;
 
   constructor(
-    private crudProduct: CrudProduct
+    private navCtrl : NavController,
+    private crudProduct: CrudProduct,
+    private crudUser : CrudUser,
+    private authService: AuthService
   ){}
   products : any;
   initializeProduct : any;
   hasSearch = false;
   userEmail: string;
+  users: any;
 
   ngOnInit() {   
     //lay thong tin san pham
@@ -34,6 +40,19 @@ export class HomePage {
       })
       this.initializeProduct = this.products;
     });
+    this.crudUser.readUser().subscribe(data => {
+      const navctrl =  this.navCtrl;
+      data.map(e => {
+        if(this.authService.userDetails().uid == e.payload.doc.data()['userID']){
+          if(e.payload.doc.data()['blockAccount'] == true){
+            navctrl.navigateRoot('/login');
+            this.authService.logoutUser();
+            this.authService.ToastMessage("Tài khoản bạn đã bị block do vi phạm điều lệ sử dụng ứng dụng !");
+          }
+        }
+      })
+    });
+    
   }
 
   //load ve du lieu ban dau
@@ -57,10 +76,11 @@ export class HomePage {
   scrollToTop() {
     this.content.scrollToTop(400);
   }
+
+  userID : any;
   ionViewDidEnter(){
-    this.scrollToTop();
+    this.scrollToTop();  
   }
- 
    //chuc nang scroll
    disableFab = true;
    onScroll($event: CustomEvent<ScrollDetail>) {
@@ -73,6 +93,6 @@ export class HomePage {
        }
      }
    }
-
+  
    
 }

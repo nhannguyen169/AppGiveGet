@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
+import { ToastController } from '@ionic/angular';
 import * as firebase from 'firebase/app';
 @Injectable()
 export class AuthService {
  
-  constructor(){}
+  constructor(public toastController: ToastController){}
   
   SendVerificationMail() {
     return firebase.auth().currentUser.sendEmailVerification()
@@ -47,4 +48,13 @@ export class AuthService {
   userDetails(){
     return firebase.auth().currentUser;
   }
+
+  async ToastMessage(message) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000
+    });
+    toast.present();
+  }
+
 }

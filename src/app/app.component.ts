@@ -5,7 +5,8 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { FcmService } from '../app/service/notification/fcm.service';
 import { SendNotification } from '../app/service/notification//send.notification';
-import { ItemDetailPage} from '../app/page/item-detail/item-detail.page'
+import { ItemDetailPage} from '../app/page/item-detail/item-detail.page';
+
 import * as firebase from 'firebase/app';
 @Component({
   selector: 'app-root',
@@ -25,6 +26,7 @@ export class AppComponent {
   ) {
     this.initializeApp();
   }
+
   checkUserLogin(){
     const navctrl =  this.navCtrl;
     const ngzone = this.ngZone;

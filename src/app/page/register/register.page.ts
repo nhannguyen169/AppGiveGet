@@ -144,6 +144,7 @@ export class RegisterPage implements OnInit {
     record['createDate'] = ucreatedate;
     record['rating'] = 0;
     record['numberUserRate'] = 0;
+    record['blockAccount'] = false;
     this.crudUser.createUser(record).then(resp => {
       console.log(resp);
       this.ToastMess("Tài khoản tạo thành công. Mời bạn xác nhận email !");

@@ -197,6 +197,8 @@ export class ListgivegetPage implements OnInit {
       array[j] = temp;
     }
   }
+
+  //random object nguoi dung trong mang
   randomChooseUser(){
     this.shuffle(this.listRandomUser);
     this.listRandomUser.sort((a, b) => (a.ratioRandom > b.ratioRandom) ? 1 : -1)
@@ -646,7 +648,7 @@ export class ListgivegetPage implements OnInit {
             handler: () => {
               this.crudProduct.delete_Product(productid);
               this.sendNotification.sendNotification("thank",title,message);
-              alert.dismiss();
+              this.router.navigateByUrl('/tabs/menu');
             }
           }
       ]

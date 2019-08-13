@@ -27,8 +27,8 @@ export class MenuPage implements OnInit {
       this.selectedPath = event.url;
     });
   }
-
   ngOnInit() {
+    
   }
    //dang xuat
    logOut(){
