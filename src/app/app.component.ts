@@ -1,16 +1,18 @@
-import { Component,NgZone  } from '@angular/core';
+import { Component,NgZone,ViewChild   } from '@angular/core';
 import { Platform,NavController} from '@ionic/angular';
+import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { FcmService } from '../app/service/notification/fcm.service';
 import { SendNotification } from '../app/service/notification//send.notification';
+import { ItemDetailPage} from '../app/page/item-detail/item-detail.page'
 import * as firebase from 'firebase/app';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html'
 })
 export class AppComponent {
-  
+  @ViewChild(NavController) navChild:NavController;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -18,6 +20,7 @@ export class AppComponent {
     private navCtrl : NavController,
     private fcmService : FcmService,
     private sendNotification : SendNotification,
+    public deeplinks: Deeplinks,
     private ngZone : NgZone
   ) {
     this.initializeApp();
@@ -53,7 +56,13 @@ export class AppComponent {
       this.checkUserLogin();
       this.getNotification();
       this.sendNotification.getNotification();
-      //this.sendNotification.notifyPost();
+      this.deeplinks.routeWithNavController(this.navChild, {
+        'item-detail/:itemId': ItemDetailPage
+      }).subscribe((match) => {
+        console.log('Successfully routed', match);
+      }, (nomatch) => {
+        console.log('Unmatched Route', nomatch);
+      });
     });
   }
 }

@@ -167,9 +167,9 @@
             </ion-col>
           </ion-row>
           <ion-row>
-            <ion-list>
+            <ion-list style="width:100%;">
               <div *ngFor="let m of message;let even = even; let n=index">
-                <ion-item [color]="even? 'primary' : 'secondary'" class="item-mess" *ngIf="n < 10">
+                <ion-item [color]="even? 'primary' : 'secondary'" class="item-mess" *ngIf="n < 10" >
                   <ion-thumbnail slot="start">
                     <img src="/assets/logo/logo.png" style="width:45px;">
                   </ion-thumbnail>

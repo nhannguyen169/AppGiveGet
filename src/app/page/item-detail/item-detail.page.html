@@ -58,6 +58,16 @@
               </ion-row>
             </ion-grid> 
             <ion-grid style="padding-top:30px;">
+              <ion-row>
+                <ion-col>
+                  <ion-button color="success" style="font-size:12px; " (click)="presentModal()">
+                    <ion-icon slot="start" name="eye"></ion-icon>
+                    Lượt người đang đăng ký ( {{numberUserSubmit}} )
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            <ion-grid style="padding-top:30px;">
                 <ion-row>
                     <ion-col class="title-lbl">
                         <ion-label>Người đăng</ion-label>
@@ -86,16 +96,6 @@
                     </ion-col>
                 </ion-row>
             </ion-grid>  
-            <ion-grid style="padding-top:30px;">
-              <ion-row>
-                <ion-col>
-                  <ion-button color="success" style="font-size:12px; " (click)="presentModal()">
-                    <ion-icon slot="start" name="eye"></ion-icon>
-                    Lượt người đang đăng ký ( {{numberUserSubmit}} )
-                  </ion-button>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
         </div>
     </div>
     <div style="background:whitesmoke;">

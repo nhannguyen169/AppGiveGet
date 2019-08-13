@@ -18,6 +18,9 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { Firebase } from '@ionic-native/firebase/ngx';
 import { ReactiveFormsModule} from '@angular/forms';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { SocialSharing } from "@ionic-native/social-sharing/ngx";
+import { SocialMedia } from "./service/social-media/social.media";
+import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 import { ListGiveDetailPageModule } from './modal/list-give-detail/list-give-detail.module';
 import { RatingPageModule } from './modal/rating/rating.module';
 import * as firebase from 'firebase';
@@ -44,6 +47,9 @@ firebase.initializeApp(environment.firebase);
     AuthService,
     FcmService,
     LocalNotifications,
+    SocialSharing,
+    SocialMedia,
+    Deeplinks,
     SendNotification,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Camera

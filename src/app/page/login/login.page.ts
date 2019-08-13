@@ -40,7 +40,7 @@ export class LoginPage implements OnInit {
     ],
     'password': [
       { type: 'required', message: 'Yêu cầu nhập mật khẩu.' },
-      { type: 'minlength', message: 'Mật khẩu cần trên 5 ký tự.' }
+      { type: 'minlength', message: 'Mật khẩu tối thiểu 6 ký tự.' }
     ]
   };
  

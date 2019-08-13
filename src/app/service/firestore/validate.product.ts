@@ -16,16 +16,16 @@ export class ValidateProduct {
     });
     toast.present();
   }
-  async ToastName() {
+  async ToastName(message) {
     const toast = await this.toastController.create({
-      message: 'Chưa nhập tên sản phẩm',
+      message: message,
       duration: 2000
     });
     toast.present();
   }
-  async ToastDescribe() {
+  async ToastDescribe(message) {
     const toast = await this.toastController.create({
-      message: 'Chưa nhập mô tả',
+      message: message,
       duration: 2000
     });
     toast.present();

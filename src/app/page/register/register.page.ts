@@ -19,15 +19,15 @@ export class RegisterPage implements OnInit {
     ],
     'password': [
       { type: 'required', message: 'Yêu cầu nhập mật khẩu.' },
-      { type: 'minlength', message: 'Mật khẩu cần trên 5 ký tự.' }
+      { type: 'minlength', message: 'Mật khẩu tối thiểu 6 ký tự.' }
     ],
     'username': [
       { type: 'required', message: 'Yêu cầu nhập tên tài khoản.' },
-      { type: 'minlength', message: 'Tên tài khoản cần trên 6 ký tự.' }
+      { type: 'minlength', message: 'Tên tài khoản tối thiểu 6 ký tự.' }
     ],
     'mssv': [
       { type: 'required', message: 'Yêu cầu nhập mã số sinh viên.' },
-      { type: 'minlength', message: 'Mã số sinh viên cần trên 7 ký tự.' }
+      { type: 'minlength', message: 'Mã số sinh viên cần tối thiểu 7 ký tự.' }
     ],
     'fullname': [
       { type: 'required', message: 'Yêu cầu nhập họ tên.' }

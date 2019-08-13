@@ -7,6 +7,7 @@ import { ValidateProduct } from '../../service/firestore/validate.product';
 import { AuthService } from '../../service/authentication/authentication.service';
 import { CrudUser } from  '../../service/authentication/crud.user';
 import { ListGiveDetailPage } from '../../modal/list-give-detail/list-give-detail.page';
+import { SocialMedia } from "../../service/social-media/social.media";
 @Component({
   selector: 'app-item-detail',
   templateUrl: './item-detail.page.html',
@@ -20,6 +21,7 @@ export class ItemDetailPage implements OnInit {
     public actionSheetController: ActionSheetController,
     private loadingController: LoadingController,
     private modalController: ModalController,
+    private socialMedia : SocialMedia,
     private crudProduct: CrudProduct,
     private validateProduct: ValidateProduct,
     private authService: AuthService,
@@ -65,7 +67,7 @@ export class ItemDetailPage implements OnInit {
           this.nameSubmitBtn = "Đã đăng ký nhận";
         }else if(this.userSubmit[i].hasChosen == true){
           this.disableBtn = true;
-          this.nameSubmitBtn = "Đã có người được nhận sản phẩm này";
+          this.nameSubmitBtn = "Đã có người được chọn";
         }else{
           console.log("haha")
           checkGet = false;
@@ -167,6 +169,7 @@ export class ItemDetailPage implements OnInit {
     this.checkUserSubmitOrGive();
     this.getDifferentProducts(); 
     this.getUserGivenID();
+    this.createContentShare();
   }
   //chuc nang hien thi report
   async showReportAllert() {
@@ -180,19 +183,114 @@ export class ItemDetailPage implements OnInit {
     await alert.present();
   }
 
+  subjectShare : string;
+  shareMessage : string;
+  imageShare : string;
+  urlShare : string;
+  //tao content share fb
+  createContentShare(){
+    for(var i = 0;i<this.products.length;i++){
+      if(this.products[i].id == this.itemId){
+        this.subjectShare = null;
+        this.shareMessage = this.products[i].tensp+" - "+this.products[i].note;
+        this.imageShare = null;
+        this.urlShare = "https://givegetshare.firebaseapp.com/home/"+this.products[i].id;
+      }
+    }
+  }
+
   //chuc nang hien thi share
   async showShareAction() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Chia sẻ',
-      buttons: [{
-        text: 'Facebook',
-        role: 'destructive',
-        icon: 'logo-facebook'
-      }, {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel'
-      }]
+      buttons: [
+        {
+          text: "Share on Facebook",
+          role: "destructive",
+          cssClass: " action-facebook",
+          icon: "logo-facebook",
+          handler: () => {
+            this.socialMedia.share(
+              "com.facebook.katana",
+              "Facebook",
+              "facebook",
+              this.shareMessage,
+              this.subjectShare,
+              this.imageShare,
+              this.urlShare
+            );
+          }
+        },
+        {
+          text: "Share on Whatsup",
+          role: "destructive",
+          cssClass: " action-whatsup",
+          icon: "logo-whatsapp",
+          handler: () => {
+            this.socialMedia.share(
+              "com.whatsapp",
+              "Whatsapp",
+              "whatsapp",
+              this.shareMessage,
+              this.subjectShare,
+              this.imageShare,
+              this.urlShare
+            );
+          }
+        },
+        {
+          text: "Share on Instagram",
+          role: "destructive",
+          cssClass: " action-instagram",
+          icon: "logo-instagram",
+          handler: () => {
+            this.socialMedia.share(
+              "com.instagram.android",
+              "Instagram",
+              "instagram",
+              this.shareMessage,
+              this.subjectShare,
+              this.imageShare,
+              this.urlShare
+            );
+          }
+        },
+        {
+          text: "Share on Twitter",
+          role: "destructive",
+          cssClass: " action-twitter",
+          icon: "logo-twitter",
+          handler: () => {
+            this.socialMedia.share(
+              "com.twitter.android",
+              "Twitter",
+              "twitter",
+              this.shareMessage,
+              this.subjectShare,
+              this.imageShare,
+              this.urlShare
+            );
+          }
+        },
+        {
+          text: "Share on other Social medias",
+          role: "destructive",
+          cssClass: " action-regular",
+          icon: "share",
+          handler: () => {
+            this.socialMedia.share(
+              "none",
+              "Share",
+              "none",
+              this.shareMessage,
+              this.subjectShare,
+              this.imageShare,
+              this.urlShare
+            );
+          }
+        }
+      ]
+ 
     });
     await actionSheet.present();
   }

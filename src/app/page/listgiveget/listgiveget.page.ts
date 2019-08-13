@@ -556,9 +556,13 @@ export class ListgivegetPage implements OnInit {
   validated = false;
   checkValidate(record){
     if(record.Edittensp == ""){
-      this.validateProduct.ToastName();
+      this.validateProduct.ToastName("Chưa nhập tên sản phẩm");
     }else if(record.Editnote == ""){
-      this.validateProduct.ToastDescribe();
+      this.validateProduct.ToastDescribe("");
+    }else if(record.Edittensp.length > 20){
+      this.validateProduct.ToastName("Tên sản phẩm nhiều hơn 20 kí tự");
+    }else if(record.Editnote.length > 200){
+      this.validateProduct.ToastDescribe("Mô tả nhiều hơn 200 kí tự");
     }else{
       this.validated = true;
     }
@@ -639,9 +643,10 @@ export class ListgivegetPage implements OnInit {
             }
           }, {
             text: 'Xóa',
-            handler: data => {
+            handler: () => {
               this.crudProduct.delete_Product(productid);
               this.sendNotification.sendNotification("thank",title,message);
+              alert.dismiss();
             }
           }
       ]
@@ -688,7 +693,7 @@ export class ListgivegetPage implements OnInit {
             }
           }, {
             text: 'Xóa',
-            handler: data => {
+            handler: () => {
               this.crudProduct.delete_GetProduct(productid,docID);
               if(userHasChosen == true){
                 this.sendNotification.sendNotification("abort",title,message)

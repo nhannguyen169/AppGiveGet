@@ -122,6 +122,7 @@ export class ItemPostPage implements OnInit {
       this.imgUrl = undefined;
       this.captureDataUrl = "";
       this.hasUpProduct = true;
+      this.validated = false;
       this.navCtrl.navigateForward('/tabs/menu');
       this.validateProduct.ToastSuccess();
       console.log(resp);
@@ -134,12 +135,17 @@ export class ItemPostPage implements OnInit {
  
   
   checkValidate(){
-    if(this.captureDataUrl == undefined){
-      this.validateProduct.ToastImage();
-    }else if(this.newProductName == undefined){
-      this.validateProduct.ToastName();
-    }else if(this.newProductDescribe == undefined){
-      this.validateProduct.ToastDescribe();
+    //if(this.captureDataUrl == undefined){
+      //this.validateProduct.ToastImage();
+    //}else 
+    if(this.newProductName == undefined || this.newProductName == ""){
+      this.validateProduct.ToastName("Chưa nhập tên sản phẩm");
+    }else if(this.newProductName.length > 20){
+      this.validateProduct.ToastName("Tên sản phẩm nhiều hơn 20 kí tự");
+    }else if(this.newProductDescribe== undefined || this.newProductDescribe == ""){
+      this.validateProduct.ToastDescribe("Chưa nhập mô tả");
+    }else if(this.newProductDescribe.length > 200){
+      this.validateProduct.ToastDescribe("Mô tả nhiều hơn 200 kí tự");
     }else if(this.newProductType == undefined){
       this.validateProduct.ToastType();
     }else if(this.newProductMethod  == undefined){
@@ -167,6 +173,7 @@ export class ItemPostPage implements OnInit {
       var img = this.imgUrl;
       await this.loadingCreate(10000);
       await this.CreateRecord(img);
+      this.validated = false;
     }  
   }
 
