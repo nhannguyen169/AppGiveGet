@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, AlertController,ModalController,LoadingController,ActionSheetController} from '@ionic/angular';
 import { Camera,CameraOptions } from '@ionic-native/camera/ngx';
+import { CallNumber } from '@ionic-native/call-number/ngx';
 import { CrudProduct } from '../../service/firestore/crud.product';
 import { CrudUser } from  '../../service/authentication/crud.user';
 import { GetProducttype } from '../../service/firestore/get.productype';
@@ -25,6 +26,7 @@ export class ListgivegetPage implements OnInit {
     public actionSheetController: ActionSheetController,
     private router : Router,
     private camera : Camera,
+    private callNumber: CallNumber,
     private crudProduct: CrudProduct,
     private crudUser: CrudUser,
     private sendNotification : SendNotification,
@@ -68,6 +70,7 @@ export class ListgivegetPage implements OnInit {
           username: e.payload.doc.data()['username'],
           fullname: e.payload.doc.data()['fullname'],
           khoa: e.payload.doc.data()['khoa'],
+          phone:e.payload.doc.data()['phone'],
           rating :e.payload.doc.data()['rating'],
           numberUserRate: e.payload.doc.data()['numberUserRate']
         };
@@ -92,14 +95,18 @@ export class ListgivegetPage implements OnInit {
       this.userID = this.authService.userDetails().uid;
     }
     for(var i =0;i<this.products.length;i++){ 
-      this.getUserHasSubmit(this.products[i].id,this.products[i].loaisp,this.products[i].tensp,this.products[i].date,this.products[i].img);
+      for(var j =0;j<this.listAllUser.length;j++){
+        if(this.listAllUser[j].userID == this.products[i].user){
+          this.getUserHasSubmit(this.products[i].id,this.products[i].loaisp,this.products[i].tensp,this.products[i].date,this.products[i].img,this.listAllUser[j].phone);
+        }
+      }
     }
   }
 
 
   listUserSubmit : any;
   //lay thong tin nguoi dung da dang ky cho trang get
-  getUserHasSubmit(productID,loaisp,tensp,date,img){
+  getUserHasSubmit(productID,loaisp,tensp,date,img,phone){
     this.listUserSubmit = [];
     this.crudProduct.read_GetProduct(productID).subscribe(data => {
       data.map(e => {
@@ -109,6 +116,7 @@ export class ListgivegetPage implements OnInit {
           tensp : tensp,
           date : date,
           img : img,
+          phone : phone,
           userid:e.payload.doc.id,
           user:e.payload.doc.data()['user'],
           hasChosen : e.payload.doc.data()['hasChosen']
@@ -203,7 +211,7 @@ export class ListgivegetPage implements OnInit {
     this.shuffle(this.listRandomUser);
     this.listRandomUser.sort((a, b) => (a.ratioRandom > b.ratioRandom) ? 1 : -1)
     for(var i =0;i<this.listRandomUser.length;i++){
-      if(i = this.listRandomUser.length - 1){
+      if(i == this.listRandomUser.length - 1){
         return this.listRandomUser[i].userId;
       }
     }
@@ -344,6 +352,7 @@ export class ListgivegetPage implements OnInit {
     var hasRated = false;
     var hasChosen = false;
     var confirmDone = false;
+    var giverConfirmDone = false;
     var arr;
     for(var j =0;j<this.listUserSubmit.length;j++){
       for(var i =0;i<this.listAllUser.length;i++){
@@ -357,6 +366,8 @@ export class ListgivegetPage implements OnInit {
               if(this.checkUserHasRate(productid) == true){
                 hasRated = true;
               }
+            }else if(fieldConfirm =="Người nhận chưa xác nhận <br/> Người cho đã xác nhận"){
+              giverConfirmDone = true;
             }
             hasUserConfirm = true;
           }else if(this.listUserSubmit[j].user == this.listAllUser[i].userID && this.listUserSubmit[j].hasChosen != true && hasChosen == false){
@@ -381,7 +392,18 @@ export class ListgivegetPage implements OnInit {
           }
         }
       ]
-    }else if(confirmDone == false && hasUserConfirm == true){
+    }else if(giverConfirmDone == true && confirmDone == false && hasUserConfirm == true){
+      arr = [
+        {
+          text: 'Đóng',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }
+      ]
+    }else if(giverConfirmDone == false && confirmDone == false && hasUserConfirm == true){
       arr = [
         {
           text: 'Đóng',
@@ -427,6 +449,7 @@ export class ListgivegetPage implements OnInit {
     var fieldGiven;
     var fieldConfirm ;
     var confirmDone = false;
+    var giverConfirmDone = false;
     var arr;
     var userID;
     for(var i =0;i<this.products.length;i++){
@@ -440,6 +463,8 @@ export class ListgivegetPage implements OnInit {
     fieldConfirm = this.checkGiveAndGetConfirm(productid);
     if(fieldConfirm == "Người nhận đã xác nhận <br/> Người cho đã xác nhận"){
       confirmDone = true;
+    }else if(fieldConfirm == "Người nhận đã xác nhận <br/> Người cho chưa xác nhận"){
+      giverConfirmDone = true;
     }
     if(confirmDone == true){
       arr = [
@@ -455,6 +480,17 @@ export class ListgivegetPage implements OnInit {
           handler: data => {
             this.presentRatingModal(productid,userID,this.userID);
             console.log('Confirm xác nhận');
+          }
+        }
+      ]
+    }else if(giverConfirmDone == true){
+      arr = [
+        {
+          text: 'Đóng',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
           }
         }
       ]
@@ -610,25 +646,38 @@ export class ListgivegetPage implements OnInit {
     var fieldChosen = 'Bạn có muốn xoá !';
     var fullname;
     var khoa;
-    var username;
+    var givername;
+    var gettorname
     var title;
-    var message;
-    for(var j =0;j<this.listUserSubmit.length;j++){
-      for(var i =0;i<this.listAllUser.length;i++){
-        if(this.userID == this.listAllUser[i].userID){
-          fullname = this.listAllUser[i].fullname;
-          khoa = this.listAllUser[i].khoa;
-          username = this.listAllUser[i].username;
-        }
-        if(this.listUserSubmit[j].id == productid){
-          title = username+" đã xóa bài đăng: "+this.listUserSubmit[j].tensp ;
+    var message = "";
+    var productName;
+    var bool = false;
+    for(var i = 0;i<this.products.length;i++){
+      if(this.products[i].id == productid){
+        productName = this.products[i].tensp;
+      }
+    }
+    for(var i =0;i<this.listAllUser.length;i++){
+      if(this.userID == this.listAllUser[i].userID){ 
+        fullname = this.listAllUser[i].fullname;
+        khoa = this.listAllUser[i].khoa;
+        givername = this.listAllUser[i].username;
+        title = givername+" đã xóa bài đăng: "+productName;
+       
+      }
+      for(var j =0;j<this.listUserSubmit.length;j++){
+        if(productid == this.listUserSubmit[j].id){
           if(this.listUserSubmit[j].user == this.listAllUser[i].userID && this.listUserSubmit[j].hasChosen == true){
             fieldChosen = 'Đang có người đang thực hiện giao dịch với bạn. <br/> Bạn có mún xóa !';
-            message = "Cảm ơn bạn "+fullname+" Khoa "+khoa+" đã đăng bài trên Give Get và xin lỗi bạn "+this.listAllUser[i].fullname+" đang thực hiện giao dịch này.";
-          }else{
-            message = "Cảm ơn bạn "+fullname+" Khoa "+khoa+" đã đăng bài trên Give Get";
+            bool = true;
+            gettorname = this.listAllUser[i].fullname;
           }
         }
+      }
+      if(bool == true){
+        message = "Cảm ơn bạn "+fullname+" Khoa "+khoa+" đã đăng bài trên Give Get và xin lỗi bạn "+gettorname+" đang thực hiện giao dịch này.";
+      }else{
+        message = "Cảm ơn bạn "+fullname+" Khoa "+khoa+" đã đăng bài trên Give Get";
       }
     }
     const alert = await this.alertController.create({
@@ -648,7 +697,6 @@ export class ListgivegetPage implements OnInit {
             handler: () => {
               this.crudProduct.delete_Product(productid);
               this.sendNotification.sendNotification("thank",title,message);
-              this.router.navigateByUrl('/tabs/menu');
             }
           }
       ]
@@ -800,11 +848,19 @@ export class ListgivegetPage implements OnInit {
     await actionSheet.present();
   }
 
-  async presentOptionsCardGet(productID,hasChosen) {
+  async presentOptionsCardGet(productID,hasChosen,phone) {
     var arr;
     if(hasChosen == true){
       arr = [
         {
+        text: 'Liên hệ',
+        icon: 'call',
+        handler: () => {
+          this.callNumber.callNumber(phone, true)
+          .then(res => console.log('Launched dialer!', res))
+          .catch(err => console.log('Error launching dialer', err));
+        }
+      },{
         text: 'Tình trạng giao dịch',
         icon: 'checkbox-outline',
         handler: () => {

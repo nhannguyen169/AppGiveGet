@@ -43,6 +43,7 @@ export class ItemDetailPage implements OnInit {
   userGivenID : any;
   hasCreated = false;
   listReport : any;
+  countSubmitClick = 0;
   sliderConfig = {
     slidesPerView: 1.6,
     spaceBetween: 10,
@@ -370,12 +371,14 @@ export class ItemDetailPage implements OnInit {
     let record = {};
     record['user'] = this.userID;
     record['hasChosen'] = false; 
+    record['phone'] = 
     this.disableBtn = true;
     this.crudProduct.add_GetProduct(this.itemId,record).then(resp =>{
       this.hasCreated = true;
       this.validateProduct.ToastGetSuccess();
       this.checkUserSubmitOrGive();
       this.getNumberUserSubmit();
+      this.countSubmitClick ++;
     })  
   }
   //gui du lieu len firebase
@@ -383,7 +386,9 @@ export class ItemDetailPage implements OnInit {
     const loading = await this.loadingController.create({
       message: 'Đang xử lý'
     });
-    await this.createGetData();
+    if(this.countSubmitClick < 1){
+      await this.createGetData();
+    }
     if(this.hasCreated == true){
       loading.dismiss();
     }

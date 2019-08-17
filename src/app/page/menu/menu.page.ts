@@ -35,7 +35,7 @@ export class MenuPage implements OnInit {
     this.authService.logoutUser()
     .then(res => {
       console.log(res);
-      this.navCtrl.navigateForward('/login');
+      this.navCtrl.navigateRoot('/login');
     })
     .catch(error => {
       console.log(error);

@@ -119,7 +119,7 @@
       <ion-grid >
         <ion-row *ngFor="let i of listUserSubmit">
           <ion-card *ngIf="i.user == userID">
-            <span (click)="presentOptionsCardGet(i.id,i.hasChosen)">
+            <span (click)="presentOptionsCardGet(i.id,i.hasChosen,i.phone)">
               <ion-card-header>
                 <ion-row>
                   <ion-col>
