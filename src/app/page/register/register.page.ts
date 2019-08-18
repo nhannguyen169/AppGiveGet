@@ -19,18 +19,22 @@ export class RegisterPage implements OnInit {
     ],
     'password': [
       { type: 'required', message: 'Yêu cầu nhập mật khẩu.' },
-      { type: 'minlength', message: 'Mật khẩu tối thiểu 6 ký tự.' }
+      { type: 'minlength', message: 'Mật khẩu tối thiểu 6 ký tự.' },
+      { type: 'pattern', message: 'Mật khẩu không được chứa khoảng trắng hoặc kí tự đặc biệt' }
     ],
     'username': [
       { type: 'required', message: 'Yêu cầu nhập tên tài khoản.' },
-      { type: 'minlength', message: 'Tên tài khoản tối thiểu 6 ký tự.' }
+      { type: 'minlength', message: 'Tên tài khoản tối thiểu 6 ký tự.' },
+      { type: 'pattern', message: 'Tên tài khoản không được chứa khoảng trắng hoặc kí tự đặc biệt' }
     ],
     'mssv': [
       { type: 'required', message: 'Yêu cầu nhập mã số sinh viên.' },
-      { type: 'minlength', message: 'Mã số sinh viên cần tối thiểu 7 ký tự.' }
+      { type: 'minlength', message: 'Mã số sinh viên cần tối thiểu 7 ký tự.' },
+      { type: 'pattern', message: 'Mã số sinh viên được chứa khoảng trắng hoặc kí tự đặc biệt' }
     ],
     'fullname': [
-      { type: 'required', message: 'Yêu cầu nhập họ tên.' }
+      { type: 'required', message: 'Yêu cầu nhập họ tên.' },
+      { type: 'pattern', message: 'Họ tên không được chứa khoảng trắng hoặc kí tự đặc biệt' }
     ],
     'phone': [
       { type: 'required', message: 'Yêu cầu nhập số điện thoại.' },
@@ -81,18 +85,22 @@ export class RegisterPage implements OnInit {
         Validators.pattern('^[a-zA-Z0-9_.+-]+@vanlanguni.vn+$')
       ])),
       password: new FormControl('', Validators.compose([
-        Validators.minLength(5),
+        Validators.minLength(6),
+        Validators.pattern('^[a-zA-Z0-9_.+-]+$'),
         Validators.required
       ])),
       username: new FormControl('', Validators.compose([
         Validators.minLength(6),
+        Validators.pattern('^[a-zA-Z0-9_.+-]+$'),
         Validators.required
       ])),
       mssv: new FormControl('', Validators.compose([
         Validators.minLength(7),
+        Validators.pattern('^[a-zA-Z0-9_.+-]+$'),
         Validators.required
       ])),
       fullname: new FormControl('', Validators.compose([
+        Validators.pattern('^[a-zA-Z0-9_.+-]+$'),
         Validators.required
       ])),
       phone: new FormControl('', Validators.compose([

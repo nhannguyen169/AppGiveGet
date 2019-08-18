@@ -596,7 +596,7 @@ export class ListgivegetPage implements OnInit {
     if(record.Edittensp == ""){
       this.validateProduct.ToastName("Chưa nhập tên sản phẩm");
     }else if(record.Editnote == ""){
-      this.validateProduct.ToastDescribe("");
+      this.validateProduct.ToastDescribe("Chưa nhập mô tả");
     }else if(record.Edittensp.length > 20){
       this.validateProduct.ToastName("Tên sản phẩm nhiều hơn 20 kí tự");
     }else if(record.Editnote.length > 200){

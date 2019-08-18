@@ -123,6 +123,7 @@ export class ItemDetailPage implements OnInit {
     }
   }
 
+
   ngOnInit() {
     //lay thong tin san pham tu firebase qua id
     this.itemId = this.activatedRoute.snapshot.paramMap.get('itemid');
@@ -182,6 +183,7 @@ export class ItemDetailPage implements OnInit {
     this.checkUserSubmitOrGive();
     this.getDifferentProducts(); 
     this.getUserGivenID();
+    this.getSubmitQuantity();
     this.createContentShare();
   }
   //chuc nang hien thi report
@@ -381,14 +383,46 @@ export class ItemDetailPage implements OnInit {
       this.countSubmitClick ++;
     })  
   }
+  
+  listUserSubmit:any;
+  //lay so luong nguoi dung co dang ky nhan qua so luong cho phep
+  getSubmitQuantity(){
+    this.listUserSubmit = [];
+    for(var i = 0;i<this.products.length;i++){
+      this.crudProduct.read_GetProduct(this.products[i].id).subscribe(data => {
+        data.map(e => {
+          this.listUserSubmit.push({
+            user : e.payload.doc.data()['user']
+          });
+        });
+      });
+    }
+  }
+  //kiem tra nguoi dung co dang ky nhan qua so luong cho phep
+  checkOutSubmitQuantity(){
+    var count = 0;
+    for(var i =0;i<this.listUserSubmit.length;i++){
+      if(this.listUserSubmit[i].user == this.userID){
+        count ++;
+      }
+    }
+    return count;
+  }
+
   //gui du lieu len firebase
   async submitGet(){
     const loading = await this.loadingController.create({
       message: 'Đang xử lý'
     });
+
     if(this.countSubmitClick < 1){
-      await this.createGetData();
+      if(this.checkOutSubmitQuantity() >= 2){
+        await this.validateProduct.ToastMessage('Không được đăng ký nhận quá 2 lần');
+      }else{
+        await this.createGetData();
+      }
     }
+
     if(this.hasCreated == true){
       loading.dismiss();
     }

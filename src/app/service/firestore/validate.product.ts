@@ -66,5 +66,12 @@ export class ValidateProduct {
     toast.present();
   }
 
+  async ToastMessage(message) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000
+    });
+    toast.present();
+  }
 
 }
